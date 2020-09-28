@@ -12,6 +12,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// TODO get this hooked up to CRA's build dir (most likely via symlink)
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
