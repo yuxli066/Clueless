@@ -17,11 +17,15 @@ The top level directory contains common (dev) dependencies across the other subp
 ## Client
 
 The Client subdirectory contains a [create react app](https://create-react-app.dev/) project. The client uses ES6.
+When built, the client puts its artifacts in the `build` directory.
 
 ## Server
 
+The server contains an express app for servering the client as a static bundle. This is done via symlinking the server's `public` directory to the client's `build` directory. It uses ES5.
+
 # Special Notes
 
-All dependencies in client should be dependencies, **not** dev dependencies. This is because the artifact of the
-client is a bundle as described [here](https://github.com/facebook/create-react-app/issues/6180). The server uses
-ES5.
+- All dependencies in client should be dependencies, **not** dev dependencies. This is because the artifact of the
+  client is a bundle as described [here](https://github.com/facebook/create-react-app/issues/6180).
+
+- When in dev mode, the server doesn't actually serve the clinet, because the client uses a special dev server to enable hot reloading. This special server proxies to the actual server to facilitate websocket communication.
