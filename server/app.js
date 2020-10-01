@@ -2,6 +2,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const socketIo = require("socket.io");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -18,4 +19,17 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
-module.exports = app;
+const io = socketIo();
+
+// TODO we should move the socket handling code to a new file!
+io.on("connect", (socket) => {
+  console.log("connected!");
+  socket.on("disconnect", () => {
+    console.log("disconnected!");
+  });
+});
+
+module.exports = {
+  app,
+  io,
+};

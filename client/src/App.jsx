@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
+import socketIOClient from "socket.io-client";
 
 function App() {
+  // TODO socket connection should be a context and done on the other route
+  useEffect(() => {
+    // const socket = io();
+    socketIOClient("http://localhost:3001");
+  }, []);
+
   return (
     <Switch>
       {/* TODO add route for specific game board */}
