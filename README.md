@@ -7,6 +7,15 @@ A lite version of clue for EP Course EN.605.601.83.FA20 - Foundations of Softwar
 Prerequisites include [node](https://nodejs.org/) and [yarn](https://classic.yarnpkg.com/).
 One reccomenation (but not requirement) for installing node is to use [nvm](https://github.com/nvm-sh/nvm)
 
+# Quick Start
+
+After installing node and yarn, run the following to start the client and server together in dev mode:
+
+```bash
+yarn
+yarn start
+```
+
 # Structure
 
 ## Top Level
