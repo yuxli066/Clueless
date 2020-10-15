@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
 import { SocketGate, SocketProvider } from "./SocketContext";
+import Board from "./Board";
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <Route path="/game">
         <SocketProvider>
           <SocketGate loading={<p>establishing websocket connection...</p>}>
-            <p>Websocket connected successfully!</p>
+            <Board />
           </SocketGate>
         </SocketProvider>
       </Route>

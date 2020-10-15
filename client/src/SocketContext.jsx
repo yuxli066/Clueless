@@ -24,12 +24,17 @@ export function SocketProvider({ children }) {
   // default url is window.location
   useEffect(() => {
     const socket = io();
-    // TODO log connection to socket?
     setSocket(socket);
   }, []);
 
   useEffect(() => {
     if (socket) {
+      socket.on("connect", () => {
+        console.log("Client connected to server!");
+      });
+
+      // TODO add reconnect logic
+
       return () => socket.close();
     }
   }, [socket]);
