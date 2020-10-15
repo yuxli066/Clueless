@@ -2,6 +2,7 @@ include:
   - template: "Workflows/MergeRequest-Pipelines.gitlab-ci.yml"
 
 build:
+  stage: build
   image: node:lts-alpine
   before_script:
     - yarn
