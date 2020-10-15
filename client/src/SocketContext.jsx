@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 import { useEffect } from "react";
-import io from "socket-io-client";
+import io from "socket.io-client";
 
 const SocketContext = createContext();
 
@@ -10,7 +10,7 @@ export function SocketGate({ loading, children }) {
 
   // if the socket context is "falsey", return a loading component instead
   if (!socket) {
-    return React.createElement(loading);
+    return loading;
   }
 
   return children;
@@ -30,7 +30,7 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     if (socket) {
-      return socket.close();
+      return () => socket.close();
     }
   }, [socket]);
 
