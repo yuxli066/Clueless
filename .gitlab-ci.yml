@@ -1,0 +1,13 @@
+include:
+  - template: "Workflows/MergeRequest-Pipelines.gitlab-ci.yml"
+
+build:
+  image: node:lts-alpine
+  before_script:
+    - yarn
+  script:
+    - cd client
+    - yarn build
+  cache:
+    paths:
+      - $CI_PROJECT_DIR/node_modules
