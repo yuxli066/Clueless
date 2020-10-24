@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
@@ -47,3 +47,15 @@ function App() {
 }
 
 export default App;
+
+
+{/*<div className="App">*/}
+{/*    <Switch>*/}
+{/*        /!* TODO add route for specific game board *!/*/}
+{/*        /!* NOTE: path="/" MUST be at the end because it will always match *!/*/}
+{/*        <Route path="/">*/}
+{/*            /!* TODO if we add the "bp3-dark" class here (or any container) we get dark theme! (consider making a switch to do this) *!/*/}
+{/*            /!* TODO replace with some landing page *!/*/}
+{/*        </Route>*/}
+{/*    </Switch>*/}
+{/*</div>*/}
