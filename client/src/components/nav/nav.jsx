@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useTransition, animated } from "react-spring";
-import NavigationMenuItems from "./NavigationMenuItems";
+import NavigationMenuItems from "./navMenuItems";
 
 function Navigation() {
   // eslint-disable-next-line
@@ -23,12 +23,12 @@ function Navigation() {
   let menuMask = maskTransitions.map(
       ({ item, key, props }) =>
         item && (
-          <animated.div
+          <animated
             key={key}
             style={props}
             className=""
             onClick={() => setShowMenu(false)}
-          ></animated.div>
+          />
         )
     ),
     menu = menuTransitions.map(
@@ -43,10 +43,10 @@ function Navigation() {
   return (
     <div className="">
       <div className="">
-        <a className="" href="#" alt="">
-          <img className="" src={require("../../images/logo.png")}></img>
+        <div className="">
+          <img alt="" className="" src={require("../../images/logo.png")}/>
           LOGO
-        </a>
+        </div>
       </div>
       <div className="">
         {/*add logo here*/}
