@@ -1,5 +1,5 @@
 import React from "react";
-import Navigation from "./nav/nav";
+import Navigation from "./nav/Nav";
 
 function Header() {
   /*TODO: Add Team Logo, Add sticky footer, Add Team pics to Team page, maybe make nav bar better looking?*/
