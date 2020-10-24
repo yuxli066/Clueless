@@ -17,7 +17,10 @@ function App() {
         </SocketProvider>
       </Route>
       {/* NOTE: path="/" MUST be at the end bc it will always match */}
+      {/* TODO add route for specific game board */}
+      {/* NOTE: path="/" MUST be at the end because it will always match */}
       <Route path="/">
+        {/* TODO if we add the "bp3-dark" class here (or any container) we get dark theme! (consider making a switch to do this) */}
         {/* TODO replace with some landing page */}
         <div className="App">
           <header className="App-header">
