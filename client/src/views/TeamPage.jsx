@@ -1,5 +1,6 @@
 import React from 'react';
 import TeamMemCard from "./TeamMemCard";
+import "./Views.css";
 
 function TeamPage() {
     let savannahBio = "Savannah Blades works as a software and product developer at Bureau Veritas North America, Project Management Division. " +
@@ -31,19 +32,60 @@ function TeamPage() {
         "University. David has experience in using Python, MATLAB, C++, and Java.";
 
     return (
-        <section className="">
-            <div className="">
-                <h1 className="" >Meet the Team</h1>
-                <hr className=""></hr>
+        <section id="team" className="team">
+            <div className="container-fluid">
+
+                <div className="row">
+                    <div className="section-title col-lg-12">
+                        <h2>Meet The Team</h2>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="" data-aos="fade-up">
+                        <TeamMemCard name="Savannah Blades" jobTitle="Lead UI/UX Designer" location="Maryland" bio={savannahBio}/>
+                        <TeamMemCard name="Savannah Blades" jobTitle="Lead UI/UX Designer" location="Maryland" bio={savannahBio}/>
+                        <TeamMemCard name="Savannah Blades" jobTitle="Lead UI/UX Designer" location="Maryland" bio={savannahBio}/>
+                    </div>
+                    <div className="" data-aos="fade-up">
+                        <TeamMemCard name="Savannah Blades" jobTitle="Lead UI/UX Designer" location="Maryland" bio={savannahBio}/>
+                        <TeamMemCard name="Savannah Blades" jobTitle="Lead UI/UX Designer" location="Maryland" bio={savannahBio}/>
+                        <TeamMemCard name="Savannah Blades" jobTitle="Lead UI/UX Designer" location="Maryland" bio={savannahBio}/>
+                    </div>
+                </div>
+
             </div>
-            <TeamMemCard name="Savannah Blades" jobTitle="Lead UI/UX Designer" location="Maryland" bio={savannahBio}/>
-            <TeamMemCard name="Tony Lawrence" jobTitle="Project Manager" location="Maryland" bio={tonyBio}/>
-            <TeamMemCard name="Leo Li" jobTitle="Lead Software Quality Assurance" location="Los Angeles, CA" bio={leoBio}/>
-            <TeamMemCard name="David Phillips" jobTitle="Lead Programmer" location="Maryland" bio={davidPBio}/>
-            <TeamMemCard name="Kyle Spivak" jobTitle="Lead Configuration Manager" location="Maryland" bio={kyleSBio}/>
-            <TeamMemCard name="David Tigeros" jobTitle="Lead Architect" location="Maryland" bio={davidTBio}/>
         </section>
     );
 }
 
+// {/*<div>*/}
+// {/*    <Row md={12}>*/}
+// {/*        <div className="">*/}
+// {/*            <h1 className="" >Meet the Team</h1>*/}
+// {/*            <hr className=""></hr>*/}
+// {/*        </div>*/}
+// {/*    </Row>*/}
+// {/*    <Row>*/}
+// {/*        <Col md={4}>*/}
+// {/*            <TeamMemCard name="Savannah Blades" jobTitle="Lead UI/UX Designer" location="Maryland" bio={savannahBio}/>*/}
+// {/*        </Col>*/}
+// {/*        <Col md={4}>*/}
+// {/*            <TeamMemCard name="Tony Lawrence" jobTitle="Project Manager" location="Maryland" bio={tonyBio}/>*/}
+// {/*        </Col>*/}
+// {/*        <Col md={4}>*/}
+// {/*            <TeamMemCard name="Leo Li" jobTitle="Lead Software Quality Assurance" location="Los Angeles, CA" bio={leoBio}/>*/}
+// {/*        </Col>*/}
+// {/*    </Row>*/}
+// {/*    <Row>*/}
+// {/*        <Col md={4}>*/}
+// {/*            <TeamMemCard name="David Phillips" jobTitle="Lead Programmer" location="Maryland" bio={davidPBio}/>*/}
+// {/*        </Col>*/}
+// {/*        <Col md={4}>*/}
+// {/*            <TeamMemCard name="Kyle Spivak" jobTitle="Lead Configuration Manager" location="Maryland" bio={kyleSBio}/>*/}
+// {/*        </Col>*/}
+// {/*        <Col md={4}>*/}
+// {/*            <TeamMemCard name="David Tigeros" jobTitle="Lead Architect" location="Maryland" bio={davidTBio}/>*/}
+// {/*        </Col>*/}
+// {/*    </Row>*/}
+// {/*</div>*/}
 export default TeamPage;

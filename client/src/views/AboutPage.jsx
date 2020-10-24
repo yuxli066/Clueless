@@ -1,16 +1,63 @@
 import React from 'react';
+import "./Views.css";
+import Container from "react-bootstrap/cjs/Container";
 
 function AboutPage() {
     return (
-        <section className="">
-            <div className="">
-                <h1 className="" >About</h1>
-                <hr className=""></hr>
-            </div>
-            <div className="">
-                <h1 className="" >Rules:</h1>
-                <p className="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In metus vulputate eu scelerisque. Quis eleifend quam adipiscing vitae proin sagittis. Quis vel eros donec ac odio tempor orci dapibus. Nunc non blandit massa enim nec. Netus et malesuada fames ac turpis egestas sed. Augue eget arcu dictum varius duis at consectetur lorem donec. Phasellus vestibulum lorem sed risus ultricies tristique nulla aliquet. Nunc lobortis mattis aliquam faucibus purus. Magna fermentum iaculis eu non diam. Congue mauris rhoncus aenean vel elit. Praesent tristique magna sit amet purus gravida quis. Ac felis donec et odio pellentesque diam. Arcu cursus vitae congue mauris. A pellentesque sit amet porttitor eget dolor morbi non arcu. Ut enim blandit volutpat maecenas volutpat blandit aliquam.</p>
-            </div>
+        <section id="about" className="about">
+            <Container fluid>
+                <div className="section-title">
+                    <h2>About</h2>
+                </div>
+                <div className="row">
+                    <div className="col-lg-6 pt-4 pt-lg-0 content" data-aos="fade-left">
+                        <h3>Rules for the game: </h3>
+                        <p>
+                            Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt
+                            adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
+                            Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus
+                            itaque neque. Aliquid amet quidem ut quaerat cupiditate. Ab et eum qui repellendus omnis
+                            culpa magni laudantium dolores. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                            Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt
+                            adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
+                            Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus
+                            itaque neque. Aliquid amet quidem ut quaerat cupiditate. Ab et eum qui repellendus omnis
+                            culpa magni laudantium dolores. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                            Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt
+                            adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
+                            Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus
+                            itaque neque. Aliquid amet quidem ut quaerat cupiditate. Ab et eum qui repellendus omnis
+                            culpa magni laudantium dolores. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                        </p>
+                    </div>
+                    <div className="col-lg-6 pt-4 pt-lg-0 content" data-aos="fade-left">
+                        <h3>Other Info: </h3>
+                        <p>
+                            Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt
+                            adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
+                            Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus
+                            itaque neque. Aliquid amet quidem ut quaerat cupiditate. Ab et eum qui repellendus omnis
+                            culpa magni laudantium dolores. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                            Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt
+                            adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
+                            Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus
+                            itaque neque. Aliquid amet quidem ut quaerat cupiditate. Ab et eum qui repellendus omnis
+                            culpa magni laudantium dolores. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                            Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt
+                            adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
+                            Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus
+                            itaque neque. Aliquid amet quidem ut quaerat cupiditate. Ab et eum qui repellendus omnis
+                            culpa magni laudantium dolores. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                        </p>
+                    </div>
+                </div>
+            </Container>
         </section>
     );
 }

@@ -9,7 +9,9 @@ import LandingPage from "./views/LandingPage";
 import TeamPage from "./views/TeamPage";
 import AboutPage from "./views/AboutPage";
 
-
+/* TODO if we add the "bp3-dark" class here (or any container) we get dark theme! (consider making a switch to do this) */
+/* TODO add route for specific game board */
+/* TODO Improve landing page UI and colors */
 function App() {
   // TODO socket connection should be a context and done on the other route
   useEffect(() => {
@@ -17,14 +19,12 @@ function App() {
     socketIOClient("http://localhost:3001");
   }, []);
 
-    /* TODO if we add the "bp3-dark" class here (or any container) we get dark theme! (consider making a switch to do this) */
-    /* TODO add route for specific game board */
-    /* TODO Improve landing page UI and colors */
+
 return (
-    <div className="">
-        <div className="">
-            <Router path="/">
-                <Header />
+    <div>
+        <Router path="/">
+            <Header />
+            <main id="main">
                 <div className="">
                     <Switch>
                         <Route exact path ="/">
@@ -41,11 +41,9 @@ return (
                         </Route>
                     </Switch>
                 </div>
-            </Router>
-            <div>
-                <Footer className="footer"/>
-            </div>
-        </div>
+            </main>
+        </Router>
+        <Footer className="footer"/>
     </div>
 );
 }

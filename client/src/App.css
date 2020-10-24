@@ -1,20 +1,40 @@
-.App {
-  text-align: center;
+@media screen and (min-width: 1400px) {
+  .container {
+    display: flex;
+    width: 1370px;
+  }
+}
+@media screen and (min-width: 1600px) {
+  .container {
+    display: flex;
+    width: 1570px;
+  }
+}
+@media screen and (min-width: 1900px) {
+  .container {
+    display: flex;
+    width: 1870px;
+  }
 }
 
-/* TODO do we need any of this? */
-/* .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-} */
+.container-smooth {
+  max-width: 1170px;
+}
+@media (min-width: 1px) {
+  .container-smooth {
+    width: auto;
+  }
+}
 
-/* TODO do we still need this? */
-/* .App-link {
-  color: #61dafb;
-} */
+#main {
+  margin-left: 300px;
+}
+
+@media (max-width: 1199px) {
+  #main {
+    margin-left: 0;
+  }
+}
+
+
+

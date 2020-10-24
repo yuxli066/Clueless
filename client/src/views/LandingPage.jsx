@@ -16,9 +16,8 @@ function LandingPage() {
                     </button>
                 </div>
 
-                {/*Right Col*/}
                 <div className="">
-                    <img className="" src={require("../images/clueless_bg.jpg")}></img>
+                    <img className="" src={require("../images/clueless_bg.jpg")} alt=""></img>
                 </div>
             </div>
         </div>
