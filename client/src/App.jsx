@@ -1,19 +1,21 @@
-import React, { useEffect } from "react";
+import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
-import socketIOClient from "socket.io-client";
+import { SocketGate, SocketProvider } from "./SocketContext";
+import Board from "./Board";
 
 function App() {
-  // TODO socket connection should be a context and done on the other route
-  useEffect(() => {
-    // const socket = io();
-    socketIOClient("http://localhost:3001");
-  }, []);
-
   return (
     <Switch>
-      {/* TODO add route for specific game board */}
+      {/* TODO this will have to include some sort of parameter for the game (for multiple sessions) */}
+      <Route path="/game">
+        <SocketProvider>
+          <SocketGate loading={<p>establishing websocket connection...</p>}>
+            <Board />
+          </SocketGate>
+        </SocketProvider>
+      </Route>
       {/* NOTE: path="/" MUST be at the end bc it will always match */}
       <Route path="/">
         {/* TODO replace with some landing page */}
@@ -30,6 +32,9 @@ function App() {
               rel="noopener noreferrer"
             >
               Learn React
+            </a>
+            <a className="App-link" href={`${window.location.href}game`}>
+              Connect to websocket
             </a>
           </header>
         </div>

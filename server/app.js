@@ -27,6 +27,12 @@ io.on("connect", (socket) => {
   socket.on("disconnect", () => {
     console.log("disconnected!");
   });
+
+  socket.on("greet", (greeing) => {
+    console.log("client said:", greeing);
+    console.log("sending response back...");
+    socket.emit("response", "hello from server!");
+  });
 });
 
 module.exports = {
