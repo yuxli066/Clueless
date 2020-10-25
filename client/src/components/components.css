@@ -80,15 +80,15 @@
     overflow-y: auto;
 }
 
-#header .profile img {
+#header .Logo img {
     margin: 15px auto;
     display: block;
     width: 120px;
     border: 8px solid #2c2f3f;
 }
 
-#header .profile h1 {
-    font-size: 24px;
+#header .Logo h1 {
+    font-size: 52px;
     margin: 0;
     padding: 0;
     font-weight: 600;
@@ -97,28 +97,7 @@
     font-family: "Poppins", sans-serif;
 }
 
-#header .profile h1 a, #header .profile h1 a:hover {
-    color: #fff;
-    text-decoration: none;
-}
-
-#header .profile .social-links a {
-    font-size: 18px;
-    display: inline-block;
-    background: #212431;
-    color: #fff;
-    line-height: 1;
-    padding: 8px 0;
-    margin-right: 4px;
-    border-radius: 50%;
-    text-align: center;
-    width: 36px;
-    height: 36px;
-    transition: 0.3s;
-}
-
-#header .profile .social-links a:hover {
-    background: #149ddd;
+#header .Logo h1 a, #header .Logo h1 a:hover {
     color: #fff;
     text-decoration: none;
 }
@@ -131,28 +110,33 @@
 
 /* Navigation */
 .nav-menu {
-    padding-top: 30px;
+    margin-top: 100px;
 }
 
 .nav-menu * {
     margin: 0;
-    padding: 0;
     list-style: none;
+}
+
+.nav-menu > ul {
+    padding-left: 0;
 }
 
 .nav-menu > ul > li {
     position: relative;
     white-space: nowrap;
+    align-content: center;
+    margin: 10% 0;
 }
 
 .nav-menu a {
-    display: flex;
+    display: inline-block;
     align-items: center;
     color: #a8a9b4;
     padding: 12px 15px;
     margin-bottom: 8px;
     transition: 0.3s;
-    font-size: 15px;
+    font-size: 52px;
 }
 
 .nav-menu a i {
@@ -179,7 +163,6 @@
     border: 0;
     background: none;
     font-size: 24px;
-    transition: all 0.4s;
     outline: none !important;
     line-height: 1;
     cursor: pointer;

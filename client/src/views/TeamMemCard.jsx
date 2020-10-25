@@ -11,23 +11,23 @@ function TeamMemCard (props) {
     let bio = props.bio;
 
     return (
-        <span className="profile-card">
+        <div className="profile-card">
             <header>
-                <a href="http://ali.shahab.pk">
-                    <img alt="" src="https://www.clipartkey.com/mpngs/m/29-297748_round-profile-image-placeholder.png"/>
-                </a>
+                <img alt="" src="https://www.clipartkey.com/mpngs/m/29-297748_round-profile-image-placeholder.png"/>
                 <h1>{name}</h1>
-                <h2>{jobTitle}-{location}</h2>
+                <h2><FontAwesomeIcon className="member-job" icon={faSuitcase} />{jobTitle}</h2>
+                <h2><FontAwesomeIcon className="member-job" icon={faGlobe} />{location}</h2>
             </header>
             <div className="profile-bio">
                 <p>{bio}</p>
             </div>
-            <ul className="profile-social-links">
-                <li><FontAwesomeIcon className="" icon={faLinkedinIn} /></li>
-                <li><FontAwesomeIcon className="" icon={faGithub} /></li>
-                <li><FontAwesomeIcon className="" icon={faFacebook} /></li>
-            </ul>
-        </span>
+            <div className="empty-container">&nbsp;&nbsp;</div>
+            <div className="profile-social-links">
+                <span><FontAwesomeIcon className="member-socials" icon={faLinkedinIn} /></span>
+                <span><FontAwesomeIcon className="member-socials" icon={faGithub} /></span>
+                <span><FontAwesomeIcon className="member-socials" icon={faFacebook} /></span>
+            </div>
+        </div>
     );
 }
 
