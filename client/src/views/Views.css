@@ -1,50 +1,74 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700);
+/*--------------------------------------------------------------
+# Landing Page/Home
+--------------------------------------------------------------*/
+@media (max-width: 991px) {
+    #landing .landing-content {
+        padding-top: 30px;
+    }
+}
 
-@media screen and (min-width: 1400px) {
-    .container {
-        display: flex;
-        width: 1370px;
-    }
+#landing .landing-content .features {
+    margin: 0 0 15px 0;
+    padding: 0;
 }
-@media screen and (min-width: 1600px) {
-    .container {
-        display: flex;
-        width: 1570px;
-    }
+
+#landing .counters {
+    padding-top: 40px;
 }
-@media screen and (min-width: 1900px) {
-    .container {
-        display: flex;
-        width: 1870px;
-    }
+
+#landing .counters span {
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    font-size: 48px;
+    display: block;
+    color: #555186;
 }
-.card-row {
-    display: grid;
-    overflow: hidden;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 2fr;
-    grid-column-gap: 25px;
-    grid-row-gap: 25px;
+
+#landing .counters p {
+    padding: 0;
+    margin: 0 0 20px 0;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    color: #8a87b6;
+}
+
+/*--------------------------------------------------------------
+# Game
+--------------------------------------------------------------*/
+/* No styles yet */
+
+/*--------------------------------------------------------------
+# Team & Team Profile Card
+--------------------------------------------------------------*/
+.col-lg-6 {
+    display: flex;
 }
 
 .profile-card{
-    width: 400px;
-    border-radius: 2px;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
-    background: rgba(255,255,255,1);
+    padding: 7%;
+    box-shadow: 13px 13px 9px -1px rgba(237,220,237,1);
+    background-color: white;
     display: inline-block !important;
-    margin: 30px !important;
+    margin: 20px !important;
     position: relative;
+    border-radius: 2%;
+}
+
+.member-name {
+    color: #3f51b5;
+    font-weight: 600;
+    margin: 0;
 }
 
 .profile-card header{
     display: block;
     position: relative;
-    background: rgba(255,255,255,1);
+    background: white;
     text-align: center;
     padding: 15px 0 10px;
     z-index: 1;
     overflow: hidden;
+    border-radius: 2%;
 }
 
 .profile-card header img{
@@ -54,46 +78,25 @@
     box-shadow: 0 1px 0 rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.1);
 }
 
-.profile-card header h1{
-    font-weight: 200;
-    font-size: 42px;
-    color: #444;
-    letter-spacing: -3px;
-    margin: 0;
-    padding: 0;
-}
-
-.profile-card header h2{
-    font-weight: 400;
-    font-size: 14px;
-    color: #666;
-    letter-spacing: .5px;
-}
 
 .profile-card .profile-bio{
     display: block;
     padding: 0 20px 15px;
     text-align: left;
-    color: #888;
 }
 
 .profile-card .profile-social-links{
     display: block;
     width: 70%;
     position: absolute;
-    bottom: 0;
-    margin: 0 15%;
+    bottom: 10px;
+    margin: 0 5%;
     padding-bottom: 5px;
 }
 
 .profile-card .profile-social-links span{
     display: table-cell;
     width: 50%;
-}
-
-.member-job {
-    margin: 0 5px;
-    color: lightskyblue;
 }
 
 .member-socials {
@@ -103,30 +106,7 @@
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
-.about .content h3 {
-    font-weight: 700;
-    font-size: 26px;
-    color: #173b6c;
-}
-
-.about .content ul {
-    list-style: none;
-    padding: 0;
-}
-
-.about .content ul li {
-    padding-bottom: 10px;
-}
-
-.about .content ul i {
-    font-size: 20px;
-    padding-right: 2px;
-    color: #149ddd;
-}
-
-.about .content p:last-child {
-    margin-bottom: 0;
-}
+/* no styles yet */
 
 /*--------------------------------------------------------------
 # Sections
@@ -136,41 +116,3 @@ section {
     overflow: hidden;
 }
 
-.section-bg {
-    background: #f5f8fd;
-}
-
-.section-title {
-    padding-bottom: 30px;
-}
-
-.section-title h2 {
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    position: relative;
-    color: #173b6c;
-}
-
-.section-title h2::after {
-    content: '';
-    position: absolute;
-    display: block;
-    width: 50px;
-    height: 3px;
-    background: #149ddd;
-    bottom: 0;
-    left: 0;
-}
-
-.section-title p {
-    margin-bottom: 0;
-}
-
-/*--------------------------------------------------------------
-# Team
---------------------------------------------------------------*/
-.team .icon-box {
-    margin-bottom: 20px;
-}

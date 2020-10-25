@@ -1,3 +1,6 @@
+/*--------------------------------------------------------------
+# Media Container Sizes
+--------------------------------------------------------------*/
 @media screen and (min-width: 1400px) {
   .container {
     display: flex;
@@ -17,23 +20,90 @@
   }
 }
 
-.container-smooth {
-  max-width: 1170px;
-}
 @media (min-width: 1px) {
   .container-smooth {
     width: auto;
   }
 }
 
+.container-smooth {
+  max-width: 1170px;
+}
+
+/*--------------------------------------------------------------
+# Main Container
+--------------------------------------------------------------*/
 #main {
   margin-left: 300px;
+  background-color: rgba(230,230,250, 0.3);
 }
 
 @media (max-width: 1199px) {
   #main {
     margin-left: 0;
   }
+}
+
+/*--------------------------------------------------------------
+# Font Typography for entire website
+--------------------------------------------------------------*/
+
+h1 {
+  /*border-bottom: 5px solid;*/
+  /*border-color: rgba(63, 81, 181, 0.5);*/
+  color: #3f51b5;
+  font-family: "Comic Sans MS", sans-serif;
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 48px;
+  margin: 0 0 26px;
+  padding: 0 0 24px;
+  text-transform: uppercase;
+  display: inline-block;
+  padding-right: 1em;
+  position: relative;
+}
+
+h1:after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  border-bottom: 5px solid;
+  border-color: rgba(63, 81, 181, 0.5);
+  display:block;
+}
+
+h2 {
+  color: #3f51b5;
+  font-family: "Comic Sans MS", sans-serif;
+  font-size: 28px;
+  font-weight: normal;
+  line-height: 30px;
+  margin: 0 0 18px;
+  padding: 12px 0 0;
+  text-transform: uppercase;
+}
+
+p {
+  color: #363636;
+  font-family: "Comic Sans MS", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0 0 24px;
+}
+
+blockquote {
+  border-left: 5px solid #f0f1e7;
+  color: #b2b888;
+  float: right;
+  font-family: "Marvel", sans-serif;
+  font-size: 20px;
+  font-style: italic;
+  line-height: 24px;
+  margin: 0 0 24px 30px;
+  padding-left: 30px;
+  width: 150px;
 }
 
 

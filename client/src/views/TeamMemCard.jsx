@@ -3,6 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFacebook, faLinkedinIn, faGithub} from "@fortawesome/free-brands-svg-icons";
 import { faSuitcase, faGlobe } from "@fortawesome/free-solid-svg-icons";
 import "./Views.css";
+import "../App.css"
 
 function TeamMemCard (props) {
     let name = props.name;
@@ -14,18 +15,17 @@ function TeamMemCard (props) {
         <div className="profile-card">
             <header>
                 <img alt="" src="https://www.clipartkey.com/mpngs/m/29-297748_round-profile-image-placeholder.png"/>
-                <h1>{name}</h1>
-                <h2><FontAwesomeIcon className="member-job" icon={faSuitcase} />{jobTitle}</h2>
-                <h2><FontAwesomeIcon className="member-job" icon={faGlobe} />{location}</h2>
+                <p className="blockquote member-name">{name}</p>
+                <p className="blockquote member-name"><FontAwesomeIcon icon={faSuitcase} size="lg"/>{jobTitle}</p>
+                <p className="blockquote member-name"><FontAwesomeIcon icon={faGlobe} size="lg"/>{location}</p>
             </header>
             <div className="profile-bio">
                 <p>{bio}</p>
             </div>
-            <div className="empty-container">&nbsp;&nbsp;</div>
             <div className="profile-social-links">
-                <span><FontAwesomeIcon className="member-socials" icon={faLinkedinIn} /></span>
-                <span><FontAwesomeIcon className="member-socials" icon={faGithub} /></span>
-                <span><FontAwesomeIcon className="member-socials" icon={faFacebook} /></span>
+                <span><FontAwesomeIcon className="member-socials" icon={faLinkedinIn} size="2x"/></span>
+                <span><FontAwesomeIcon className="member-socials" icon={faGithub} size="2x"/></span>
+                <span><FontAwesomeIcon className="member-socials" icon={faFacebook} size="2x"/></span>
             </div>
         </div>
     );

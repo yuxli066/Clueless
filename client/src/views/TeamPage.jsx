@@ -1,6 +1,12 @@
 import React from 'react';
 import TeamMemCard from "./TeamMemCard";
 import "./Views.css";
+import "../App.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from "react-bootstrap/cjs/Container";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+AOS.init();
 
 function TeamPage() {
     let savannahBio = "Savannah Blades works as a software and product developer at Bureau Veritas North America, Project Management Division. " +
@@ -33,26 +39,35 @@ function TeamPage() {
 
     return (
         <section id="team" className="team">
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="section-title col-lg-12">
-                        <h2>Meet The Team</h2>
-                    </div>
+            <Container fluid>
+                <div className="section-title col-lg-12">
+                    <h1>Meet The Team</h1>
                 </div>
-                <div className="row">
-                    <div className="card-row col-sm-12">
-                        <TeamMemCard name="Savannah Blades" jobTitle="Lead UI/UX Designer" location="Maryland" bio={savannahBio}/>
-                        <TeamMemCard name="Tony Lawrence" jobTitle="Project Manager" location="Maryland" bio={tonyBio}/>
-                        <TeamMemCard name="Leo Li" jobTitle="Lead Software Quality Assurance" location="California" bio={leoBio}/>
-                    </div>
-                    <div className="card-row">
-                        <TeamMemCard name="David Phillips" jobTitle="Lead Programmer" location="Maryland" bio={davidPBio}/>
-                        <TeamMemCard name="Kyle Spivak" jobTitle="Lead Configuration Manager" location="Maryland" bio={kyleSBio}/>
-                        <TeamMemCard name="David Tigreros" jobTitle="Lead Architect" location="Maryland" bio={davidTBio}/>
-                    </div>
+                <div className="d-flex flex-row row">
+                    <div className="col-lg-6 col-md-12 col-sm-12" data-aos="flip-up" data-aos-delay="500" data-aos-duration="750"><TeamMemCard name="Savannah Blades" jobTitle="Lead UI/UX Designer" location="Maryland" bio={savannahBio}/></div>
+                    <div className="col-lg-6 col-md-12 col-sm-12" data-aos="flip-down" data-aos-duration="750"><TeamMemCard name="Tony Lawrence" jobTitle="Project Manager" location="Maryland" bio={tonyBio}/></div>
                 </div>
 
-            </div>
+                <div className="d-flex flex-row row">
+                    <div className="col-lg-6 col-md-12 col-sm-12" data-aos="flip-left" data-aos-duration="750"><TeamMemCard name="Leo Li" jobTitle="Lead Software Quality Assurance" location="California" bio={leoBio}/></div>
+                    <div className="col-lg-6 col-md-12 col-sm-12" data-aos="flip-right" data-aos-delay="500" data-aos-duration="750"><TeamMemCard name="David Phillips" jobTitle="Lead Programmer" location="Maryland" bio={davidPBio}/></div>
+                </div>
+
+                <div className="d-flex flex-row row">
+                    <div className="col-lg-6 col-md-12 col-sm-12" data-aos="flip-up" data-aos-delay="500" data-aos-duration="750"><TeamMemCard name="Kyle Spivak" jobTitle="Lead Configuration Manager" location="Maryland" bio={kyleSBio}/></div>
+                    <div className="col-lg-6 col-md-12 col-sm-12" data-aos="flip-down" data-aos-duration="750"><TeamMemCard name="David Tigreros" jobTitle="Lead Architect" location="Maryland" bio={davidTBio}/></div>
+                </div>
+                {/*<div className="flex-box">*/}
+                {/*    <TeamMemCard name="Savannah Blades" jobTitle="Lead UI/UX Designer" location="Maryland" bio={savannahBio}/>*/}
+                {/*    <TeamMemCard name="Tony Lawrence" jobTitle="Project Manager" location="Maryland" bio={tonyBio}/>*/}
+                {/*    <TeamMemCard name="Leo Li" jobTitle="Lead Software Quality Assurance" location="California" bio={leoBio}/>*/}
+                {/*</div>*/}
+                {/*<div className="flex-box">*/}
+                {/*    <TeamMemCard name="David Phillips" jobTitle="Lead Programmer" location="Maryland" bio={davidPBio}/>*/}
+                {/*    <TeamMemCard name="Kyle Spivak" jobTitle="Lead Configuration Manager" location="Maryland" bio={kyleSBio}/>*/}
+                {/*    <TeamMemCard name="David Tigreros" jobTitle="Lead Architect" location="Maryland" bio={davidTBio}/>*/}
+                {/*</div>*/}
+            </Container>
         </section>
     );
 }

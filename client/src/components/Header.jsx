@@ -11,19 +11,21 @@ function Header() {
   return (
       <header id="header">
           <div className="d-flex flex-column">
-              <div className="Logo">
-                  <img src={require("../images/logo.png")} alt="Logo" className="img-fluid rounded-circle"/>
-                      <h1 className="text-light">Clue-Less</h1>
+              <div className="Logo-container">
+                  <div className="Logo">
+                      {/*<img src={require("../images/logo.png")} alt="Logo" className="img-fluid rounded-circle"/>*/}
+                  </div>
+                  <h1 className="nav-title">Clue-Less</h1>
               </div>
               <nav className="nav-menu">
                   <ul>
-                      <li><Icon icon={IconNames.HOME} iconSize={50} intent={Intent.PRIMARY} /><Link to="/"> Home </Link></li>
-                      <li><Icon icon={IconNames.PLAY} iconSize={50} intent={Intent.PRIMARY} /><Link to="/game"> Game </Link></li>
-                      <li><Icon icon={IconNames.PEOPLE} iconSize={50} intent={Intent.PRIMARY} /><Link to="/team"> Team </Link></li>
-                      <li><Icon icon={IconNames.INFO_SIGN} iconSize={50} intent={Intent.PRIMARY} /><Link to="/about"> About </Link></li>
+                      <li><Icon icon={IconNames.HOME} iconSize={50} intent={Intent.NONE} /><Link to="/"> Home </Link></li>
+                      <li><Icon icon={IconNames.PLAY} iconSize={50} intent={Intent.NONE} /><Link to="/game"> Game </Link></li>
+                      <li><Icon icon={IconNames.PEOPLE} iconSize={50} intent={Intent.NONE} /><Link to="/team"> Team </Link></li>
+                      <li><Icon icon={IconNames.INFO_SIGN} iconSize={50} intent={Intent.NONE} /><Link to="/about"> About </Link></li>
                   </ul>
               </nav>
-              <button type="button" className="mobile-nav-toggle d-xl-none"><Icon icon={IconNames.MENU} iconSize={Icon.SIZE_LARGE} intent={Intent.PRIMARY} /></button>
+              {/*<button type="button" className="mobile-nav-toggle d-xl-none"><Icon icon={IconNames.MENU} iconSize={Icon.SIZE_LARGE} intent={Intent.PRIMARY} /></button>*/}
           </div>
       </header>
   );
