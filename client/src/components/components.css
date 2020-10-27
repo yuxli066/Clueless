@@ -109,3 +109,9 @@
 .mobile-nav-active #header {
     left: 0;
 }
+
+/* Footer */
+.footer {
+    position: absolute;
+    bottom: 0;
+}

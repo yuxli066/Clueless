@@ -2,12 +2,12 @@ import "./App.css";
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import socketIOClient from "socket.io-client";
-import GameController from "./views/game/GameController";
 import Header from './components/Header';
-import Footer from './components/Footer';
 import LandingPage from "./views/LandingPage";
-import TeamPage from "./views/TeamPage";
+import GamePage from "./views/GamePage";
 import AboutPage from "./views/AboutPage";
+import TeamPage from "./views/TeamPage";
+
 
 /* TODO if we add the "bp3-dark" class here (or any container) we get dark theme! (consider making a switch to do this) */
 /* TODO add route for specific game board */
@@ -21,7 +21,7 @@ function App() {
 
 
 return (
-    <div>
+    <div id="app">
         <Router path="/">
             <Header />
             <main id="main">
@@ -31,7 +31,7 @@ return (
                             <LandingPage/>
                         </Route>
                         <Route path ="/game">
-                            <GameController/>
+                            <GamePage/>
                         </Route>
                         <Route path ="/about">
                             <AboutPage/>
@@ -43,7 +43,6 @@ return (
                 </div>
             </main>
         </Router>
-        <Footer className="footer"/>
     </div>
 );
 }

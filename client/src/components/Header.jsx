@@ -25,7 +25,9 @@ function Header() {
                       <li><Icon icon={IconNames.INFO_SIGN} iconSize={50} intent={Intent.NONE} /><Link to="/about"> About </Link></li>
                   </ul>
               </nav>
-              {/*<button type="button" className="mobile-nav-toggle d-xl-none"><Icon icon={IconNames.MENU} iconSize={Icon.SIZE_LARGE} intent={Intent.PRIMARY} /></button>*/}
+              <header className="footer">
+                  The Colonel Mustards&copy;Copyright 2020
+              </header>
           </div>
       </header>
   );
