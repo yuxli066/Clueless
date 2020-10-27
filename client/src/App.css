@@ -93,6 +93,16 @@ p {
   margin: 0 0 24px;
 }
 
+.text-emphasis {
+  font-weight: 500;
+  color: blueviolet;
+}
+
+.text-emphasis2 {
+  font-weight: 500;
+  color: orangered;
+}
+
 blockquote {
   border-left: 5px solid #f0f1e7;
   color: #b2b888;

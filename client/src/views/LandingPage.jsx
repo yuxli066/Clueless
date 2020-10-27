@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import {Link} from "react-router-dom";
 AOS.init();
 
 function LandingPage() {
@@ -13,45 +14,47 @@ function LandingPage() {
         <section id="landing" className="landing">
             <Container fluid>
                 <div className="section-title">
-                    <h1>LandingPage</h1>
+                    <h1>The Colonel Mustards</h1>
                 </div>
                 <Row>
-                        <Col>
-                            <div className="landing-img" data-aos="zoom-in" data-aos-delay="100">
-                                <img src={require("../images/clueless_bg.jpg")} alt="" className="img-fluid" width="100%"/>
-                            </div>
-                        </Col>
-                        <Col>
-                            <div className="landing-content">
-                                <p>Molestiae omnis numquam corrupti omnis itaque. Voluptatum quidem impedit. Odio
-                                    dolorum exercitationem est error omnis repudiandae ad dolorum sit.</p>
-                                <p>
-                                    Explicabo repellendus quia labore. Non optio quo ea ut ratione et quaerat. Porro
-                                    facilis deleniti porro consequatur
-                                    et temporibus. Labore est odio.
-
-                                    Odio omnis saepe qui. Veniam eaque ipsum. Ea quia voluptatum quis explicabo sed
-                                    nihil repellat..
-                                </p>
-
-                                <div className="features clearfix" data-aos="fade-up" data-aos-delay="100">
-                                    <h4>Corporis dolorem</h4>
-                                    <p>Commodi quia voluptatum. Est cupiditate voluptas quaerat officiis ex alias
-                                        dignissimos et ipsum. Soluta at enim modi ut incidunt dolor et.</p>
-                                </div>
-                                <div className="features clearfix" data-aos="fade-up" data-aos-delay="200">
-                                    <h4>Eum ut aspernatur</h4>
-                                    <p>Molestias eius rerum iusto voluptas et ab cupiditate aut enim. Assumenda animi
-                                        occaecati. Quo dolore fuga quasi autem aliquid ipsum odit. Perferendis
-                                        doloremque iure nulla aut.</p>
-                                </div>
-                                <div className="features clearfix" data-aos="fade-up" data-aos-delay="300">
-                                    <h4>Voluptates dolores</h4>
-                                    <p>Voluptates nihil et quis omnis et eaque omnis sint aut. Ducimus dolorum
-                                        aspernatur. Totam dolores ut enim ullam voluptas distinctio aut.</p>
-                                </div>
-                            </div>
-                        </Col>
+                    <Col>
+                        <div className="landing-img" data-aos="zoom-in" data-aos-delay="200">
+                            <img src={require("../images/clueless_bg.jpg")} alt="" className="img-fluid" width="100%"/>
+                        </div>
+                        <div className="features clearfix" data-aos="fade-up" data-aos-delay="300">
+                            <p>Clue - Hasbro games</p>
+                        </div>
+                    </Col>
+                    <Col>
+                        <div className="landing-content" data-aos="zoom-in" data-aos-delay="200">
+                            <h2>Enjoy spending time with friends and family by solving murder mysteries!</h2>
+                            <p>
+                                <span className="text-emphasis">
+                                    Tired of isolation? Sick of not being able to see your friends and families?
+                                    Trying to pick up a new hobby you want to share with a significant other?
+                                </span><br/>
+                                Don't worry, The Colonel Mustards have created a solution to all those problems.
+                            </p>
+                            <p>
+                                Introducing <span className="text-emphasis">Clue-Less</span>! Clue-Less
+                                is an online multi-player board game that not only allows you to interact with other people virtually but also creates an
+                                amazing experience for everyone involved! Through Clue-Less, you will be able to
+                                enjoy the qualities of the game Clue and also <span className="text-emphasis">spend quality time with both family and friends
+                                by working together, or against each other, to solve the murder mystery of this "Classic Detective Game". </span>
+                            </p>
+                            <p>
+                                Remeber, <span className="text-emphasis2">don’t give up until you find out!</span>
+                            </p>
+                            <p>
+                                What are you waiting for? Click the play button below to play now!
+                            </p>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <div className="play-button" data-aos="zoom-in" data-aos-delay="200">
+                        <Link to="/game">PLAY CLUE-LESS</Link>
+                    </div>
                 </Row>
             </Container>
         </section>

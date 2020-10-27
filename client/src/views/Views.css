@@ -12,24 +12,33 @@
     padding: 0;
 }
 
-#landing .counters {
-    padding-top: 40px;
+#landing a {
+    all: unset;
+    color: mediumpurple !important;
 }
 
-#landing .counters span {
-    font-family: "Montserrat", sans-serif;
-    font-weight: bold;
-    font-size: 48px;
+#landing .play-button {
+    font-family: "Comic Sans MS", sans-serif;
+    text-decoration: none;
+    position: relative;
+
+    background-color: white;
+    font-weight: 700;
+    font-size: 3em;
     display: block;
-    color: #555186;
+    border-radius: 8px;
+    box-shadow: 0 9px 0 lightgrey, 0 9px 25px rgba(0,0,0,.7);
+    text-align: center;
+    width: 100%;
+    transition: all .1s ease;
 }
 
-#landing .counters p {
-    padding: 0;
-    margin: 0 0 20px 0;
-    font-family: "Montserrat", sans-serif;
-    font-size: 14px;
-    color: #8a87b6;
+#landing .play-button:hover {
+    box-shadow: 0 3px 0 lightgrey, 0 3px 6px rgba(0,0,0,.9);
+    text-decoration: none;
+    position: relative;
+    top: 6px;
+    cursor: pointer;
 }
 
 /*--------------------------------------------------------------
