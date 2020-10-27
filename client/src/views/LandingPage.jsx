@@ -52,9 +52,11 @@ function LandingPage() {
                     </Col>
                 </Row>
                 <Row>
-                    <div className="play-button" data-aos="zoom-in" data-aos-delay="200">
-                        <Link to="/game">PLAY CLUE-LESS</Link>
-                    </div>
+                    <Link to="/game">
+                        <div className="play-button" data-aos="zoom-in" data-aos-delay="200">
+                            PLAY CLUE-LESS
+                        </div>
+                    </Link>
                 </Row>
             </Container>
         </section>
