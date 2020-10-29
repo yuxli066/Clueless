@@ -1,21 +1,32 @@
 /*--------------------------------------------------------------
+# Font Imports
+--------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css?family=Noticia+Text&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Old+Standard+TT&display=swap');
+/*--------------------------------------------------------------
 # Media Container Sizes
 --------------------------------------------------------------*/
+.outerContainer{
+  margin: auto;
+  width: 100%;
+}
+@media only screen and (max-width: 768px) {
+  .outerContainer{
+    width: 700px;
+  }
+}
 @media screen and (min-width: 1400px) {
-  .container {
-    display: flex;
+  .outerContainer{
     width: 1370px;
   }
 }
 @media screen and (min-width: 1600px) {
-  .container {
-    display: flex;
+  .outerContainer{
     width: 1570px;
   }
 }
 @media screen and (min-width: 1900px) {
-  .container {
-    display: flex;
+  .outerContainer{
     width: 1870px;
   }
 }
@@ -31,52 +42,24 @@
 }
 
 /*--------------------------------------------------------------
-# Main Container
---------------------------------------------------------------*/
-#main {
-  margin-left: 300px;
-  height: 100%;
-}
-
-@media (max-width: 1199px) {
-  #main {
-    margin-left: 0;
-  }
-}
-
-/*--------------------------------------------------------------
 # Font Typography for entire website
 --------------------------------------------------------------*/
 
 h1 {
-  /*border-bottom: 5px solid;*/
-  /*border-color: rgba(63, 81, 181, 0.5);*/
-  color: #3f51b5;
-  font-family: "Comic Sans MS", sans-serif;
+  color: black;
+  font-family: "Droid Serif", sans-serif;
   font-size: 54px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 48px;
-  margin: 0 0 26px;
-  padding: 0 0 24px;
   text-transform: uppercase;
   display: inline-block;
   padding-right: 1em;
   position: relative;
 }
 
-h1:after {
-  content: '';
-  position: absolute;
-  left: 20px;
-  right: 20px;
-  border-bottom: 5px solid;
-  border-color: rgba(63, 81, 181, 0.5);
-  display:block;
-}
-
 h2 {
-  color: #3f51b5;
-  font-family: "Comic Sans MS", sans-serif;
+  color: black;
+  font-family: "Droid Serif", sans-serif;
   font-size: 28px;
   font-weight: normal;
   line-height: 30px;
@@ -86,35 +69,23 @@ h2 {
 }
 
 p {
-  color: #363636;
-  font-family: "Comic Sans MS", sans-serif;
-  font-size: 16px;
+  color: black;
+  font-family: "Old Standard TT", sans-serif;
+  font-size: 20px;
   line-height: 24px;
-  margin: 0 0 24px;
+  font-weight: 700;
 }
 
 .text-emphasis {
-  font-weight: 500;
-  color: blueviolet;
+  font-weight: 900;
+  color: red;
 }
 
 .text-emphasis2 {
-  font-weight: 500;
-  color: orangered;
+  font-weight: 900;
+  color: red;
 }
 
-blockquote {
-  border-left: 5px solid #f0f1e7;
-  color: #b2b888;
-  float: right;
-  font-family: "Marvel", sans-serif;
-  font-size: 20px;
-  font-style: italic;
-  line-height: 24px;
-  margin: 0 0 24px 30px;
-  padding-left: 30px;
-  width: 150px;
-}
 
 
 

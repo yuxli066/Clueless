@@ -1,13 +1,10 @@
 import "./App.css";
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import socketIOClient from "socket.io-client";
-import Header from './components/Header';
-import LandingPage from "./views/LandingPage";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {Helmet} from 'react-helmet';
 import GamePage from "./views/GamePage";
-import AboutPage from "./views/AboutPage";
-import TeamPage from "./views/TeamPage";
-
+import CombinedLandingPage from './views/CombinedLandingPage';
 
 /* TODO if we add the "bp3-dark" class here (or any container) we get dark theme! (consider making a switch to do this) */
 /* TODO add route for specific game board */
@@ -19,29 +16,32 @@ function App() {
     socketIOClient("http://localhost:3001");
   }, []);
 
-
+let backgroundImage = require("./images/bg_2.jpg");
 return (
     <div id="app">
+        <Helmet>
+            <style>
+                {`
+                    body {
+                      background: linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%), url(${backgroundImage});
+                      background-position: center center;
+                      background-size: cover
+                    }
+                `}
+            </style>
+        </Helmet>
         <Router path="/">
-            <Header />
-            <main id="main">
-                <div className="">
+                <div className="outerContainer">
+                    <CombinedLandingPage />
                     <Switch>
                         <Route exact path ="/">
-                            <LandingPage/>
+                            <CombinedLandingPage />
                         </Route>
                         <Route path ="/game">
                             <GamePage/>
                         </Route>
-                        <Route path ="/about">
-                            <AboutPage/>
-                        </Route>
-                        <Route path ="/team">
-                            <TeamPage/>
-                        </Route>
                     </Switch>
                 </div>
-            </main>
         </Router>
     </div>
 );

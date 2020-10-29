@@ -15,9 +15,9 @@ function TeamMemCard (props) {
         <div className="profile-card">
             <header>
                 <img alt="" src="https://www.clipartkey.com/mpngs/m/29-297748_round-profile-image-placeholder.png"/>
-                <p className="blockquote member-name">{name}</p>
-                <p className="blockquote member-name"><FontAwesomeIcon icon={faSuitcase} size="lg"/>{jobTitle}</p>
-                <p className="blockquote member-name"><FontAwesomeIcon icon={faGlobe} size="lg"/>{location}</p>
+                <p className="member-name">{name}</p>
+                <p className="member-name"><FontAwesomeIcon icon={faSuitcase} size="lg"/>{jobTitle}</p>
+                <p className="member-name"><FontAwesomeIcon icon={faGlobe} size="lg"/>{location}</p>
             </header>
             <div className="profile-bio">
                 <p>{bio}</p>

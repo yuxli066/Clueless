@@ -1,117 +1,36 @@
-/* Header CSS */
-#header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 300px;
-    transition: all ease-in-out 0.5s;
-    z-index: 9997;
-    background: white;
-    box-shadow: 14px 1px 9px -1px rgba(237,220,237,1);
-    overflow-y: auto;
+.head{
+    margin-top: 1em;
+    padding-top: 1em;
+    border-top: 5px solid black;
 }
 
-#header .Logo img {
-    margin: 15px auto;
-    display: block;
-    width: 120px;
-}
-
-#header .Logo {
-    font-size: 52px;
-    margin: auto;
-    padding: auto;
-    -moz-text-align-last: center;
-    text-align-last: center;
-}
-
-.nav-title {
-    margin: 10% 0 0 0;
-    padding: 0 20%;
-}
-
-.nav-title:after {
-    border-style: none !important;
-}
-
-@media (max-width: 1199px) {
-    #header {
-        left: -300px;
-    }
-}
-
-/* Navigation */
-.nav-menu {
-    margin-top: 50px;
-}
-
-.nav-menu * {
-    margin: 0;
-    list-style: none;
-}
-
-.nav-menu > ul {
-    padding-left: 0;
-}
-
-.nav-menu > ul > li {
-    position: relative;
-    white-space: nowrap;
-    align-content: center;
-    margin: 10% 0;
-}
-
-.nav-menu a {
+.header{
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 80px;
+    text-transform: uppercase;
     display: inline-block;
-    align-items: center;
-    color: mediumpurple;
-    font-family: "Comic Sans MS", sans-serif;
-    padding: 12px 15px;
-    margin-bottom: 8px;
-    transition: 0.3s;
-    font-size: 52px;
+    line-height: 72px;
+    margin-bottom: 20px;
+    width: 100%;
 }
 
-.nav-menu li:hover {
-     text-decoration: none;
-     box-shadow: 14px 1px 9px -1px rgba(237,220,237,1);
-     background-color: rgba(147,112,219,0.3);
+.subhead {
+    text-transform: uppercase;
+    border-bottom: 2px solid #2f2f2f;
+    border-top: 2px solid #2f2f2f;
+    padding: 12px 0 12px 0;
+    font-style: italic;
+    font-weight: 700;
 }
 
-.nav-menu li span {
-    margin-left: 14% !important;
-}
-
-#header svg {
-    color: mediumpurple;
-}
-
-/* Mobile Navigation */
-.mobile-nav-toggle {
-    position: fixed;
-    right: 15px;
-    top: 15px;
-    z-index: 9998;
-    border: 0;
-    background: none;
-    font-size: 24px;
-    outline: none !important;
-    line-height: 1;
-    cursor: pointer;
-    text-align: right;
-}
-
-.mobile-nav-active {
-    overflow: hidden;
-}
-
-.mobile-nav-active #header {
-    left: 0;
-}
-
-/* Footer */
-.footer {
-    position: absolute;
-    bottom: 0;
+.weatherforcastbox{
+    position: relative;
+    width: 12%;
+    left: 10px;
+    border: 3px double #2f2f2f;
+    padding: 10px 15px 10px 15px;
+    line-height: 20px;
+    display: inline-block;
+    margin: 0 50px 20px -360px;
 }

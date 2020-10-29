@@ -6,14 +6,10 @@ import Container from "react-bootstrap/cjs/Container";
 function AboutPage() {
     return (
         <section id="about" className="about">
-            <Container fluid>
+            <Container>
                 <div className="section-title">
-                    <h1>About</h1>
+                    <h1>Finding clues:</h1>
                 </div>
-                {/*<div className="row">*/}
-                {/*    <div className="col-lg-6 pt-4 pt-lg-0 content"><h2>Rules for the game: </h2></div>*/}
-                {/*    <div className="col-lg-6 pt-4 pt-lg-0 content"><h2>Other Info: </h2></div>*/}
-                {/*</div>*/}
                 <div className="row">
                     <div className="flex-column col-lg-6 p-4 pt-lg-0 content">
                         <div className="row"><h2>Rules for the game: </h2></div>
