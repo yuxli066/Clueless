@@ -32,7 +32,6 @@ return (
         </Helmet>
         <Router path="/">
                 <div className="outerContainer">
-                    <CombinedLandingPage />
                     <Switch>
                         <Route exact path ="/">
                             <CombinedLandingPage />
