@@ -12,7 +12,8 @@
   },
   "scripts": {
     "build": "yarn workspace client build",
-    "start": "concurrently \"yarn workspace client start\" \"yarn workspace server dev\""
+    "start": "concurrently \"yarn workspace client start\" \"yarn workspace server dev\"",
+    "test-server": "yarn workspace server test"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",

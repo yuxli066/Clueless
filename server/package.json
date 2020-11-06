@@ -5,7 +5,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./bin/www",
     "start-dev": "yarn dev",
-    "dev": "cross-env NODE_ENV=development DEBUG='server:*' PORT=3001 nodemon ./bin/www"
+    "dev": "cross-env NODE_ENV=development DEBUG='server:*' PORT=3001 nodemon ./bin/www",
+    "test": "cross-env NODE_ENV=development DEBUG='server:*' PORT=3001 mocha --exit"
   },
   "dependencies": {
     "cookie-parser": "^1.4.4",
@@ -15,7 +16,9 @@
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "cross-env": "^7.0.2",
+    "mocha": "^8.2.1",
     "nodemon": "^2.0.4"
   }
 }
