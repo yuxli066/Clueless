@@ -1,5 +1,6 @@
 const assert = require("chai").assert;
 const http = require("http");
+const uri = "http://localhost:3001";
 var server;
 
 function serverTest(path) {
@@ -10,7 +11,7 @@ function serverTest(path) {
   describe("Testing paths", function () {
     this.timeout(5000);
     it(`Path to ${path} return 200 status code`, function (done) {
-      http.get("http://localhost:3001" + path, function (response) {
+      http.get(uri + path, function (response) {
         assert.equal(response.statusCode, 200);
         done();
       });
