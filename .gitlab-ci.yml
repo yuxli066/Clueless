@@ -4,8 +4,6 @@ include:
 build:
   stage: build
   image: node:lts-alpine
-  before_script:
-    - yarn
   script:
     - cd client
     - yarn build
