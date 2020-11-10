@@ -5,10 +5,13 @@ build:
   stage: build
   image: node:lts-alpine
   before_script:
-    - yarn
+    - yarn install --cache-folder .yarn
   script:
     - cd client
     - yarn build
   cache:
     paths:
       - $CI_PROJECT_DIR/node_modules
+      - $CI_PROJECT_DIR/client/node_modules
+      - $CI_PROJECT_DIR/server/node_modules
+      - .yarn
