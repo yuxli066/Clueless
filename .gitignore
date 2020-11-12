@@ -8,3 +8,11 @@ yarn-debug.log*
 yarn-error.log*
 .idea
 
+# yarn 2.0
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
