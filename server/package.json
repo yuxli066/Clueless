@@ -6,7 +6,7 @@
     "start": "cross-env NODE_ENV=production node ./bin/www",
     "start-dev": "yarn dev",
     "dev": "cross-env NODE_ENV=development DEBUG='server:*' PORT=3001 nodemon ./bin/www",
-    "test": "cross-env NODE_ENV=development DEBUG='server:*' PORT=3001 mocha --exit"
+    "test": "cross-env NODE_ENV=development DEBUG='server:*' PORT=3001 mocha test/tests.js --reporter xunit --reporter-options output=./test/results.xml --exit"
   },
   "dependencies": {
     "cookie-parser": "^1.4.4",
@@ -19,6 +19,8 @@
     "chai": "^4.2.0",
     "cross-env": "^7.0.2",
     "mocha": "^8.2.1",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "socket.io-client": "^2.3.1",
+    "socketio-wildcard": "^2.0.0"
   }
 }

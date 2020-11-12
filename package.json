@@ -21,7 +21,8 @@
     "eslint-config-prettier": "^6.12.0",
     "husky": "^4.3.0",
     "prettier": "2.1.2",
-    "pretty-quick": "^3.0.2"
+    "pretty-quick": "^3.0.2",
+    "socket.io-client": "^3.0.1"
   },
   "husky": {
     "hooks": {
