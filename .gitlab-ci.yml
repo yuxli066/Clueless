@@ -1,9 +1,27 @@
+stages:
+  - build
+  - test
+
 include:
   - template: "Workflows/MergeRequest-Pipelines.gitlab-ci.yml"
 
 build:
   stage: build
   image: node:lts-alpine
+  before_script:
+    - yarn add @fortawesome/fontawesome-svg-core
+    - yarn add @fortawesome/free-brands-svg-icons
+    - yarn add @fortawesome/free-solid-svg-icons
   script:
-    - cd client
     - yarn build
+
+test:
+  stage: test
+  image: node:lts-alpine
+  script:
+    - echo "Running Server Unit Tests"
+    - yarn test-server
+  artifacts:
+    when: always
+    reports:
+      junit: server/test/*.xml

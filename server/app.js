@@ -28,10 +28,15 @@ io.on("connect", (socket) => {
     console.log("disconnected!");
   });
 
-  socket.on("greet", (greeing) => {
-    console.log("client said:", greeing);
+  socket.on("greet", (greeting) => {
+    console.log("client said:", greeting);
     console.log("sending response back...");
-    socket.emit("response", "hello from server!");
+    socket.emit("response", "Hello from server!");
+  });
+
+  socket.on("greetOtherClients", (greeting) => {
+    console.log("client said:", greeting);
+    io.emit("broadcast", "Hello all clients from server!");
   });
 });
 
