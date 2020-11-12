@@ -1,11 +1,13 @@
 import "./App.css";
-import React from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useContext } from "react";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import GamePage from "./views/GamePage";
 import CombinedLandingPage from "./views/CombinedLandingPage";
-import { SocketProvider, SocketGate } from "./SocketContext";
+import SocketContext, { SocketProvider, SocketGate } from "./SocketContext";
 import backgroundImage from "./images/bg_2.jpg";
+import GameLobby from "./components/GameLobby";
+import { useEffect } from "react";
 
 /* TODO if we add the "bp3-dark" class here (or any container) we get dark theme! (consider making a switch to do this) */
 /* TODO add route for specific game board */
@@ -29,17 +31,48 @@ function App() {
           <Route exact path="/">
             <CombinedLandingPage />
           </Route>
-          <Route path="/game">
+          <Route path="/:game">
             <SocketProvider>
               {/* TODO make a more aesthetic loading component */}
               <SocketGate loading={<p>establishing websocket connection...</p>}>
-                <GamePage />
+                <GameSession />
               </SocketGate>
             </SocketProvider>
           </Route>
         </Switch>
       </div>
     </div>
+  );
+}
+
+// TODO I feel like this could have a better name
+function GameSession() {
+  const socket = useContext(SocketContext);
+  useEffect(() => {
+    console.log("joining the single instance room...");
+    // TODO in the future, we will need a request/response for getting a lobby
+    // FIXME why this no work?
+    socket.emit("join", "singe-instance-game");
+
+    return () => {
+      console.log(
+        "unmounting and disconnecting from the single instance room..."
+      );
+      socket.emit("leave", "single-instance-room");
+    };
+  }, [socket]);
+
+  const match = useRouteMatch();
+
+  return (
+    <Switch>
+      <Route path={`${match.path}/game`}>
+        <GamePage />
+      </Route>
+      <Route path={`${match.path}/lobby`}>
+        <GameLobby />
+      </Route>
+    </Switch>
   );
 }
 

@@ -24,11 +24,35 @@ const io = socketIo();
 const position = {};
 
 // TODO we should move the socket handling code to a new file!
+// FIXME this is a dangerous global! We need to come up with a better way of handling it!
+var lobbies = {};
+
+// TODO we should move the socket handling code to a new file!
 io.on('connect', (socket) => {
-  console.log('connected!');
+  console.log(`new websocket client with id ${socket.id} connected!`);
 
   socket.on('disconnect', () => {
-    console.log('disconnected!');
+    console.log(`client ${socket.id} disconnected!`);
+  });
+
+  // adapted from: https://stackoverflow.com/a/40413809
+  socket.on('join', (room) => {
+    console.log('client joining game room:', room);
+    socket.join(room);
+    // TODO broadcast that the client joined the room!
+    // TODO also figure out a way to indicate who is who
+
+    // TODO are we able to do something with the io object itself maybe? i think that the rooms might be able to be accessed from there and see who's in them!
+  });
+
+  socket.on('leave', (room) => {
+    console.log('client leaving game room:', room);
+    socket.leave(room);
+  });
+
+  socket.on('disconnecting', () => {
+    // TODO we need to emit to the room that this socket will disconnect imminently
+    console.log(socket.rooms);
   });
 
   socket.on('greet', (greeting) => {
