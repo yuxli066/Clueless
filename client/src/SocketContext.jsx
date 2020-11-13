@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext } from "react";
-import { useEffect } from "react";
-import io from "socket.io-client";
+import React, { createContext, useState, useContext } from 'react';
+import { useEffect } from 'react';
+import io from 'socket.io-client';
 
 const SocketContext = createContext();
 
@@ -29,8 +29,8 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     if (socket) {
-      socket.on("connect", () => {
-        console.log("Client connected to server!");
+      socket.on('connect', () => {
+        console.log('Client connected to server!');
       });
 
       // TODO add reconnect logic
@@ -39,9 +39,7 @@ export function SocketProvider({ children }) {
     }
   }, [socket]);
 
-  return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
-  );
+  return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>;
 }
 
 export default SocketContext;

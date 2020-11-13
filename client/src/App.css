@@ -6,27 +6,27 @@
 /*--------------------------------------------------------------
 # Media Container Sizes
 --------------------------------------------------------------*/
-.outerContainer{
+.outerContainer {
   margin: auto;
   width: 100%;
 }
 @media only screen and (max-width: 768px) {
-  .outerContainer{
+  .outerContainer {
     width: 700px;
   }
 }
 @media screen and (min-width: 1400px) {
-  .outerContainer{
+  .outerContainer {
     width: 1370px;
   }
 }
 @media screen and (min-width: 1600px) {
-  .outerContainer{
+  .outerContainer {
     width: 1570px;
   }
 }
 @media screen and (min-width: 1900px) {
-  .outerContainer{
+  .outerContainer {
     width: 1870px;
   }
 }
@@ -47,7 +47,7 @@
 
 h1 {
   color: black;
-  font-family: "Droid Serif", sans-serif;
+  font-family: 'Droid Serif', sans-serif;
   font-size: 54px;
   font-weight: 700;
   line-height: 48px;
@@ -59,7 +59,7 @@ h1 {
 
 h2 {
   color: black;
-  font-family: "Droid Serif", sans-serif;
+  font-family: 'Droid Serif', sans-serif;
   font-size: 28px;
   font-weight: normal;
   line-height: 30px;
@@ -70,7 +70,7 @@ h2 {
 
 p {
   color: black;
-  font-family: "Old Standard TT", sans-serif;
+  font-family: 'Old Standard TT', sans-serif;
   font-size: 20px;
   line-height: 24px;
   font-weight: 700;
@@ -85,7 +85,3 @@ p {
   font-weight: 900;
   color: red;
 }
-
-
-
-
