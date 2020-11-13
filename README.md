@@ -9,10 +9,12 @@ One reccomenation (but not requirement) for installing node is to use [nvm](http
 
 # Quick Start
 
-This repo uses `yarn 2` with `zero installs` enabled. This means that developers don't need to run `yarn install` anymore to get the app up and running.
+This repo uses `yarn 2` with `zero installs` "enabled". In reality, there are several tools that run `postInstall` scripts that we need, so we still have to occasionally run `yarn install`. But, with that said, it should be less frequent and things will be significantly faster as it will only be these `postInstall` scripts that are run. No packages should need to be downloaded.
+
 After installing node and yarn, run the following to start the client and server together in dev mode:
 
 ```bash
+yarn install
 yarn start
 ```
 
