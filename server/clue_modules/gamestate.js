@@ -80,10 +80,12 @@ var roomCardSet = new Set([
 ]);
 var validatedMove = false;
 var currentPlayer = undefined; // define current client character
+var nextPlayer = getNextPlayer(currentPlayer);
 var murderPlayer = randomCard(playerCardSet); // choose random card to select murder character
 var murderWeapon = randomCard(weaponCardSet); // choose random card to select murder weapon
 var murderRoom = randomCard(roomCardSet); // choose random card to select murder room
 var gameDeck = getGameDeck(murderPlayer, murderWeapon, murderRoom); // cards remaining in the game to be distributed
+
 // shuffle deck
 gameDeck = shuffleDeck(gameDeck); // shuffle the deck to randomize order they get sent
 
@@ -166,6 +168,30 @@ function shuffleDeck(cardDeck) {
   }
 
   return new Set(deck);
+}
+
+// determine who's turn to go next
+function getNextPlayer(currentPlayer) {
+  switch (currentPlayer) {
+    case mrsPeacockPlayer:
+      return profPlumPlayer;
+      break;
+    case profPlumPlayer:
+      return missScarletPlayer;
+      break;
+    case missScarletPlayer:
+      return colMustardPlayer;
+      break;
+    case colMustardPlayer:
+      return mrsWhitePlayer;
+      break;
+    case mrsWhitePlayer:
+      return mrGreenPlayer;
+      break;
+    case mrGreenPlayer:
+      return mrsPeacockPlayer;
+      break;
+  }
 }
 
 // validate accusation made by current player
