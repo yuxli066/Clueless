@@ -5,32 +5,28 @@
 class GameCard {
   constructor() {}
 
-  suspectList = new Set();
-  weaponList = new Set();
-  roomList = new Set();
+  gameCardList = new Set();
 
-  updateSuspectList(player) {
-    this.suspectList.add(player);
+  getGameCardList() {
+    return this.gameCardList;
   }
 
-  updateWeaponList(weapon) {
-    this.weaponList.add(weapon);
+  addGameCard(gameCard) {
+    this.gameCardList.add(gameCard);
   }
 
-  updateRoomList(room) {
-    this.roomList.add(room);
+  removeGameCard(gameCard) {
+    if (this.gameCardList.has(gameCard)) {
+      this.gameCardList.delete(gameCard);
+    }
   }
 
-  getSuspectList() {
-    return this.suspectList;
-  }
-
-  getWeaponList() {
-    return this.weaponList;
-  }
-
-  getRoomList() {
-    return this.roomList;
+  showGameCard(gameCard) {
+    if (this.gameCardList.has(gameCard)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
