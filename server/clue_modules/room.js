@@ -7,7 +7,7 @@ var coordinates = require("./coordinates");
 
 class Room {
   entrances = new Set();
-  secretPassageConnection = undefined;
+  secretPassageWay = undefined;
   adjacentHallways = new Set();
 
   constructor(name) {
@@ -32,8 +32,12 @@ class Room {
     this.adjacentHallways.add(new hallways.Hallway(hallwayNum));
   }
 
-  setSecretPassageConnection(room) {
-    this.secretPassageConnection = room;
+  setSecretPassageWay(room) {
+    this.secretPassageWay = room;
+  }
+
+  getSecretPassageWay() {
+    return this.secretPassageWay;
   }
 }
 
