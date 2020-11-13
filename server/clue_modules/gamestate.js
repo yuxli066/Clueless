@@ -84,6 +84,8 @@ var murderPlayer = randomCard(playerCardSet); // choose random card to select mu
 var murderWeapon = randomCard(weaponCardSet); // choose random card to select murder weapon
 var murderRoom = randomCard(roomCardSet); // choose random card to select murder room
 var gameDeck = getGameDeck(murderPlayer, murderWeapon, murderRoom); // cards remaining in the game to be distributed
+// shuffle deck
+gameDeck = shuffleDeck(gameDeck); // shuffle the deck to randomize order they get sent
 
 // TODO add logic that distributed remaining cards to clients
 
@@ -151,6 +153,19 @@ function getGameDeck(murderPlayer, murderWeapon, murderRoom) {
   }
 
   return gameDeck;
+}
+
+// shuffle the deck to randomize distribution (using Fisher-Yates Algorithm)
+function shuffleDeck(cardDeck) {
+  var deck = Array.from(cardDeck);
+  for (var i = deck.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * i);
+    var temp = deck[i];
+    deck[i] = deck[j];
+    deck[j] = temp;
+  }
+
+  return new Set(deck);
 }
 
 // validate accusation made by current player
