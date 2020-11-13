@@ -17,17 +17,6 @@ var mrsPeacockPlayer = new player.Player("Mrs Peacock");
 var mrGreenPlayer = new player.Player("Mr. Green");
 var mrsWhitePlayer = new player.Player("Mrs. White");
 
-// Instantiate Rooms
-var studyRoom = new room.Room("Study");
-var hallRoom = new room.Room("Hall");
-var loungeRoom = new room.Room("Lounge");
-var libraryRoom = new room.Room("Library");
-var billiardsRoom = new room.Room("Billiards");
-var diningRoom = new room.Room("Dining");
-var conservatoryRoom = new room.Room("Conservatory");
-var ballroomRoom = new room.Room("Ballroom");
-var kitchenRoom = new room.Room("Kitchen");
-
 // Instantiate Weapons
 var knifeWeapon = new weapon.Weapon("Knife");
 var ropeWeapon = new weapon.Weapon("Rope");
@@ -49,6 +38,38 @@ var hallway9 = new hallway.Hallway(9);
 var hallway10 = new hallway.Hallway(10);
 var hallway11 = new hallway.Hallway(11);
 var hallway12 = new hallway.Hallway(12);
+
+// Instantiate Rooms
+var studyRoom = new room.Room("Study");
+studyRoom.addAdjacentHallways([hallway2, hallway5]);
+studyRoom.setSecretPassageWay(kitchenRoom);
+
+var hallRoom = new room.Room("Hall");
+hallRoom.addAdjacentHallways([hallway5, hallway7, hallway10]);
+
+var loungeRoom = new room.Room("Lounge");
+loungeRoom.addAdjacentHallways([hallway10, hallway12]);
+loungeRoom.setSecretPassageWay(conservatoryRoom);
+
+var libraryRoom = new room.Room("Library");
+libraryRoom.addAdjacentHallways([hallway1, hallway2, hallway4]);
+
+var billiardsRoom = new room.Room("Billiards");
+billiardsRoom.addAdjacentHallways([hallway4, hallway6, hallway7, hallway9]);
+
+var diningRoom = new room.Room("Dining");
+diningRoom.addAdjacentHallways([hallway9, hallway11, hallway12]);
+
+var conservatoryRoom = new room.Room("Conservatory");
+conservatoryRoom.addAdjacentHallways([hallway1, hallway3]);
+conservatoryRoom.setSecretPassageWay(loungeRoom);
+
+var ballroomRoom = new room.Room("Ballroom");
+ballroomRoom.addAdjacentHallways([hallway3, hallway6, hallway8]);
+
+var kitchenRoom = new room.Room("Kitchen");
+kitchenRoom.addAdjacentHallways([hallway8, hallway11]);
+kitchenRoom.setSecretPassageWay(studyRoom);
 
 // State Tracking
 var playerCardSet = new Set([
