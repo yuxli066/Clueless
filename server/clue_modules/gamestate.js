@@ -1,13 +1,169 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-const socketIo = require("socket.io");
+/**
+ * Game State Module
+ */
 
+// Import list
 var player = require("./player");
+var room = require("./room");
+var weapon = require("./weapon");
+var hallway = require("./hallway");
+const { Coordinate } = require("./coordinates");
 
-var player1 = new player.Player("Mustard");
+// Instantiate Players
+var colMustardPlayer = new player.Player("Colonel Mustard");
+var missScarletPlayer = new player.Player("Miss Scarlet");
+var profPlumPlayer = new player.Player("Prof. Plum");
+var mrsPeacockPlayer = new player.Player("Mrs Peacock");
+var mrGreenPlayer = new player.Player("Mr. Green");
+var mrsWhitePlayer = new player.Player("Mrs. White");
 
-console.log(player1.getName());
-player1.setName("David");
-console.log(player1.getName());
+// Instantiate Rooms
+var studyRoom = new room.Room("Study");
+var hallRoom = new room.Room("Hall");
+var loungeRoom = new room.Room("Lounge");
+var libraryRoom = new room.Room("Library");
+var billiardsRoom = new room.Room("Billiards");
+var diningRoom = new room.Room("Dining");
+var conservatoryRoom = new room.Room("Conservatory");
+var ballroomRoom = new room.Room("Ballroom");
+var kitchenRoom = new room.Room("Kitchen");
+
+// Instantiate Weapons
+var knifeWeapon = new weapon.Weapon("Knife");
+var ropeWeapon = new weapon.Weapon("Rope");
+var leadPipeWeapon = new weapon.Weapon("Lead Pipe");
+var wrenchWeapon = new weapon.Weapon("Wrench");
+var candleStickWeapon = new weapon.Weapon("Candle Stick");
+var revolverWeapon = new weapon.Weapon("Revolver");
+
+// Instantiate Hallways
+var hallway1 = new hallway.Hallway(1);
+var hallway2 = new hallway.Hallway(2);
+var hallway3 = new hallway.Hallway(3);
+var hallway4 = new hallway.Hallway(4);
+var hallway5 = new hallway.Hallway(5);
+var hallway6 = new hallway.Hallway(6);
+var hallway7 = new hallway.Hallway(7);
+var hallway8 = new hallway.Hallway(8);
+var hallway9 = new hallway.Hallway(9);
+var hallway10 = new hallway.Hallway(10);
+var hallway11 = new hallway.Hallway(11);
+var hallway12 = new hallway.Hallway(12);
+
+// State Tracking
+var playerCardSet = new Set([
+  colMustardPlayer,
+  missScarletPlayer,
+  profPlumPlayer,
+  mrsPeacockPlayer,
+  mrGreenPlayer,
+  mrsWhitePlayer,
+]);
+var weaponCardSet = new Set([
+  knifeWeapon,
+  ropeWeapon,
+  leadPipeWeapon,
+  wrenchWeapon,
+  candleStickWeapon,
+  revolverWeapon,
+]);
+var roomCardSet = new Set([
+  conservatoryRoom,
+  libraryRoom,
+  studyRoom,
+  ballroomRoom,
+  billiardsRoom,
+  hallRoom,
+  kitchenRoom,
+  diningRoom,
+  loungeRoom,
+]);
+var validatedMove = false;
+var currentPlayer = undefined; // define current client character
+var murderPlayer = randomCard(playerCardSet); // choose random card to select murder character
+var murderWeapon = randomCard(weaponCardSet); // choose random card to select murder weapon
+var murderRoom = randomCard(roomCardSet); // choose random card to select murder room
+var gameDeck = getGameDeck(murderPlayer, murderWeapon, murderRoom); // cards remaining in the game to be distributed
+
+// TODO add logic that distributed remaining cards to clients
+
+// TODO: mapping player to connected clients
+
+// TODO: mapping game card decks to connected clients
+
+// Locations
+var playerLocation = new Map();
+playerLocation.set(mrsPeacockPlayer, new Coordinate(0, 1));
+playerLocation.set(profPlumPlayer, new Coordinate(0, 3));
+playerLocation.set(missScarletPlayer, new Coordinate(3, 4));
+playerLocation.set(colMustardPlayer, new Coordinate(4, 3));
+playerLocation.set(mrsWhitePlayer, new Coordinate(3, 0));
+playerLocation.set(mrGreenPlayer, new Coordinate(1, 0));
+
+var roomLocation = new Map();
+roomLocation.set(conservatoryRoom, new Coordinate(0, 0));
+roomLocation.set(libraryRoom, new Coordinate(0, 2));
+roomLocation.set(studyRoom, new Coordinate(0, 4));
+roomLocation.set(ballroomRoom, new Coordinate(2, 0));
+roomLocation.set(billiardsRoom, new Coordinate(2, 2));
+roomLocation.set(hallRoom, new Coordinate(2, 4));
+roomLocation.set(kitchenRoom, new Coordinate(4, 0));
+roomLocation.set(diningRoom, new Coordinate(4, 2));
+roomLocation.set(loungeRoom, new Coordinate(4, 4));
+
+var hallwayLocation = new Map();
+hallwayLocation.set(hallway1, new Coordinate(0, 1));
+hallwayLocation.set(hallway2, new Coordinate(0, 3));
+hallwayLocation.set(hallway3, new Coordinate(1, 0));
+hallwayLocation.set(hallway4, new Coordinate(1, 2));
+hallwayLocation.set(hallway5, new Coordinate(1, 4));
+hallwayLocation.set(hallway6, new Coordinate(2, 1));
+hallwayLocation.set(hallway7, new Coordinate(2, 3));
+hallwayLocation.set(hallway8, new Coordinate(3, 0));
+hallwayLocation.set(hallway9, new Coordinate(3, 2));
+hallwayLocation.set(hallway10, new Coordinate(3, 4));
+hallwayLocation.set(hallway11, new Coordinate(4, 1));
+hallwayLocation.set(hallway12, new Coordinate(4, 3));
+
+// choose random card
+function randomCard(cardSet) {
+  var cardArray = Array.from(cardSet);
+  return cardArray[Math.floor(Math.random() * cardArray.length)];
+}
+
+// function to have set of remaining cards after murder cards are chosone
+function getGameDeck(murderPlayer, murderWeapon, murderRoom) {
+  // remove murder cards from each set
+  var remainingPlayers = playerCardSet.delete(murderPlayer);
+  var remainingWeapons = weaponCardSet.delete(murderWeapon);
+  var remainingRooms = roomCardSet.delete(murderRoom);
+
+  // combine deck into one set to be distributed to game players
+  var gameDeck = new Set();
+  for (var item in remainingPlayers) {
+    gameDeck.add(item);
+  }
+  for (var item in remainingWeapons) {
+    gameDeck.add(item);
+  }
+  for (var item in remainingRooms) {
+    gameDeck.add(item);
+  }
+
+  return gameDeck;
+}
+
+// validate accusation made by current player
+function validateAccusation(playerCard, weaponCard, roomCard) {}
+
+// validate suggestion made by current player
+function validateSuggestion(playerCard, weaponCard, roomCard) {}
+
+//valid player move, move if it is valid
+function validatePlayerMove() {}
+
+// update player location should move be valid
+function updatePlayerLocation(playerMove) {}
+
+// update weapon location if move from suggestion is made
+function updateWeaponLocation(weaponMove) {}
