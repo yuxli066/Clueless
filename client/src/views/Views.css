@@ -4,76 +4,75 @@
 @import url('https://fonts.googleapis.com/css?family=Noticia+Text&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Old+Standard+TT&display=swap');
 
-@media screen and (max-width: 2100px)
-{
-    .landing-img {
-        all: unset;
-        width: 400px;
-        height: 400px;
-        overflow: hidden;
-    }
-    .landing-img2 {
-        all: unset;
-        width: 250px;
-        height: 200px;
-        overflow: hidden;
-    }
+@media screen and (max-width: 2100px) {
+  .landing-img {
+    all: unset;
+    width: 400px;
+    height: 400px;
+    overflow: hidden;
+  }
+  .landing-img2 {
+    all: unset;
+    width: 250px;
+    height: 200px;
+    overflow: hidden;
+  }
 
-    .image-txt {
-        all: unset;
-        text-align: center !important;
-    }
+  .image-txt {
+    all: unset;
+    text-align: center !important;
+  }
 
-    .image-txt2 {
-        all: unset;
-        text-align: center !important;
-    }
+  .image-txt2 {
+    all: unset;
+    text-align: center !important;
+  }
 }
 
 /*--------------------------------------------------------------
 # Sections & Backgrounds
 --------------------------------------------------------------*/
 section {
-    padding-top: 2rem;
-    padding-bottom: 4rem;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
 }
 
 .innerContainer {
-    background-color: #f9f7f1;
-    width: 75%;
+  background-color: #f9f7f1;
+  width: 75%;
 }
 
 .innerContainer .container-fluid {
-    border-left: 5px solid #2f2f2f;
-    border-right: 5px solid #2f2f2f;
-    padding-left: 2%;
-    padding-right: 2%;
+  border-left: 5px solid #2f2f2f;
+  border-right: 5px solid #2f2f2f;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 
 .innerContainer .container {
-    border-left: 5px solid #2f2f2f;
-    border-right: 5px solid #2f2f2f;
-    padding-left: 2%;
-    padding-right: 2%;
+  border-left: 5px solid #2f2f2f;
+  border-right: 5px solid #2f2f2f;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 
 .section-title {
-    text-align: center;
-    font-style: italic;
+  text-align: center;
+  font-style: italic;
 }
 
 .section-title:after {
-    border-bottom: 1px solid #2f2f2f;
-    content: '';
-    width: 30%;
-    height: 10px;
-    display: block;
-    margin: 0 auto;
+  border-bottom: 1px solid #2f2f2f;
+  content: '';
+  width: 30%;
+  height: 10px;
+  display: block;
+  margin: 0 auto;
 }
 
 .content-section {
-    padding-top: 7.5rem;
-    padding-bottom: 7.5rem;
+  padding-top: 7.5rem;
+  padding-bottom: 7.5rem;
 }
 
 /*--------------------------------------------------------------
@@ -81,11 +80,11 @@ section {
 --------------------------------------------------------------*/
 
 #landing {
-    min-height: 30rem;
-    position: relative;
-    display: table;
-    width: 100%;
-    height: auto;
+  min-height: 30rem;
+  position: relative;
+  display: table;
+  width: 100%;
+  height: auto;
 }
 
 /*@media (min-width: 992px) {*/
@@ -98,152 +97,154 @@ section {
 /*}*/
 
 .landing-img img {
-    filter: sepia(80%) grayscale(1) contrast(1) opacity(0.8);
-    mix-blend-mode: multiply;
-    display: block;
-    margin: auto;
+  filter: sepia(80%) grayscale(1) contrast(1) opacity(0.8);
+  mix-blend-mode: multiply;
+  display: block;
+  margin: auto;
 }
 
 .landing-img {
-    width: 600px;
-    height: 400px;
-    overflow: hidden;
-    margin: 2% 0 0 25px;
+  width: 600px;
+  height: 400px;
+  overflow: hidden;
+  margin: 2% 0 0 25px;
 }
 .landing-img2 {
-    width: 400px;
-    height: 400px;
-    overflow: hidden;
-    margin: 4% 0 0 -75px;
+  width: 400px;
+  height: 400px;
+  overflow: hidden;
+  margin: 4% 0 0 -75px;
 }
 
 .landing-img2 img {
-    filter: sepia(80%) grayscale(1) contrast(1) opacity(0.8);
-    mix-blend-mode: multiply;
-    display: block;
+  filter: sepia(80%) grayscale(1) contrast(1) opacity(0.8);
+  mix-blend-mode: multiply;
+  display: block;
 }
 
 .image-txt {
-    text-align: center !important;
-    margin: 0 0 0 -100px !important;
+  text-align: center !important;
+  margin: 0 0 0 -100px !important;
 }
 
 .image-txt2 {
-    text-align: center !important;
-    margin: 0 0 0 -120px !important;
+  text-align: center !important;
+  margin: 0 0 0 -120px !important;
 }
 
 .image-txt p {
-    font-family: "Old Standard TT", sans-serif !important;
+  font-family: 'Old Standard TT', sans-serif !important;
 }
 
 .image-txt2 p {
-    font-family: "Old Standard TT", sans-serif !important;
+  font-family: 'Old Standard TT', sans-serif !important;
 }
 
 #landing a {
-    all: unset;
-    color: red;
-    width: 100%;
+  all: unset;
+  color: red;
+  width: 100%;
 }
 
 #landing .play-button {
-    font-family: "Old Standard TT", sans-serif;
-    text-decoration: none;
-    position: relative;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 100%), antiquewhite;
-    font-weight: 900;
-    font-size: 3em;
-    display: block;
-    border-radius: 8px;
-    box-shadow: 0 9px 0 lightgrey, 0 9px 25px rgba(0,0,0,.7);
-    text-align: center;
-    transition: all .1s ease;
+  font-family: 'Old Standard TT', sans-serif;
+  text-decoration: none;
+  position: relative;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 100%),
+    antiquewhite;
+  font-weight: 900;
+  font-size: 3em;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 9px 0 lightgrey, 0 9px 25px rgba(0, 0, 0, 0.7);
+  text-align: center;
+  transition: all 0.1s ease;
 }
 
 #landing .play-button:hover {
-    box-shadow: 0 3px 0 lightgrey, 0 3px 6px rgba(0,0,0,.9);
-    text-decoration: none;
-    position: relative;
-    top: 6px;
-    cursor: pointer;
+  box-shadow: 0 3px 0 lightgrey, 0 3px 6px rgba(0, 0, 0, 0.9);
+  text-decoration: none;
+  position: relative;
+  top: 6px;
+  cursor: pointer;
 }
 
 /*--------------------------------------------------------------
 # Team & Team Profile Card Section
 --------------------------------------------------------------*/
 .col-lg-6 {
-    display: flex;
+  display: flex;
 }
 
-.profile-card{
-    padding: 7%;
-    box-shadow: 13px 13px 9px -1px rgb(115 112 115);
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 100%), antiquewhite;
-    display: inline-block !important;
-    margin: 20px !important;
-    position: relative;
-    border-radius: 2%;
+.profile-card {
+  padding: 7%;
+  box-shadow: 13px 13px 9px -1px rgb(115 112 115);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 100%),
+    antiquewhite;
+  display: inline-block !important;
+  margin: 20px !important;
+  position: relative;
+  border-radius: 2%;
 }
 
 .member-name {
-    font-weight: 600;
-    margin: 0;
+  font-weight: 600;
+  margin: 0;
 }
 
 .member-name svg {
-    margin-right: 2%;
+  margin-right: 2%;
 }
 
-.profile-card header{
-    display: block;
-    position: relative;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 100%), antiquewhite;
-    text-align: center;
-    padding: 15px 0 10px;
-    z-index: 1;
-    overflow: hidden;
-    border-radius: 2%;
+.profile-card header {
+  display: block;
+  position: relative;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 100%),
+    antiquewhite;
+  text-align: center;
+  padding: 15px 0 10px;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 2%;
 }
 
-.profile-card header img{
-    border-radius: 100%;
-    width: 150px;
-    border: 1px solid rgba(255,255,255,.5);
-    box-shadow: 0 1px 0 rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.1);
+.profile-card header img {
+  border-radius: 100%;
+  width: 150px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-
-.profile-card .profile-bio{
-    display: block;
-    padding: 0 20px 15px;
-    text-align: left;
+.profile-card .profile-bio {
+  display: block;
+  padding: 0 20px 15px;
+  text-align: left;
 }
 
-.profile-card .profile-social-links{
-    display: table;
-    table-layout: fixed;
-    width: 75%;
-    position: absolute;
-    bottom: 10px;
-    margin: 0 5%;
-    padding-bottom: 5px;
+.profile-card .profile-social-links {
+  display: table;
+  table-layout: fixed;
+  width: 75%;
+  position: absolute;
+  bottom: 10px;
+  margin: 0 5%;
+  padding-bottom: 5px;
 }
 
-.profile-card .profile-social-links span{
-    display: table-cell;
-    width: 50%;
+.profile-card .profile-social-links span {
+  display: table-cell;
+  width: 50%;
 }
 
 .member-socials {
-    color: cornflowerblue;
+  color: cornflowerblue;
 }
 
 /*--------------------------------------------------------------
 # Footer Section
 --------------------------------------------------------------*/
 footer.footer {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-    margin-bottom: 2em;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  margin-bottom: 2em;
 }
