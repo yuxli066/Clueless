@@ -2,13 +2,9 @@
  * Room Class
  */
 
-var hallways = require("./hallway");
-var coordinates = require("./coordinates");
-
 class Room {
-  entrances = new Set();
   secretPassageWay = undefined;
-  adjacentHallways = new Set();
+  adjacentHallwayList = new Set();
 
   constructor(name) {
     this.name = name;
@@ -24,12 +20,14 @@ class Room {
     this.name = name;
   }
 
-  addEntrance(axisX, axisY) {
-    this.entrances.add(new coordinates.Coordinate(axisX, axisY));
+  addAdjacentHallway(hallway) {
+    this.adjacentHallwayList.add(hallway);
   }
 
-  addAdjacentHallway(hallwayNum) {
-    this.adjacentHallways.add(new hallways.Hallway(hallwayNum));
+  addAdjacentHallways(hallwayArray) {
+    for (var i = 0; i < hallwayArray.length; i++) {
+      this.addAdjacentHallwayList.add(hallwayArray[i]);
+    }
   }
 
   setSecretPassageWay(room) {
