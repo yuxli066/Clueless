@@ -6,7 +6,7 @@ import SocketContext from '../../../src/SocketContext';
 export default function Board() {
   // TODO we can inline this var if we want!
   const initialLocation = { x: Math.random() * 700, y: Math.random() * 600 };
-  const id = useRef(undefined);
+  // const id = useRef(undefined);
   const [positions, setPositions] = useState({ temp_initial: initialLocation });
 
   const positionRef = useRef(positions);
@@ -19,14 +19,6 @@ export default function Board() {
   socket.on('response', (resp) => {
     console.log('Response from server: ', resp);
   });
-
-  // console.log(positions);
-
-  // on first mount of the board, send a socket
-  // TODO possibly send a disconnect message? (server handles it too though)
-  useEffect(() => {
-    socket.on('new_client', { ...initialLocation });
-  }, []);
 
   // use of useCallback here allows for these messages to only be registered once to the websocket
   const handleResponse = useCallback((resp) => console.log('Response from server: ', resp), []);

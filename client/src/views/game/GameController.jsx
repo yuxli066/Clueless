@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Container from 'react-bootstrap/cjs/Container';
 import Board from './Board';
-import Colonal from './Colonal';
 function GameController() {
   return (
     <div>

@@ -11,13 +11,5 @@ yarn-error.log*
 .vscode/
 .env
 
-# yarn 2.0
-.yarn/*
-!.yarn/cache
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
-
-
-
+# since we're using yarn we should avoid checking in npm's lockfile
+package-lock.json
