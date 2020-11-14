@@ -7,7 +7,7 @@ var player = require("./player");
 var room = require("./room");
 var weapon = require("./weapon");
 var hallway = require("./hallway");
-const { Coordinate } = require("./coordinates");
+var coordinate = require("./coordinates");
 
 // Instantiate Players
 var colMustardPlayer = new player.Player("Colonel Mustard");
@@ -40,6 +40,8 @@ var hallway11 = new hallway.Hallway(11);
 var hallway12 = new hallway.Hallway(12);
 
 // Instantiate Rooms
+// link adjacent hallways
+// set secret passage way where applicable
 var studyRoom = new room.Room("Study");
 studyRoom.addAdjacentHallways([hallway2, hallway5]);
 studyRoom.setSecretPassageWay(kitchenRoom);
@@ -118,37 +120,37 @@ gameDeck = shuffleDeck(gameDeck); // shuffle the deck to randomize order they ge
 
 // Locations
 var playerLocation = new Map();
-playerLocation.set(mrsPeacockPlayer, new Coordinate(0, 1));
-playerLocation.set(profPlumPlayer, new Coordinate(0, 3));
-playerLocation.set(missScarletPlayer, new Coordinate(3, 4));
-playerLocation.set(colMustardPlayer, new Coordinate(4, 3));
-playerLocation.set(mrsWhitePlayer, new Coordinate(3, 0));
-playerLocation.set(mrGreenPlayer, new Coordinate(1, 0));
+playerLocation.set(mrsPeacockPlayer, new coordinate.Coordinate(0, 1));
+playerLocation.set(profPlumPlayer, new coordinate.Coordinate(0, 3));
+playerLocation.set(missScarletPlayer, new coordinate.Coordinate(3, 4));
+playerLocation.set(colMustardPlayer, new coordinate.Coordinate(4, 3));
+playerLocation.set(mrsWhitePlayer, new coordinate.Coordinate(3, 0));
+playerLocation.set(mrGreenPlayer, new coordinate.Coordinate(1, 0));
 
 var roomLocation = new Map();
-roomLocation.set(conservatoryRoom, new Coordinate(0, 0));
-roomLocation.set(libraryRoom, new Coordinate(0, 2));
-roomLocation.set(studyRoom, new Coordinate(0, 4));
-roomLocation.set(ballroomRoom, new Coordinate(2, 0));
-roomLocation.set(billiardsRoom, new Coordinate(2, 2));
-roomLocation.set(hallRoom, new Coordinate(2, 4));
-roomLocation.set(kitchenRoom, new Coordinate(4, 0));
-roomLocation.set(diningRoom, new Coordinate(4, 2));
-roomLocation.set(loungeRoom, new Coordinate(4, 4));
+roomLocation.set(conservatoryRoom, new coordinate.Coordinate(0, 0));
+roomLocation.set(libraryRoom, new coordinate.Coordinate(0, 2));
+roomLocation.set(studyRoom, new coordinate.Coordinate(0, 4));
+roomLocation.set(ballroomRoom, new coordinate.Coordinate(2, 0));
+roomLocation.set(billiardsRoom, new coordinate.Coordinate(2, 2));
+roomLocation.set(hallRoom, new coordinate.Coordinate(2, 4));
+roomLocation.set(kitchenRoom, new coordinate.Coordinate(4, 0));
+roomLocation.set(diningRoom, new coordinate.Coordinate(4, 2));
+roomLocation.set(loungeRoom, new coordinate.Coordinate(4, 4));
 
 var hallwayLocation = new Map();
-hallwayLocation.set(hallway1, new Coordinate(0, 1));
-hallwayLocation.set(hallway2, new Coordinate(0, 3));
-hallwayLocation.set(hallway3, new Coordinate(1, 0));
-hallwayLocation.set(hallway4, new Coordinate(1, 2));
-hallwayLocation.set(hallway5, new Coordinate(1, 4));
-hallwayLocation.set(hallway6, new Coordinate(2, 1));
-hallwayLocation.set(hallway7, new Coordinate(2, 3));
-hallwayLocation.set(hallway8, new Coordinate(3, 0));
-hallwayLocation.set(hallway9, new Coordinate(3, 2));
-hallwayLocation.set(hallway10, new Coordinate(3, 4));
-hallwayLocation.set(hallway11, new Coordinate(4, 1));
-hallwayLocation.set(hallway12, new Coordinate(4, 3));
+hallwayLocation.set(hallway1, new coordinate.Coordinate(0, 1));
+hallwayLocation.set(hallway2, new coordinate.Coordinate(0, 3));
+hallwayLocation.set(hallway3, new coordinate.Coordinate(1, 0));
+hallwayLocation.set(hallway4, new coordinate.Coordinate(1, 2));
+hallwayLocation.set(hallway5, new coordinate.Coordinate(1, 4));
+hallwayLocation.set(hallway6, new coordinate.Coordinate(2, 1));
+hallwayLocation.set(hallway7, new coordinate.Coordinate(2, 3));
+hallwayLocation.set(hallway8, new coordinate.Coordinate(3, 0));
+hallwayLocation.set(hallway9, new coordinate.Coordinate(3, 2));
+hallwayLocation.set(hallway10, new coordinate.Coordinate(3, 4));
+hallwayLocation.set(hallway11, new coordinate.Coordinate(4, 1));
+hallwayLocation.set(hallway12, new coordinate.Coordinate(4, 3));
 
 // choose random card
 function randomCard(cardSet) {
