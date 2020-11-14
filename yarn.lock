@@ -1611,6 +1611,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fortawesome/fontawesome-free@npm:^5.15.1":
+  version: 5.15.1
+  resolution: "@fortawesome/fontawesome-free@npm:5.15.1"
+  checksum: 80dba87ece2d438cfee2548c4d31527cf1ae992f750dcd4b1ac8cbba546f2d6fc0f76caf0c093df658e1eb7bc844e78267d555e49075108b5cffa7a3f89ce232
+  languageName: node
+  linkType: hard
+
 "@fortawesome/fontawesome-svg-core@npm:^1.2.32":
   version: 1.2.32
   resolution: "@fortawesome/fontawesome-svg-core@npm:1.2.32"
@@ -4362,6 +4369,7 @@ __metadata:
   dependencies:
     "@blueprintjs/core": ^3.34.0
     "@blueprintjs/icons": ^3.22.0
+    "@fortawesome/fontawesome-free": ^5.15.1
     "@fortawesome/fontawesome-svg-core": ^1.2.32
     "@fortawesome/free-brands-svg-icons": ^5.15.1
     "@fortawesome/free-solid-svg-icons": ^5.15.1
