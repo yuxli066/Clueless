@@ -7,7 +7,7 @@ export default function Board() {
   // TODO we can inline this var if we want!
   const initialLocation = { x: Math.random() * 700, y: Math.random() * 600 };
   const id = useRef(undefined);
-  const [positions, setPositions] = useState([]);
+  const [positions, setPositions] = useState({ temp_initial: initialLocation });
 
   const positionRef = useRef(positions);
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Board() {
     console.log('Response from server: ', resp);
   });
 
-  console.log(positions);
+  // console.log(positions);
 
   // on first mount of the board, send a socket
   // TODO possibly send a disconnect message? (server handles it too though)
@@ -30,25 +30,33 @@ export default function Board() {
 
   // use of useCallback here allows for these messages to only be registered once to the websocket
   const handleResponse = useCallback((resp) => console.log('Response from server: ', resp), []);
+
+  // pos?
+  /*
+  {
+    "id1": {x:0 y: 0}
+    "id2": {x:0 y: 0}
+  }
+  */
   const handlePosition = useCallback((pos) => {
     console.log('Changed Position!', pos);
-    setPositions([...positionRef.current, pos]);
+    setPositions(pos);
   }, []);
 
   useEffect(() => {
     socket.on('response', handleResponse);
-    socket.on('pos_change', handlePosition);
+    socket.on('playerMoved', handlePosition);
 
     // make sure to un-register ourselves when we unmount!
     return () => {
       socket.off('response', handleResponse);
-      socket.off('pos_change', handlePosition);
+      socket.off('playerMoved', handlePosition);
     };
   }, [socket, handlePosition, handleResponse]);
 
-  socket.on('playerMoved', (playerInfo) => {
-    playerInfo.handlePosition(playerInfo.x, playerInfo.y);
-  });
+  // socket.on('playerMoved', (playerInfo) => {
+  //   playerInfo.handlePosition(playerInfo.x, playerInfo.y);
+  // });
   return (
     <div
       style={{
@@ -57,15 +65,12 @@ export default function Board() {
         width: 792,
       }}
     >
-      {positions.map((position) => (
-        <Colonel
-          className="player"
-          key={position.id}
-          id={id.current}
-          initialPos={{ x: position.x, y: position.y }}
-          movable={position.id === id.current}
-        />
-      ))}
+      {/* TODO update movable with an id check as was done before! */}
+      {Object.entries(positions).map(([key, pos]) => {
+        console.log('key here is: ', key);
+        console.log('pos here is:', pos);
+        return <Colonel key={key} id={key} initialPos={{ x: pos.x, y: pos.y }} movable={true} />;
+      })}
     </div>
   );
 }

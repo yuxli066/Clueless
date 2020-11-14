@@ -6,7 +6,6 @@ function GameController() {
   return (
     <div>
       <Container fluid className="innerContainer">
-        <Colonal />
         <Board />
       </Container>
     </div>

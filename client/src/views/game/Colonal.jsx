@@ -13,12 +13,13 @@ export default function Colonel({ id, initialPos, movable }) {
   }, [initialPos]);
 
   function handleOnStop(e, pos) {
+    console.log(movable);
     if (movable) {
       const { x, y } = pos;
       setPos({ x, y });
-      socket.emit('playerMoved', pos[socket.id]);
+      socket.emit('playerMovement', { x: pos.x, y: pos.y });
     }
-    console.log(pos);
+    console.log('pos is', pos);
   }
 
   return (

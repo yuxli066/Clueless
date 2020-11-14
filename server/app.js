@@ -26,9 +26,6 @@ const position = {};
 // TODO we should move the socket handling code to a new file!
 io.on('connect', (socket) => {
   console.log('connected!');
-  socket.on('disconnect', () => {
-    console.log('disconnected!');
-  });
 
   socket.on('disconnect', () => {
     console.log('disconnected!');
@@ -46,16 +43,14 @@ io.on('connect', (socket) => {
   });
 
   socket.on('playerMovement', (movementData) => {
+    console.log('Made it to the server');
+    if (!position[socket.id]) {
+      position[socket.id] = {};
+    }
     position[socket.id].x = movementData.x;
     position[socket.id].y = movementData.y;
     // emit a message to all players about the player that moved
-    socket.emit('playerMoved', players[socket.id]);
-  });
-
-  socket.on('pos_change', (pos) => {
-    console.log('Position changed!');
-    position[socket.id] = pos;
-    io.emit('pos_change', position);
+    io.emit('playerMoved', position);
   });
 });
 
