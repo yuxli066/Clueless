@@ -2142,6 +2142,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@fortawesome/fontawesome-free", [
+        ["npm:5.15.1", {
+          "packageLocation": "./.yarn/unplugged/@fortawesome-fontawesome-free-npm-5.15.1-76d33468b2/node_modules/@fortawesome/fontawesome-free/",
+          "packageDependencies": [
+            ["@fortawesome/fontawesome-free", "npm:5.15.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@fortawesome/fontawesome-svg-core", [
         ["npm:1.2.32", {
           "packageLocation": "./.yarn/unplugged/@fortawesome-fontawesome-svg-core-npm-1.2.32-8dca04b772/node_modules/@fortawesome/fontawesome-svg-core/",
@@ -5309,6 +5318,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["client", "workspace:client"],
             ["@blueprintjs/core", "virtual:656141524fab26d76b9a0de37412b0bd8d68b112a7ae5bb3607d411763274ecb93d754bd2292ee7cee1844b867cae11a6a7be00b96f1e87fd47684b593faaa6e#npm:3.35.0"],
             ["@blueprintjs/icons", "npm:3.22.0"],
+            ["@fortawesome/fontawesome-free", "npm:5.15.1"],
             ["@fortawesome/fontawesome-svg-core", "npm:1.2.32"],
             ["@fortawesome/free-brands-svg-icons", "npm:5.15.1"],
             ["@fortawesome/free-solid-svg-icons", "npm:5.15.1"],
