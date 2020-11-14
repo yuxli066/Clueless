@@ -21,14 +21,15 @@ app.use('/users', usersRouter);
 
 const io = socketIo();
 
-var position = {
-  x: 0,
-  y: 0,
-};
+const position = {};
 
 // TODO we should move the socket handling code to a new file!
 io.on('connect', (socket) => {
   console.log('connected!');
+  socket.on('disconnect', () => {
+    console.log('disconnected!');
+  });
+
   socket.on('disconnect', () => {
     console.log('disconnected!');
   });
@@ -44,12 +45,17 @@ io.on('connect', (socket) => {
     io.emit('broadcast', 'Hello all clients from server!');
   });
 
-  socket.emit('position', position);
+  socket.on('playerMovement', (movementData) => {
+    position[socket.id].x = movementData.x;
+    position[socket.id].y = movementData.y;
+    // emit a message to all players about the player that moved
+    socket.emit('playerMoved', players[socket.id]);
+  });
 
   socket.on('pos_change', (pos) => {
     console.log('Position changed!');
-    position = pos;
-    io.emit('position', position);
+    position[socket.id] = pos;
+    io.emit('pos_change', position);
   });
 });
 

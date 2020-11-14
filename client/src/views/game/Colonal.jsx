@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
 import colonel_mustard from '../../images/colonel_mustard.jpg';
 import Draggable from 'react-draggable';
 import SocketContext from '../../SocketContext';
@@ -16,7 +16,7 @@ export default function Colonel({ id, initialPos, movable }) {
     if (movable) {
       const { x, y } = pos;
       setPos({ x, y });
-      socket.emit('pos_change', pos);
+      socket.emit('playerMoved', pos[socket.id]);
     }
     console.log(pos);
   }

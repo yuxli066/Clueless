@@ -7,7 +7,6 @@ export default function Board() {
   // TODO we can inline this var if we want!
   const initialLocation = { x: Math.random() * 700, y: Math.random() * 600 };
   const id = useRef(undefined);
-  const player = document.getElementsByClassName('player')[0];
   const [positions, setPositions] = useState([]);
 
   const positionRef = useRef(positions);
@@ -47,6 +46,9 @@ export default function Board() {
     };
   }, [socket, handlePosition, handleResponse]);
 
+  socket.on('playerMoved', (playerInfo) => {
+    playerInfo.handlePosition(playerInfo.x, playerInfo.y);
+  });
   return (
     <div
       style={{
