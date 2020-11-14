@@ -8,6 +8,7 @@ var room = require("./room");
 var weapon = require("./weapon");
 var hallway = require("./hallway");
 var coordinate = require("./coordinates");
+var gamecard = require("./gamecard");
 
 // Instantiate Players
 var colMustardPlayer = new player.Player("Colonel Mustard");
@@ -108,11 +109,37 @@ var murderPlayer = randomCard(playerCardSet); // choose random card to select mu
 var murderWeapon = randomCard(weaponCardSet); // choose random card to select murder weapon
 var murderRoom = randomCard(roomCardSet); // choose random card to select murder room
 var gameDeck = getGameDeck(murderPlayer, murderWeapon, murderRoom); // cards remaining in the game to be distributed
-
 // shuffle deck
 gameDeck = shuffleDeck(gameDeck); // shuffle the deck to randomize order they get sent
 
-// TODO add logic that distributed remaining cards to clients
+// Client Game Cards
+var numOfClients = 0; // TODO determine how we update this
+var gameCardMap = createClientGameCards(numOfClients);
+
+// distibute cards to each of the client's gamecard set
+distributeDeck(gameCardMap, gameDeck);
+
+// Create game cards for each client depending on how many clients are connected
+function createClientGameCards(clientNum) {
+  cardMap = new Map();
+  for (var i = 0; i < clientNum; i++) {
+    cardMap.set("client" + i.toString(), new gamecard.GameCard());
+  }
+
+  return cardMap;
+}
+
+// distribute shuffled deck to each client
+function distributeDeck(cardMap, deck) {
+  var clientIndex = 0;
+  for (var card in deck) {
+    if (clientIndex >= cardMap.size - 1) {
+      clientIndex = 0;
+    }
+    cardMap.get("client" + clientIndex.toString()).addGameCard(card);
+    clientIndex++;
+  }
+}
 
 // TODO: mapping player to connected clients
 
