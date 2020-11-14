@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-
+import Container from 'react-bootstrap/cjs/Container';
+import Board from './Board';
+import Colonal from './Colonal';
 function GameController() {
-  const [count, setCount] = useState(0);
-
   return (
     <div>
-      <h1>{count}</h1>
-      <h1 onClick={() => setCount(count + 1)}>Plus</h1>
-      <h1 onClick={() => setCount(count - 1)}>Minus</h1>
+      <Container fluid className="innerContainer">
+        <Colonal />
+        <Board />
+      </Container>
     </div>
   );
 }

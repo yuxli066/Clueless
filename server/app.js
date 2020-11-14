@@ -21,6 +21,11 @@ app.use('/users', usersRouter);
 
 const io = socketIo();
 
+var position = {
+  x: 0,
+  y: 0,
+};
+
 // TODO we should move the socket handling code to a new file!
 io.on('connect', (socket) => {
   console.log('connected!');
@@ -28,15 +33,23 @@ io.on('connect', (socket) => {
     console.log('disconnected!');
   });
 
-  socket.on("greet", (greeting) => {
-    console.log("client said:", greeting);
-    console.log("sending response back...");
-    socket.emit("response", "Hello from server!");
+  socket.on('greet', (greeting) => {
+    console.log('client said:', greeting);
+    console.log('sending response back...');
+    socket.emit('response', 'Hello from server!');
   });
 
-  socket.on("greetOtherClients", (greeting) => {
-    console.log("client said:", greeting);
-    io.emit("broadcast", "Hello all clients from server!");
+  socket.on('greetOtherClients', (greeting) => {
+    console.log('client said:', greeting);
+    io.emit('broadcast', 'Hello all clients from server!');
+  });
+
+  socket.emit('position', position);
+
+  socket.on('pos_change', (pos) => {
+    console.log('Position changed!');
+    position = pos;
+    io.emit('position', position);
   });
 });
 
