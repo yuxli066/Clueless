@@ -26,7 +26,7 @@ class Room {
 
   addAdjacentHallways(hallwayArray) {
     for (var i = 0; i < hallwayArray.length; i++) {
-      this.addAdjacentHallwayList.add(hallwayArray[i]);
+      this.adjacentHallwayList.add(hallwayArray[i]);
     }
   }
 
