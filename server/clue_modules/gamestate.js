@@ -109,11 +109,12 @@ var murderPlayer = randomCard(playerCardSet); // choose random card to select mu
 var murderWeapon = randomCard(weaponCardSet); // choose random card to select murder weapon
 var murderRoom = randomCard(roomCardSet); // choose random card to select murder room
 var gameDeck = getGameDeck(murderPlayer, murderWeapon, murderRoom); // cards remaining in the game to be distributed
+
 // shuffle deck
 gameDeck = shuffleDeck(gameDeck); // shuffle the deck to randomize order they get sent
 
 // Client Game Cards
-var numOfClients = 0; // TODO determine how we update this
+var numOfClients = 3; // TODO determine how we update this
 var gameCardMap = createClientGameCards(numOfClients);
 
 // distibute cards to each of the client's gamecard set
@@ -217,13 +218,14 @@ function createClientGameCards(clientNum) {
 // distribute shuffled deck to each client
 function distributeDeck(cardMap, deck) {
   var clientIndex = 0;
-  for (var card in deck) {
-    if (clientIndex >= cardMap.size - 1) {
+
+  deck.forEach(function (card) {
+    if (clientIndex >= cardMap.size) {
       clientIndex = 0;
     }
     cardMap.get("client" + clientIndex.toString()).addGameCard(card);
     clientIndex++;
-  }
+  });
 }
 
 // determine who's turn to go next
