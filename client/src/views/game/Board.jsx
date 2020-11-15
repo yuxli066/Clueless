@@ -27,11 +27,11 @@ export default function Board() {
 
   // pos?
   /*
-        {
-          "id1": {x:0 y: 0}
-          "id2": {x:0 y: 0}
-        }
-        */
+          {
+            "id1": {x:0 y: 0}
+            "id2": {x:0 y: 0}
+          }
+          */
   const handlePosition = useCallback((pos) => {
     console.log('Changed Position!', pos);
     setPositions(pos);
