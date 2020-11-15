@@ -24,10 +24,6 @@ const io = socketIo();
 const position = {};
 
 // TODO we should move the socket handling code to a new file!
-// FIXME this is a dangerous global! We need to come up with a better way of handling it!
-var lobbies = {};
-
-// TODO we should move the socket handling code to a new file!
 io.on('connect', (socket) => {
   console.log(`new websocket client with id ${socket.id} connected!`);
 
@@ -36,9 +32,29 @@ io.on('connect', (socket) => {
   });
 
   // adapted from: https://stackoverflow.com/a/40413809
-  socket.on('join', (room) => {
+  // using rooms as opposed to namespaces for now so that we minimize the back-and forth between socket and client
+  // (namespaces would mean the server creating the namespace and then the client connecting to the namespace, so an extra trip)
+  socket.on('join', (room = undefined) => {
     console.log('client joining game room:', room);
-    socket.join(room);
+    if (room) {
+      socket.join(room);
+    } else {
+      // Join a random room
+      const availableRooms = new Map(io.sockets.adapter.rooms);
+      // filter out the rooms that are id specific (each client has their own room)
+      // I want to run forEach on keys but that doesn't quite work
+      io.sockets.sockets.forEach((_, key) => availableRooms.delete(key));
+
+      // TODO filter out rooms that are full!
+      // TODO pick a random room!
+
+      // for now, just pick the first one
+      const roomToJoin = availableRooms.keys().next().value;
+      socket.join(roomToJoin);
+    }
+
+    // take the ids of all the connected sockets and remove them from the
+
     // TODO broadcast that the client joined the room!
     // TODO also figure out a way to indicate who is who
 
