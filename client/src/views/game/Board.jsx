@@ -26,11 +26,11 @@ export default function Board() {
 
   // pos?
   /*
-    {
-      "id1": {x:0 y: 0}
-      "id2": {x:0 y: 0}
-    }
-    */
+      {
+        "id1": {x:0 y: 0}
+        "id2": {x:0 y: 0}
+      }
+      */
   const handlePosition = useCallback((pos) => {
     console.log('Changed Position!', pos);
     setPositions(pos);
@@ -74,46 +74,67 @@ export default function Board() {
           </Col>
           {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
           <Col md={3}>
+            <br />
             <div style={{ color: '#CED9E0' }}>
               {/*Dropdown for suggestion or accusation*/}
               <p style={{ textAlign: 'center' }}> Game Card </p>
-              <label className="pt-label .modifier" style={{ marginLeft: 10 }}>
+              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
                 Guess Type
                 <div class="pt-select">
                   <select>
                     <option selected>Choose an item...</option>
-                    <option value="1">One</option>
+                    <option value="1">Suggestion</option>
+                    <option value="2">Accusation</option>
                   </select>
                 </div>
               </label>
               {/*Dropdown for weapon*/}
-              <label className="pt-label .modifier" style={{ marginLeft: 10 }}>
+              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
                 Weapon
                 <div class="pt-select">
                   <select>
                     <option selected>Choose an item...</option>
-                    <option value="1">One</option>
+                    <option value="1">Candlestick</option>
+                    <option value="2">Dagger/Knife</option>
+                    <option value="3">Lead Pipe</option>
+                    <option value="4">Revolver/Colt</option>
+                    <option value="5">Rope</option>
+                    <option value="6">Spanner/monkey wrench</option>
                   </select>
                 </div>
               </label>
 
               {/*Dropdown for room TODO: This should be current room that the player is in*/}
-              <label className="pt-label .modifier" style={{ marginLeft: 10 }}>
+              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
                 Room
                 <div class="pt-select">
                   <select>
                     <option selected>Choose an item...</option>
-                    <option value="1">One</option>
+                    <option value="1">Kitchen</option>
+                    <option value="2">Hall</option>
+                    <option value="3">Ballroom</option>
+                    <option value="4">Conservatory</option>
+                    <option value="5">Dining Room</option>
+                    <option value="6">Cellar</option>
+                    <option value="7">Billard Room</option>
+                    <option value="8">Library</option>
+                    <option value="9">Lounge</option>
+                    <option value="9">Study</option>
                   </select>
                 </div>
               </label>
               {/*Dropdown for player*/}
-              <label className="pt-label .modifier" style={{ marginLeft: 10 }}>
+              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
                 Player
                 <div class="pt-select">
                   <select>
                     <option selected>Choose an item...</option>
-                    <option value="1">One</option>
+                    <option value="1">Miss Scarlett</option>
+                    <option value="2">Professor Plum</option>
+                    <option value="3">Mrs Peacock</option>
+                    <option value="4">Reverend Green</option>
+                    <option value="5">Colonel Mustard</option>
+                    <option value="6">Dr Orchid</option>
                   </select>
                 </div>
               </label>
