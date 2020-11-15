@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext, useCallback, useRef } from 'rea
 import clue_board from '../../images/clue_board.jpg';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 export default function Board() {
   // TODO we can inline this var if we want!
@@ -26,11 +26,11 @@ export default function Board() {
 
   // pos?
   /*
-      {
-        "id1": {x:0 y: 0}
-        "id2": {x:0 y: 0}
-      }
-      */
+        {
+          "id1": {x:0 y: 0}
+          "id2": {x:0 y: 0}
+        }
+        */
   const handlePosition = useCallback((pos) => {
     console.log('Changed Position!', pos);
     setPositions(pos);
@@ -139,6 +139,8 @@ export default function Board() {
                 </div>
               </label>
             </div>
+            <br />
+            <Button style={{ marginLeft: 70 }}>Submit</Button>
           </Col>
         </Row>
       </Container>
