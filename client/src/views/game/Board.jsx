@@ -72,10 +72,51 @@ export default function Board() {
               })}
             </div>
           </Col>
-
+          {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
           <Col md={3}>
-            <div style={{ color: '#CED9E0', textAlign: 'center' }}>
-              <p> Game Card </p>
+            <div style={{ color: '#CED9E0' }}>
+              {/*Dropdown for suggestion or accusation*/}
+              <p style={{ textAlign: 'center' }}> Game Card </p>
+              <label className="pt-label .modifier" style={{ marginLeft: 10 }}>
+                Guess Type
+                <div class="pt-select">
+                  <select>
+                    <option selected>Choose an item...</option>
+                    <option value="1">One</option>
+                  </select>
+                </div>
+              </label>
+              {/*Dropdown for weapon*/}
+              <label className="pt-label .modifier" style={{ marginLeft: 10 }}>
+                Weapon
+                <div class="pt-select">
+                  <select>
+                    <option selected>Choose an item...</option>
+                    <option value="1">One</option>
+                  </select>
+                </div>
+              </label>
+
+              {/*Dropdown for room TODO: This should be current room that the player is in*/}
+              <label className="pt-label .modifier" style={{ marginLeft: 10 }}>
+                Room
+                <div class="pt-select">
+                  <select>
+                    <option selected>Choose an item...</option>
+                    <option value="1">One</option>
+                  </select>
+                </div>
+              </label>
+              {/*Dropdown for player*/}
+              <label className="pt-label .modifier" style={{ marginLeft: 10 }}>
+                Player
+                <div class="pt-select">
+                  <select>
+                    <option selected>Choose an item...</option>
+                    <option value="1">One</option>
+                  </select>
+                </div>
+              </label>
             </div>
           </Col>
         </Row>
