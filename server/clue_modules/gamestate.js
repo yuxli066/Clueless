@@ -119,33 +119,11 @@ var gameCardMap = createClientGameCards(numOfClients);
 // distibute cards to each of the client's gamecard set
 distributeDeck(gameCardMap, gameDeck);
 
-// Create game cards for each client depending on how many clients are connected
-function createClientGameCards(clientNum) {
-  cardMap = new Map();
-  for (var i = 0; i < clientNum; i++) {
-    cardMap.set("client" + i.toString(), new gamecard.GameCard());
-  }
-
-  return cardMap;
-}
-
-// distribute shuffled deck to each client
-function distributeDeck(cardMap, deck) {
-  var clientIndex = 0;
-  for (var card in deck) {
-    if (clientIndex >= cardMap.size - 1) {
-      clientIndex = 0;
-    }
-    cardMap.get("client" + clientIndex.toString()).addGameCard(card);
-    clientIndex++;
-  }
-}
-
 // TODO: mapping player to connected clients
 
-// TODO: mapping game card decks to connected clients
-
 // Locations
+
+// player starts at location specified from document
 var playerLocation = new Map();
 playerLocation.set(mrsPeacockPlayer, new coordinate.Coordinate(0, 1));
 playerLocation.set(profPlumPlayer, new coordinate.Coordinate(0, 3));
@@ -154,6 +132,7 @@ playerLocation.set(colMustardPlayer, new coordinate.Coordinate(4, 3));
 playerLocation.set(mrsWhitePlayer, new coordinate.Coordinate(3, 0));
 playerLocation.set(mrGreenPlayer, new coordinate.Coordinate(1, 0));
 
+// room location as per coordinate map
 var roomLocation = new Map();
 roomLocation.set(conservatoryRoom, new coordinate.Coordinate(0, 0));
 roomLocation.set(libraryRoom, new coordinate.Coordinate(0, 2));
@@ -165,6 +144,7 @@ roomLocation.set(kitchenRoom, new coordinate.Coordinate(4, 0));
 roomLocation.set(diningRoom, new coordinate.Coordinate(4, 2));
 roomLocation.set(loungeRoom, new coordinate.Coordinate(4, 4));
 
+// hallway location as per coordinate map
 var hallwayLocation = new Map();
 hallwayLocation.set(hallway1, new coordinate.Coordinate(0, 1));
 hallwayLocation.set(hallway2, new coordinate.Coordinate(0, 3));
@@ -187,22 +167,26 @@ function randomCard(cardSet) {
 
 // function to have set of remaining cards after murder cards are chosone
 function getGameDeck(murderPlayer, murderWeapon, murderRoom) {
-  // remove murder cards from each set
-  var remainingPlayers = playerCardSet.delete(murderPlayer);
-  var remainingWeapons = weaponCardSet.delete(murderWeapon);
-  var remainingRooms = roomCardSet.delete(murderRoom);
-
-  // combine deck into one set to be distributed to game players
+  // ignore murder cards from each set combine deck into one set to be distributed to game players
   var gameDeck = new Set();
-  for (var item in remainingPlayers) {
-    gameDeck.add(item);
-  }
-  for (var item in remainingWeapons) {
-    gameDeck.add(item);
-  }
-  for (var item in remainingRooms) {
-    gameDeck.add(item);
-  }
+
+  playerCardSet.forEach(function (item) {
+    if (item != murderPlayer) {
+      gameDeck.add(item);
+    }
+  });
+
+  weaponCardSet.forEach(function (item) {
+    if (item != murderWeapon) {
+      gameDeck.add(item);
+    }
+  });
+
+  roomCardSet.forEach(function (item) {
+    if (item != murderRoom) {
+      gameDeck.add(item);
+    }
+  });
 
   return gameDeck;
 }
@@ -218,6 +202,28 @@ function shuffleDeck(cardDeck) {
   }
 
   return new Set(deck);
+}
+
+// Create game cards for each client depending on how many clients are connected
+function createClientGameCards(clientNum) {
+  cardMap = new Map();
+  for (var i = 0; i < clientNum; i++) {
+    cardMap.set("client" + i.toString(), new gamecard.GameCard());
+  }
+
+  return cardMap;
+}
+
+// distribute shuffled deck to each client
+function distributeDeck(cardMap, deck) {
+  var clientIndex = 0;
+  for (var card in deck) {
+    if (clientIndex >= cardMap.size - 1) {
+      clientIndex = 0;
+    }
+    cardMap.get("client" + clientIndex.toString()).addGameCard(card);
+    clientIndex++;
+  }
 }
 
 // determine who's turn to go next
