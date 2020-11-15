@@ -2,7 +2,8 @@ import React, { useEffect, useState, useContext, useCallback, useRef } from 'rea
 import clue_board from '../../images/clue_board.jpg';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import { Button, Card, Elevation } from '@blueprintjs/core';
 
 export default function Board() {
   // TODO we can inline this var if we want!
@@ -74,8 +75,11 @@ export default function Board() {
           </Col>
           {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
           <Col md={3}>
-            <br />
-            <div style={{ color: '#CED9E0' }}>
+            <Card
+              interactive={true}
+              elevation={Elevation.TWO}
+              style={{ color: 'rgb(206, 217, 224)', width: 'fit-content', height: 598 }}
+            >
               {/*Dropdown for suggestion or accusation*/}
               <p style={{ textAlign: 'center' }}> Game Card </p>
               <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
@@ -138,9 +142,10 @@ export default function Board() {
                   </select>
                 </div>
               </label>
-            </div>
-            <br />
-            <Button style={{ marginLeft: 70 }}>Submit</Button>
+
+              <br />
+              <Button style={{ marginLeft: 70 }}>Submit</Button>
+            </Card>
           </Col>
         </Row>
       </Container>
