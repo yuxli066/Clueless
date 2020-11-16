@@ -30,7 +30,15 @@ class Room {
   }
 
   getAdjacentHallways() {
-    return this.addAdjacentHallwayList;
+    return this.adjacentHallwayList;
+  }
+
+  hasSecretPassageWay() {
+    if (this.secretPassageWay != undefined) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   setSecretPassageWay(room) {
