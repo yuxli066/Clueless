@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } 
 import clue_board from '../../images/clue_board.jpg';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
+import { Container, Row, Col } from 'react-bootstrap';
+import { Button, Card, Elevation } from '@blueprintjs/core';
 
 export default function Board() {
   // TODO we can inline this var if we want!
@@ -47,25 +49,103 @@ export default function Board() {
   }, [socket, handlePosition, handleResponse, handleId]);
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${clue_board})`,
-        height: 752,
-        width: 792,
-      }}
-    >
-      {Object.entries(positions).map(([key, pos]) => {
-        console.log('key here is: ', key);
-        console.log('pos here is:', pos);
-        return (
-          <Colonel
-            key={key}
-            id={key}
-            initialPos={{ x: pos.x, y: pos.y }}
-            movable={key === id.current}
-          />
-        );
-      })}
+    <div>
+      <Container>
+        <Row>
+          <Col md={9}>
+            <div
+              style={{
+                backgroundImage: `url(${clue_board})`,
+                height: 600,
+                width: 715,
+              }}
+            >
+              {Object.entries(positions).map(([key, pos]) => (
+                <Colonel
+                  key={key}
+                  id={key}
+                  initialPos={{ x: pos.x, y: pos.y }}
+                  movable={key === id.current}
+                />
+              ))}
+            </div>
+          </Col>
+          {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
+          <Col md={3}>
+            <Card
+              interactive={true}
+              elevation={Elevation.TWO}
+              style={{ color: 'rgb(206, 217, 224)', width: 'fit-content', height: 598 }}
+            >
+              {/*Dropdown for suggestion or accusation*/}
+              <p style={{ textAlign: 'center' }}> Game Card </p>
+              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
+                Guess Type
+                <div class="pt-select">
+                  <select>
+                    <option selected>Choose an item...</option>
+                    <option value="1">Suggestion</option>
+                    <option value="2">Accusation</option>
+                  </select>
+                </div>
+              </label>
+              {/*Dropdown for weapon*/}
+              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
+                Weapon
+                <div class="pt-select">
+                  <select>
+                    <option selected>Choose an item...</option>
+                    <option value="1">Candlestick</option>
+                    <option value="2">Dagger/Knife</option>
+                    <option value="3">Lead Pipe</option>
+                    <option value="4">Revolver/Colt</option>
+                    <option value="5">Rope</option>
+                    <option value="6">Spanner/monkey wrench</option>
+                  </select>
+                </div>
+              </label>
+
+              {/*Dropdown for room TODO: This should be current room that the player is in*/}
+              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
+                Room
+                <div class="pt-select">
+                  <select>
+                    <option selected>Choose an item...</option>
+                    <option value="1">Kitchen</option>
+                    <option value="2">Hall</option>
+                    <option value="3">Ballroom</option>
+                    <option value="4">Conservatory</option>
+                    <option value="5">Dining Room</option>
+                    <option value="6">Cellar</option>
+                    <option value="7">Billard Room</option>
+                    <option value="8">Library</option>
+                    <option value="9">Lounge</option>
+                    <option value="9">Study</option>
+                  </select>
+                </div>
+              </label>
+              {/*Dropdown for player*/}
+              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
+                Player
+                <div class="pt-select">
+                  <select>
+                    <option selected>Choose an item...</option>
+                    <option value="1">Miss Scarlett</option>
+                    <option value="2">Professor Plum</option>
+                    <option value="3">Mrs Peacock</option>
+                    <option value="4">Reverend Green</option>
+                    <option value="5">Colonel Mustard</option>
+                    <option value="6">Dr Orchid</option>
+                  </select>
+                </div>
+              </label>
+
+              <br />
+              <Button style={{ marginLeft: 70 }}>Submit</Button>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }
