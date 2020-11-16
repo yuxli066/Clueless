@@ -126,7 +126,7 @@ distributeDeck(gameCardMap, gameDeck);
 
 // player starts at location specified from document
 var playerLocation = new Map();
-playerLocation.set(mrsPeacockPlayer, new coordinate.Coordinate(0, 1));
+playerLocation.set(mrsPeacockPlayer, new coordinate.Coordinate(0, 0));
 playerLocation.set(profPlumPlayer, new coordinate.Coordinate(0, 3));
 playerLocation.set(missScarletPlayer, new coordinate.Coordinate(3, 4));
 playerLocation.set(colMustardPlayer, new coordinate.Coordinate(4, 3));
@@ -261,9 +261,10 @@ function makeSuggestion(playerCard, weaponCard, roomCard) {}
 // update player location
 function updatePlayerLocation(playerMoving, locationMovingTo) {
   if (movingFromRoom(playerMoving, locationMovingTo)) {
-    console.log(playerLocation.get(playerMoving));
     playerLocation.set(playerMoving, hallwayLocation.get(locationMovingTo));
-    console.log(playerLocation.get(playerMoving));
+    console.log(
+      playerMoving.getName() + " has moved to " + locationMovingTo.getName()
+    );
   } else {
     console.log(
       "ERROR: Invalid move: " +
@@ -277,53 +278,58 @@ function updatePlayerLocation(playerMoving, locationMovingTo) {
 //validate move from hallway
 function movingFromRoom(playerMoving, locationMovingTo) {
   var validMove = true;
+  var currentRoom;
+
+  // for player to move to hallway, must have been in another room, find that room
+  roomCardSet.forEach(function (room) {
+    if (
+      roomLocation.get(room).compareCoordinate(playerLocation.get(playerMoving))
+    ) {
+      console.log("Player is in " + room.getName());
+      currentRoom = room;
+    }
+  });
+
   // check if moving to hallway or moving to room
   if (locationMovingTo instanceof hallway.Hallway) {
     debugger;
-    var currentRoom;
 
-    // for player to move to hallway, must have been in another room, find that room
-    roomCardSet.forEach(function (room) {
-      if (
-        roomLocation
-          .get(room)
-          .compareCoordinate(playerLocation.get(playerMoving))
-      ) {
-        console.log("Player is in " + room.getName());
-        currentRoom = room;
-      }
-    });
     if (currentRoom instanceof room.Room) {
       // determine the linked hallways and make sure it is a valid one to move to
-      currentRoom.getAdjacentHallways().forEach(function (linkedHallway) {
-        // check if this hallway is adjascent to room
-        if (locationMovingTo != linkedHallway) {
-          console.log(
-            "ERROR: Must move into hallways adjascent to current room."
-          );
-          validMove = false;
-        }
-        // check if anyone else is in this hallway
-        else {
-          playerCardSet.forEach(function (player) {
-            if (
-              playerLocation
-                .get(player)
-                .compareCoordinate(hallwayLocation.get(locationMovingTo))
-            ) {
-              console.log(
-                "ERROR: Someone is in this hallways, move to empty hallway"
-              );
-              validMove = false;
-            }
-          });
-        }
-      });
+      if (currentRoom.getAdjacentHallways().has(locationMovingTo)) {
+        playerCardSet.forEach(function (player) {
+          if (
+            playerLocation
+              .get(player)
+              .compareCoordinate(hallwayLocation.get(locationMovingTo))
+          ) {
+            console.log(
+              "ERROR: Someone is in this hallways, move to empty hallway"
+            );
+            validMove = false;
+          }
+        });
+      } else {
+        console.log(
+          "ERROR: Must move into hallways adjascent to current room."
+        );
+        validMove = false;
+      }
     } else {
       console.log("ERROR: Must be in a room to move to hallway");
       validMove = false;
     }
   } else if (locationMovingTo instanceof room.Room) {
+    // check if move is to secret passage
+    if (currentRoom.hasSecretPassageWay()) {
+      if (currentRoom.getSecretPassageWay() != locationMovingTo) {
+        console.log("ERROR: Only secret passage room allowed");
+        validMove = false;
+      }
+    } else {
+      console.log("ERROR: Can only move to room when is it secret passage way");
+      validMove = false;
+    }
   }
   return validMove;
 }
@@ -331,4 +337,5 @@ function movingFromRoom(playerMoving, locationMovingTo) {
 // // update weapon location if move from suggestion is made (target)
 // function updateWeaponLocation(weaponCard,axisX,axisY) {}
 
-updatePlayerLocation(mrsPeacockPlayer, hallway2);
+// testing game logic
+updatePlayerLocation(mrsPeacockPlayer, kitchenRoom);
