@@ -1,11 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { useContext } from 'react';
+import React, { useCallback, useEffect, useContext } from 'react';
 import SocketContext from '../../SocketContext';
-import { Button, Position, Toast, Toaster } from '@blueprintjs/core';
+import Board from './Board';
 import { AppToaster } from '../toaster';
+import { Container } from 'react-bootstrap';
 
 function GameController() {
-  const [count, setCount] = useState(0);
   const socket = useContext(SocketContext);
 
   // use of useCallback here allows for these messages to only be registered once to the websocket
@@ -20,16 +19,16 @@ function GameController() {
     return () => {
       socket.off('notification', handleResponse);
     };
-  }, []);
+  }, [socket, handleResponse]);
 
   function showToast() {
     socket.emit('display_notification', 'Testing');
   }
   return (
-    <div>
-      <h1>{count}</h1>
+    <Container fluid className="innerContainer">
+      <Board />
       <button onClick={showToast}>Display Message</button>
-    </div>
+    </Container>
   );
 }
 

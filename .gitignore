@@ -9,15 +9,11 @@ yarn-debug.log*
 yarn-error.log*
 .idea
 .vscode/
+.vs/
 .env
 
-# yarn 2.0
-.yarn/*
-!.yarn/cache
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
+# since we're using yarn we should avoid checking in npm's lockfile
+package-lock.json
 
-
-
+# for now, remove yarn 2's directory so that we don't keep accidentally committing them
+.yarn/
