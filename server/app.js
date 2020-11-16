@@ -40,6 +40,11 @@ io.on('connect', (socket) => {
     socket.emit('response', 'Hello from server!');
   });
 
+  socket.on('display_notification', (message) => {
+    console.log('client said:', message);
+    socket.emit('notification', message);
+  });
+
   socket.on('greetOtherClients', (greeting) => {
     console.log('client said:', greeting);
     io.emit('broadcast', 'Hello all clients from server!');
