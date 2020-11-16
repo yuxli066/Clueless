@@ -248,3 +248,13 @@ footer.footer {
   padding-bottom: 5rem;
   margin-bottom: 2em;
 }
+
+.board {
+  width: 850px;
+  height: 600px;
+  z-index: -1;
+}
+
+.character {
+  z-index: 1;
+}

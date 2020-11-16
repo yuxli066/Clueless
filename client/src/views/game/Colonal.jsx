@@ -23,7 +23,7 @@ export default function Colonel({ id, initialPos, movable }) {
 
   return (
     <Draggable position={pos} onStop={handleOnStop}>
-      <img src={colonel_mustard} alt="colonel mustard" />
+      <img src={colonel_mustard} alt="colonel mustard" className="character" />
     </Draggable>
   );
 }

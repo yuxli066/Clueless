@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } from 'react';
-import clue_board from '../../images/clue_board.jpg';
+import clue_board from '../../images/custom_game_board.png';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -53,22 +53,10 @@ export default function Board() {
       <Container>
         <Row>
           <Col md={9}>
-            <div
-              style={{
-                backgroundImage: `url(${clue_board})`,
-                height: 600,
-                width: 715,
-              }}
-            >
-              {Object.entries(positions).map(([key, pos]) => (
-                <Colonel
-                  key={key}
-                  id={key}
-                  initialPos={{ x: pos.x, y: pos.y }}
-                  movable={key === id.current}
-                />
-              ))}
-            </div>
+            <figure>
+              <img src={clue_board} className="board" />
+              <Colonel />
+            </figure>
           </Col>
           {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
           <Col md={3}>
