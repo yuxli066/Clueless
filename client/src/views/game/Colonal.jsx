@@ -13,7 +13,6 @@ export default function Colonel({ id, initialPos, movable }) {
   }, [initialPos]);
 
   function handleOnStop(e, pos) {
-    console.log(movable);
     if (movable) {
       const { x, y } = pos;
       setPos({ x, y });
