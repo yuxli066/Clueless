@@ -3,12 +3,11 @@
  */
 
 class Room {
-  secretPassageWay = undefined;
-  adjacentHallwayList = new Set();
-
   constructor(name) {
     this.name = name;
   }
+  secretPassageWay = undefined;
+  adjacentHallwayList = new Set();
 
   // return name of room
   getName() {
@@ -28,6 +27,10 @@ class Room {
     for (var i = 0; i < hallwayArray.length; i++) {
       this.adjacentHallwayList.add(hallwayArray[i]);
     }
+  }
+
+  getAdjacentHallways() {
+    return this.addAdjacentHallwayList;
   }
 
   setSecretPassageWay(room) {
