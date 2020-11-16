@@ -7,6 +7,10 @@ class Hallway {
     this.num = num;
   }
 
+  getName() {
+    return "Hallway " + this.num.toString();
+  }
+
   // return name of Hallway
   getHallwayNum() {
     return this.num;
