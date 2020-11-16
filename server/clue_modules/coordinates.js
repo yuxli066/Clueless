@@ -10,28 +10,40 @@ class Coordinate {
 
   // return x axis
   getAxisX() {
-    return axisX;
+    return this.axisX;
   }
 
   // return y axis
   getAxisY() {
-    return axisXY;
+    return this.axisY;
   }
 
   // set x axis value
   setAxisX(xValue) {
-    axisX = xValue;
+    this.axisX = xValue;
   }
 
   // set y axis value
   setAxisY(yValue) {
-    axisY = yValue;
+    this.axisY = yValue;
   }
 
   // set both axis values in the same method
   setCoordinate(xValue, yValue) {
-    axisX = xValue;
-    axisY = yValue;
+    this.axisX = xValue;
+    this.axisY = yValue;
+  }
+
+  // compare coordinate objects
+  compareCoordinate(otherCoordinate) {
+    if (
+      this.axisX === otherCoordinate.getAxisX() &&
+      this.axisY === otherCoordinate.getAxisY()
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
