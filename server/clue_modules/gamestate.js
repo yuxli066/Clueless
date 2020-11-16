@@ -261,7 +261,11 @@ function makeSuggestion(playerCard, weaponCard, roomCard) {}
 // update player location
 function updatePlayerLocation(playerMoving, locationMovingTo) {
   if (movingFromRoom(playerMoving, locationMovingTo)) {
-    playerLocation.set(playerMoving, hallwayLocation.get(locationMovingTo));
+    if (locationMovingTo instanceof hallway.Hallway) {
+      playerLocation.set(playerMoving, hallwayLocation.get(locationMovingTo));
+    } else {
+      playerLocation.set(playerMoving, roomLocation.get(locationMovingTo));
+    }
     console.log(
       playerMoving.getName() + " has moved to " + locationMovingTo.getName()
     );
@@ -292,8 +296,6 @@ function movingFromRoom(playerMoving, locationMovingTo) {
 
   // check if moving to hallway or moving to room
   if (locationMovingTo instanceof hallway.Hallway) {
-    debugger;
-
     if (currentRoom instanceof room.Room) {
       // determine the linked hallways and make sure it is a valid one to move to
       if (currentRoom.getAdjacentHallways().has(locationMovingTo)) {
@@ -334,8 +336,20 @@ function movingFromRoom(playerMoving, locationMovingTo) {
   return validMove;
 }
 
+function movingFromHallway(playerMoving, locationMovingTo) {
+  var validMove = true;
+  var currentRoom;
+
+  // determine what hallway player is in
+  hallwayLocation.forEach(function (hallwayCoordinate) {
+    console.log(hallwayCoordinate);
+  });
+}
+
 // // update weapon location if move from suggestion is made (target)
 // function updateWeaponLocation(weaponCard,axisX,axisY) {}
 
 // testing game logic
-updatePlayerLocation(mrsPeacockPlayer, kitchenRoom);
+updatePlayerLocation(mrsPeacockPlayer, loungeRoom);
+//debugger;
+//updatePlayerLocation(mrsPeacockPlayer, conservatoryRoom);
