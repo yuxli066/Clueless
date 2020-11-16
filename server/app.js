@@ -21,6 +21,7 @@ app.use('/users', usersRouter);
 
 const io = socketIo();
 
+// FIXME this is a dangerous global that we should fix!
 const position = {};
 
 // TODO we should move the socket handling code to a new file!
@@ -29,6 +30,7 @@ io.on('connect', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('disconnected!');
+    delete position[socket.id];
   });
 
   socket.on('greet', (greeting) => {
@@ -42,11 +44,21 @@ io.on('connect', (socket) => {
     io.emit('broadcast', 'Hello all clients from server!');
   });
 
-  socket.on('playerMovement', (movementData) => {
-    console.log('Made it to the server');
+  socket.on('newPlayer', (initialLocation) => {
     if (!position[socket.id]) {
       position[socket.id] = {};
     }
+    position[socket.id].x = initialLocation.x;
+    position[socket.id].y = initialLocation.y;
+
+    // send to this client their id
+    socket.emit('clientId', socket.id);
+
+    // send positions to all clients so they get the new player
+    io.emit('playerMoved', position);
+  });
+
+  socket.on('playerMovement', (movementData) => {
     position[socket.id].x = movementData.x;
     position[socket.id].y = movementData.y;
     // emit a message to all players about the player that moved
