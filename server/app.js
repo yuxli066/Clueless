@@ -50,6 +50,8 @@ io.on('connect', (socket) => {
   // using rooms as opposed to namespaces for now so that we minimize the back-and forth between socket and client
   // (namespaces would mean the server creating the namespace and then the client connecting to the namespace, so an extra trip)
   socket.on('join', (room = undefined) => {
+    // FIXME there's a ton in here that can be cleaned and optimized!
+
     let joinedRoom = room;
     if (room) {
       console.log('client joining game room:', room);
@@ -69,6 +71,8 @@ io.on('connect', (socket) => {
       socket.join(roomToJoin);
       joinedRoom = roomToJoin;
     }
+
+    // TODO do we want to send to the client the room they just joined?
 
     if (!roomMap.has(joinedRoom)) {
       // TODO create a new map for the clients and character names
@@ -90,12 +94,31 @@ io.on('connect', (socket) => {
       playerMap.set(socket.id, characterName);
     }
 
+    // TODO can we get the player map sooner than here?
+    const playerMap = roomMap.get(joinedRoom);
+
+    // FIXME consider moving playerMap to just a json object? (if we want to keep lobbies around then it might make more sense to keep the ES6 map)
+    let serializedPlayerMap = [];
+    for ([key, value] of playerMap) {
+      serializedPlayerMap.push({ id: key, name: value });
+    }
+
     // TODO broadcast that the client joined the room!
+    io.in(joinedRoom).emit('playerList', serializedPlayerMap);
   });
 
+  // TODO do we want to move this to the client not having to say they left the room? (assumes clients can only be in one room at a time!)
   socket.on('leave', (room) => {
     console.log('client leaving game room:', room);
     socket.leave(room);
+  });
+
+  socket.on('requestGameStart', (room) => {
+    // TODO we need to check to make sure this works!
+    console.log('starting the game!');
+    console.log(room);
+    console.log(socket.rooms);
+    io.in(room).emit('startGame');
   });
 
   socket.on('disconnecting', () => {
@@ -108,6 +131,8 @@ io.on('connect', (socket) => {
       // this way the character can be reused
       console.log('removing player from room:', room);
       roomMap.get(room)?.delete(socket.id);
+
+      // TODO update the remaining clients!
     });
   });
 
