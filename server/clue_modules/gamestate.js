@@ -126,7 +126,7 @@ distributeDeck(gameCardMap, gameDeck);
 
 // player starts at location specified from document
 var playerLocation = new Map();
-playerLocation.set(mrsPeacockPlayer, new coordinate.Coordinate(0, 0));
+playerLocation.set(mrsPeacockPlayer, new coordinate.Coordinate(0, 1));
 playerLocation.set(profPlumPlayer, new coordinate.Coordinate(0, 3));
 playerLocation.set(missScarletPlayer, new coordinate.Coordinate(3, 4));
 playerLocation.set(colMustardPlayer, new coordinate.Coordinate(4, 3));
@@ -289,7 +289,6 @@ function movingFromRoom(playerMoving, locationMovingTo) {
     if (
       roomLocation.get(room).compareCoordinate(playerLocation.get(playerMoving))
     ) {
-      console.log("Player is in " + room.getName());
       currentRoom = room;
     }
   });
@@ -323,14 +322,18 @@ function movingFromRoom(playerMoving, locationMovingTo) {
     }
   } else if (locationMovingTo instanceof room.Room) {
     // check if move is to secret passage
-    if (currentRoom.hasSecretPassageWay()) {
-      if (currentRoom.getSecretPassageWay() != locationMovingTo) {
-        console.log("ERROR: Only secret passage room allowed");
+    if (currentRoom instanceof room.Room) {
+      if (currentRoom.hasSecretPassageWay()) {
+        if (currentRoom.getSecretPassageWay() != locationMovingTo) {
+          console.log("ERROR: Only secret passage room allowed");
+          validMove = false;
+        }
+      } else {
+        console.log(
+          "ERROR: Can only move to room when is it secret passage way"
+        );
         validMove = false;
       }
-    } else {
-      console.log("ERROR: Can only move to room when is it secret passage way");
-      validMove = false;
     }
   }
   return validMove;
@@ -350,6 +353,6 @@ function movingFromHallway(playerMoving, locationMovingTo) {
 // function updateWeaponLocation(weaponCard,axisX,axisY) {}
 
 // testing game logic
-updatePlayerLocation(mrsPeacockPlayer, loungeRoom);
+updatePlayerLocation(mrsPeacockPlayer, conservatoryRoom);
 //debugger;
-//updatePlayerLocation(mrsPeacockPlayer, conservatoryRoom);
+updatePlayerLocation(mrsPeacockPlayer, loungeRoom);
