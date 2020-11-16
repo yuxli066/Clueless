@@ -103,7 +103,7 @@ var roomCardSet = new Set([
   loungeRoom,
 ]);
 var validatedMove = false;
-var currentPlayer = undefined; // define current client character
+var currentPlayer = colMustardPlayer; // define current client character
 var nextPlayer = getNextPlayer(currentPlayer);
 var murderPlayer = randomCard(playerCardSet); // choose random card to select murder character
 var murderWeapon = randomCard(weaponCardSet); // choose random card to select murder weapon
@@ -253,16 +253,82 @@ function getNextPlayer(currentPlayer) {
 }
 
 // validate accusation made by current player
-function validateAccusation(playerCard, weaponCard, roomCard) {}
+function makeAccusation(playerCard, weaponCard, roomCard) {}
 
 // validate suggestion made by current player
-function validateSuggestion(playerCard, weaponCard, roomCard) {}
+function makeSuggestion(playerCard, weaponCard, roomCard) {}
 
-//valid player move, move if it is valid
-function validatePlayerMove() {}
+// update player location
+function updatePlayerLocation(playerMoving, locationMovingTo) {
+  if (movingFromRoom(playerMoving, locationMovingTo)) {
+    console.log(playerLocation.get(playerMoving));
+    playerLocation.set(playerMoving, hallwayLocation.get(locationMovingTo));
+    console.log(playerLocation.get(playerMoving));
+  } else {
+    console.log(
+      "ERROR: Invalid move: " +
+        playerMoving.getName() +
+        " cannot move to " +
+        locationMovingTo.getName()
+    );
+  }
+}
 
-// update player location should move be valid
-function updatePlayerLocation(playerMove) {}
+//validate move from hallway
+function movingFromRoom(playerMoving, locationMovingTo) {
+  var validMove = true;
+  // check if moving to hallway or moving to room
+  if (locationMovingTo instanceof hallway.Hallway) {
+    debugger;
+    var currentRoom;
 
-// update weapon location if move from suggestion is made
-function updateWeaponLocation(weaponMove) {}
+    // for player to move to hallway, must have been in another room, find that room
+    roomCardSet.forEach(function (room) {
+      if (
+        roomLocation
+          .get(room)
+          .compareCoordinate(playerLocation.get(playerMoving))
+      ) {
+        console.log("Player is in " + room.getName());
+        currentRoom = room;
+      }
+    });
+    if (currentRoom instanceof room.Room) {
+      // determine the linked hallways and make sure it is a valid one to move to
+      currentRoom.getAdjacentHallways().forEach(function (linkedHallway) {
+        // check if this hallway is adjascent to room
+        if (locationMovingTo != linkedHallway) {
+          console.log(
+            "ERROR: Must move into hallways adjascent to current room."
+          );
+          validMove = false;
+        }
+        // check if anyone else is in this hallway
+        else {
+          playerCardSet.forEach(function (player) {
+            if (
+              playerLocation
+                .get(player)
+                .compareCoordinate(hallwayLocation.get(locationMovingTo))
+            ) {
+              console.log(
+                "ERROR: Someone is in this hallways, move to empty hallway"
+              );
+              validMove = false;
+            }
+          });
+        }
+      });
+    } else {
+      console.log("ERROR: Must be in a room to move to hallway");
+      validMove = false;
+    }
+  } else if (locationMovingTo instanceof room.Room) {
+  }
+  return validMove;
+}
+
+// // update weapon location if move from suggestion is made (target)
+// function updateWeaponLocation(weaponCard,axisX,axisY) {}
+
+updatePlayerLocation(mrsPeacockPlayer, hallway2);
