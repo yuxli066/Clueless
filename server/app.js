@@ -31,6 +31,7 @@ io.on('connect', (socket) => {
   socket.on('disconnect', () => {
     console.log('disconnected!');
     delete position[socket.id];
+    io.emit('playerMoved', position);
   });
 
   socket.on('greet', (greeting) => {
