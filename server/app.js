@@ -21,6 +21,7 @@ app.use('/users', usersRouter);
 
 const io = socketIo();
 
+// FIXME this is a dangerous global that we should fix!
 const position = {};
 
 // FIXME I think this is a dangerous global! We need to make this safer and able to synchronize read/writes!
@@ -40,6 +41,8 @@ io.on('connect', (socket) => {
   console.log(`new websocket client with id ${socket.id} connected!`);
 
   socket.on('disconnect', () => {
+    delete position[socket.id];
+    io.emit('playerMoved', position);
     console.log(`client ${socket.id} disconnected!`);
   });
 
@@ -114,16 +117,31 @@ io.on('connect', (socket) => {
     socket.emit('response', 'Hello from server!');
   });
 
+  socket.on('display_notification', (message) => {
+    console.log('client said:', message);
+    socket.emit('notification', message);
+  });
+
   socket.on('greetOtherClients', (greeting) => {
     console.log('client said:', greeting);
     io.emit('broadcast', 'Hello all clients from server!');
   });
 
-  socket.on('playerMovement', (movementData) => {
-    console.log('Made it to the server');
+  socket.on('newPlayer', (initialLocation) => {
     if (!position[socket.id]) {
       position[socket.id] = {};
     }
+    position[socket.id].x = initialLocation.x;
+    position[socket.id].y = initialLocation.y;
+
+    // send to this client their id
+    socket.emit('clientId', socket.id);
+
+    // send positions to all clients so they get the new player
+    io.emit('playerMoved', position);
+  });
+
+  socket.on('playerMovement', (movementData) => {
     position[socket.id].x = movementData.x;
     position[socket.id].y = movementData.y;
     // emit a message to all players about the player that moved
