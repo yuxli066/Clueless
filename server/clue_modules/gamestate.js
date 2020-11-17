@@ -3,28 +3,28 @@
  */
 
 // Import list
-var player = require("./player");
-var room = require("./room");
-var weapon = require("./weapon");
-var hallway = require("./hallway");
-var coordinate = require("./coordinates");
-var gamecard = require("./gamecard");
+var player = require('./player');
+var room = require('./room');
+var weapon = require('./weapon');
+var hallway = require('./hallway');
+var coordinate = require('./coordinates');
+var gamecard = require('./gamecard');
 
 // Instantiate Players
-var colMustardPlayer = new player.Player("Colonel Mustard");
-var missScarletPlayer = new player.Player("Miss Scarlet");
-var profPlumPlayer = new player.Player("Prof. Plum");
-var mrsPeacockPlayer = new player.Player("Mrs Peacock");
-var mrGreenPlayer = new player.Player("Mr. Green");
-var mrsWhitePlayer = new player.Player("Mrs. White");
+var colMustardPlayer = new player.Player('Colonel Mustard');
+var missScarletPlayer = new player.Player('Miss Scarlet');
+var profPlumPlayer = new player.Player('Prof. Plum');
+var mrsPeacockPlayer = new player.Player('Mrs. Peacock');
+var mrGreenPlayer = new player.Player('Mr. Green');
+var mrsWhitePlayer = new player.Player('Mrs. White');
 
 // Instantiate Weapons
-var knifeWeapon = new weapon.Weapon("Knife");
-var ropeWeapon = new weapon.Weapon("Rope");
-var leadPipeWeapon = new weapon.Weapon("Lead Pipe");
-var wrenchWeapon = new weapon.Weapon("Wrench");
-var candleStickWeapon = new weapon.Weapon("Candle Stick");
-var revolverWeapon = new weapon.Weapon("Revolver");
+var knifeWeapon = new weapon.Weapon('Knife');
+var ropeWeapon = new weapon.Weapon('Rope');
+var leadPipeWeapon = new weapon.Weapon('Lead Pipe');
+var wrenchWeapon = new weapon.Weapon('Wrench');
+var candleStickWeapon = new weapon.Weapon('Candle Stick');
+var revolverWeapon = new weapon.Weapon('Revolver');
 
 // Instantiate Hallways
 var hallway1 = new hallway.Hallway(1);
@@ -43,34 +43,34 @@ var hallway12 = new hallway.Hallway(12);
 // Instantiate Rooms
 // link adjacent hallways
 // set secret passage way where applicable
-var studyRoom = new room.Room("Study");
+var studyRoom = new room.Room('Study');
 studyRoom.addAdjacentHallways([hallway2, hallway5]);
 studyRoom.setSecretPassageWay(kitchenRoom);
 
-var hallRoom = new room.Room("Hall");
+var hallRoom = new room.Room('Hall');
 hallRoom.addAdjacentHallways([hallway5, hallway7, hallway10]);
 
-var loungeRoom = new room.Room("Lounge");
+var loungeRoom = new room.Room('Lounge');
 loungeRoom.addAdjacentHallways([hallway10, hallway12]);
 loungeRoom.setSecretPassageWay(conservatoryRoom);
 
-var libraryRoom = new room.Room("Library");
+var libraryRoom = new room.Room('Library');
 libraryRoom.addAdjacentHallways([hallway1, hallway2, hallway4]);
 
-var billiardsRoom = new room.Room("Billiards");
+var billiardsRoom = new room.Room('Billiards');
 billiardsRoom.addAdjacentHallways([hallway4, hallway6, hallway7, hallway9]);
 
-var diningRoom = new room.Room("Dining");
+var diningRoom = new room.Room('Dining');
 diningRoom.addAdjacentHallways([hallway9, hallway11, hallway12]);
 
-var conservatoryRoom = new room.Room("Conservatory");
+var conservatoryRoom = new room.Room('Conservatory');
 conservatoryRoom.addAdjacentHallways([hallway1, hallway3]);
 conservatoryRoom.setSecretPassageWay(loungeRoom);
 
-var ballroomRoom = new room.Room("Ballroom");
+var ballroomRoom = new room.Room('Ballroom');
 ballroomRoom.addAdjacentHallways([hallway3, hallway6, hallway8]);
 
-var kitchenRoom = new room.Room("Kitchen");
+var kitchenRoom = new room.Room('Kitchen');
 kitchenRoom.addAdjacentHallways([hallway8, hallway11]);
 kitchenRoom.setSecretPassageWay(studyRoom);
 
@@ -103,19 +103,34 @@ var roomCardSet = new Set([
   loungeRoom,
 ]);
 
+var hallwayCardSet = new Set([
+  hallway1,
+  hallway2,
+  hallway3,
+  hallway4,
+  hallway5,
+  hallway6,
+  hallway7,
+  hallway8,
+  hallway9,
+  hallway10,
+  hallway11,
+  hallway12,
+]);
+
 var validatedMove = false;
 var currentPlayer = colMustardPlayer; // define current client character
 var nextPlayer = getNextPlayer(currentPlayer);
 var murderPlayer = randomCard(playerCardSet); // choose random card to select murder character
 var murderWeapon = randomCard(weaponCardSet); // choose random card to select murder weapon
 var murderRoom = randomCard(roomCardSet); // choose random card to select murder room
-var gameDeck = getGameDeck(murderPlayer, murderWeapon, murderRoom); // cards remaining in the game to be distributed
+var preGameDeck = getGameDeck(murderPlayer, murderWeapon, murderRoom); // cards remaining in the game to be distributed
 
 // shuffle deck
-gameDeck = shuffleDeck(gameDeck); // shuffle the deck to randomize order they get sent
+var gameDeck = shuffleDeck(preGameDeck); // shuffle the deck to randomize order they get sent
 
 // Client Game Cards
-var numOfClients = 3; // TODO determine how we update this
+var numOfClients = 6; // TODO determine how we update this
 var gameCardMap = createClientGameCards(numOfClients);
 
 // distibute cards to each of the client's gamecard set
@@ -210,7 +225,7 @@ function shuffleDeck(cardDeck) {
 function createClientGameCards(clientNum) {
   cardMap = new Map();
   for (var i = 0; i < clientNum; i++) {
-    cardMap.set("client" + i.toString(), new gamecard.GameCard());
+    cardMap.set('client' + i.toString(), new gamecard.GameCard());
   }
 
   return cardMap;
@@ -224,7 +239,7 @@ function distributeDeck(cardMap, deck) {
     if (clientIndex >= cardMap.size) {
       clientIndex = 0;
     }
-    cardMap.get("client" + clientIndex.toString()).addGameCard(card);
+    cardMap.get('client' + clientIndex.toString()).addGameCard(card);
     clientIndex++;
   });
 }
@@ -267,15 +282,13 @@ function moveFromRoom(playerMoving, locationMovingTo) {
     } else {
       playerLocation.set(playerMoving, roomLocation.get(locationMovingTo));
     }
-    console.log(
-      playerMoving.getName() + " has moved to " + locationMovingTo.getName()
-    );
+    console.log(playerMoving.getName() + ' has moved to ' + locationMovingTo.getName());
   } else {
     console.log(
-      "ERROR: Invalid move: " +
+      'ERROR: Invalid move: ' +
         playerMoving.getName() +
-        " cannot move to " +
-        locationMovingTo.getName()
+        ' cannot move to ' +
+        locationMovingTo.getName(),
     );
   }
 }
@@ -284,15 +297,13 @@ function moveFromRoom(playerMoving, locationMovingTo) {
 function moveFromHallway(playerMoving, locationMovingTo) {
   if (validateHallwayMove(playerMoving, locationMovingTo)) {
     playerLocation.set(playerMoving, roomLocation.get(locationMovingTo));
-    console.log(
-      playerMoving.getName() + " has moved to " + locationMovingTo.getName()
-    );
+    console.log(playerMoving.getName() + ' has moved to ' + locationMovingTo.getName());
   } else {
     console.log(
-      "ERROR: Invalid move: " +
+      'ERROR: Invalid move: ' +
         playerMoving.getName() +
-        " cannot move to " +
-        locationMovingTo.getName()
+        ' cannot move to ' +
+        locationMovingTo.getName(),
     );
   }
 }
@@ -304,15 +315,13 @@ function validateRoomMove(playerMoving, locationMovingTo) {
 
   // for player to move to hallway, must have been in another room, find that room
   roomCardSet.forEach(function (room) {
-    if (
-      roomLocation.get(room).compareCoordinate(playerLocation.get(playerMoving))
-    ) {
+    if (roomLocation.get(room).compareCoordinate(playerLocation.get(playerMoving))) {
       currentRoom = room;
     }
   });
 
   if (!roomCardSet.has(currentRoom)) {
-    console.log("ERROR: Move only valid if you are in a room");
+    console.log('ERROR: Move only valid if you are in a room');
     validMove = false;
   }
 
@@ -322,25 +331,17 @@ function validateRoomMove(playerMoving, locationMovingTo) {
       // determine the linked hallways and make sure it is a valid one to move to
       if (currentRoom.getAdjacentHallways().has(locationMovingTo)) {
         playerCardSet.forEach(function (player) {
-          if (
-            playerLocation
-              .get(player)
-              .compareCoordinate(hallwayLocation.get(locationMovingTo))
-          ) {
-            console.log(
-              "ERROR: Someone is in this hallways, move to empty hallway"
-            );
+          if (playerLocation.get(player).compareCoordinate(hallwayLocation.get(locationMovingTo))) {
+            console.log('ERROR: Someone is in this hallways, move to empty hallway');
             validMove = false;
           }
         });
       } else {
-        console.log(
-          "ERROR: Must move into hallways adjascent to current room."
-        );
+        console.log('ERROR: Must move into hallways adjascent to current room.');
         validMove = false;
       }
     } else {
-      console.log("ERROR: Must be in a room to move to hallway");
+      console.log('ERROR: Must be in a room to move to hallway');
       validMove = false;
     }
   } else if (locationMovingTo instanceof room.Room) {
@@ -348,13 +349,11 @@ function validateRoomMove(playerMoving, locationMovingTo) {
     if (currentRoom instanceof room.Room) {
       if (currentRoom.hasSecretPassageWay()) {
         if (currentRoom.getSecretPassageWay() != locationMovingTo) {
-          console.log("ERROR: Only secret passage room allowed");
+          console.log('ERROR: Only secret passage room allowed');
           validMove = false;
         }
       } else {
-        console.log(
-          "ERROR: Can only move to room when is it secret passage way"
-        );
+        console.log('ERROR: Can only move to room when is it secret passage way');
         validMove = false;
       }
     }
@@ -366,47 +365,93 @@ function validateHallwayMove(playerMoving, locationMovingTo) {
   var validMove = true;
   var currentHallway;
 
-  // determine what hallway player is in
-  for (var i = 0; i < hallwayLocation.size; i++) {
-    currentHallway = hallwayLocation.keys().next().value;
-
-    if (
-      hallwayLocation
-        .get(currentHallway)
-        .compareCoordinate(playerLocation.get(playerMoving))
-    ) {
-      // break when we find the right hallway
-      break;
-    } else {
-      currentHallway = undefined;
+  hallwayCardSet.forEach(function (hallway) {
+    if (hallwayLocation.get(hallway).compareCoordinate(playerLocation.get(playerMoving))) {
+      currentHallway = hallway;
     }
-  }
-
-  if (currentHallway === undefined) {
-    console.log("ERROR: Move only valid if you are in a hallway");
+  });
+  if (!hallwayCardSet.has(currentHallway)) {
+    console.log('ERROR: Move only valid if you are in a room');
     validMove = false;
-    return validMove;
   }
 
   if (locationMovingTo instanceof room.Room) {
     if (!locationMovingTo.getAdjacentHallways().has(currentHallway)) {
-      console.log(
-        "ERROR: Can only move to a room that is adjascent to hallway"
-      );
+      console.log('ERROR: Can only move to a room that is adjascent to hallway');
       validMove = false;
     }
   } else {
-    console.log("ERROR: Can only move into room from hallway");
+    console.log('ERROR: Can only move into room from hallway');
     validMove = false;
   }
 
   return validMove;
 }
 
+/**
+ * for demo purposes only:
+
 // // update weapon location if move from suggestion is made (target)
 // function updateWeaponLocation(weaponCard,axisX,axisY) {}
+debugger;
+// show murder objects
+console.log('Clue-Less Game Start\n');
+console.log("Number of Players:"+numOfClients.toString());
+console.log("Murder Character: "+murderPlayer.getName());
+console.log("Murder Room: "+murderRoom.getName());
+console.log("Murder Weapon: "+murderWeapon.getName());
 
-// testing game logic
+console.log("Game Deck");
+preGameDeck.forEach(function(item)
+{
+  console.log("Game Card: "+item.getName());
+});
+console.log("\nShuffled Deck");
+gameDeck.forEach(function(item)
+{
+  console.log("Game Card: "+item.getName());
+});
+console.log("\n");
+console.log("Distribute Deck");
+
+var clientNum = 0;
+gameCardMap.forEach(function(client){
+  console.log('Client '+clientNum.toString()+" Game Cards:");
+  client.getGameCardList().forEach(function(card){
+    console.log("    - "+card.getName());
+  });
+  clientNum++;
+});
+
+console.log("\n");
+// testing game logic as message from the server are expected to be received
+// Showing game play:
+
 moveFromHallway(mrsPeacockPlayer, conservatoryRoom);
-moveFromRoom(mrsPeacockPlayer, loungeRoom);
-moveFromRoom(mrsPeacockPlayer, hallway12);
+// mrs Peacock will make an accusation
+console.log(mrsPeacockPlayer.getName()+" has made an suggestion.\n");
+
+// mr.green's move from hallway 3 to ballroom
+moveFromHallway(mrGreenPlayer, ballroomRoom);
+// mr green makes an accusation
+console.log(mrGreenPlayer.getName()+" has made an suggestion.\n");
+
+//miss scarlet's move from hallway 10 to hall
+moveFromHallway(missScarletPlayer, hallRoom);
+// miss scarlet makes an accusation
+console.log(missScarletPlayer.getName()+" has made an suggestion.\n");
+
+//mrs peacock move from conservatory room to lounge via secret passageway
+moveFromRoom(mrsPeacockPlayer,loungeRoom);
+// mrs peacock makes an accusation
+console.log(mrsPeacockPlayer.getName()+" has made an suggestion.\n");
+
+//demo error handling
+moveFromRoom(mrsPeacockPlayer,kitchenRoom);
+// invalid move go again
+console.log("\n");
+
+moveFromRoom(mrsPeacockPlayer,hallway12);
+//invalid move 
+console.log("\n");
+ */
