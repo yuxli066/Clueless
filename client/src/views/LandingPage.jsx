@@ -87,7 +87,7 @@ function LandingPage() {
           </div>
         </div>
         <div className="d-flex flex-row row">
-          <Link to="/game">
+          <Link to="/0/lobby">
             <div
               className="play-button"
               data-aos="zoom-in"
