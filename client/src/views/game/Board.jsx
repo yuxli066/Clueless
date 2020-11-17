@@ -61,6 +61,7 @@ export default function Board() {
           {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
           <Col md={3}>
             <Card
+              className="card"
               interactive={true}
               elevation={Elevation.TWO}
               style={{ color: 'rgb(206, 217, 224)', width: 'fit-content', height: 598 }}
