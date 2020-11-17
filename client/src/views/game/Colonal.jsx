@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import colonel_mustard from '../../images/colonel_mustard.jpg';
+import not_colonel_mustard from '../../images/colonel_mustard_Not_You.jpg';
 import Draggable from 'react-draggable';
 import SocketContext from '../../SocketContext';
 
@@ -23,7 +24,7 @@ export default function Colonel({ id, initialPos, movable }) {
 
   return (
     <Draggable position={pos} onStop={handleOnStop}>
-      <img src={colonel_mustard} alt="colonel mustard" />
+      <img src={movable ? colonel_mustard : not_colonel_mustard} alt="colonel mustard" />
     </Draggable>
   );
 }
