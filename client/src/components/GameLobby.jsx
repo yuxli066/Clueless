@@ -52,7 +52,7 @@ export default function GameLobby() {
         </ListGroup>
         <Card.Text>Get 3-5 friends to join this lobby to start!</Card.Text>
         <Link
-          disabled={connectedPlayers.length >= 4 && connectedPlayers.length <= 6}
+          disabled={connectedPlayers.length < 4 || connectedPlayers.length > 6}
           component={StartGameButton}
           to="/0/game"
         >
