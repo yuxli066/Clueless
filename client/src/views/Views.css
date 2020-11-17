@@ -248,3 +248,20 @@ footer.footer {
   padding-bottom: 5rem;
   margin-bottom: 2em;
 }
+
+.board {
+  width: 100%;
+  min-height: 600px;
+  z-index: -1;
+}
+
+card {
+  display: block;
+  z-index: 1;
+}
+
+.character {
+  position: absolute;
+  left: 0;
+  bottom: 360px;
+}

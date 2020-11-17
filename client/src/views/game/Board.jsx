@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } from 'react';
-import clue_board from '../../images/clue_board.jpg';
+import clue_board from '../../images/custom_game_board.png';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
 import { AppToaster } from '../toaster';
@@ -69,10 +69,13 @@ export default function Board() {
             <div
               style={{
                 backgroundImage: `url(${clue_board})`,
-                height: 600,
-                width: 715,
+                backgroundSize: '100% 100%',
+                backgroundRepeat: 'no-repeat',
+                width: '100%',
+                height: '100%',
               }}
             >
+              {/* <img src={clue_board} className="board" /> */}
               {Object.entries(positions).map(([key, pos]) => (
                 <Colonel
                   key={key}
@@ -86,6 +89,7 @@ export default function Board() {
           {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
           <Col md={3}>
             <Card
+              className="card"
               interactive={true}
               elevation={Elevation.TWO}
               style={{ color: 'rgb(206, 217, 224)', width: 'fit-content', height: 598 }}
@@ -154,9 +158,7 @@ export default function Board() {
               </label>
 
               <br />
-              <Button style={{ marginLeft: 70 }} onClick={showToast}>
-                Submit
-              </Button>
+              <Button onClick={showToast}>Submit</Button>
             </Card>
           </Col>
         </Row>
