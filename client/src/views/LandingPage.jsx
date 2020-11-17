@@ -1,12 +1,12 @@
-import React from "react";
-import "./Views.css";
-import "../App.css";
-import Container from "react-bootstrap/cjs/Container";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { Link } from "react-router-dom";
-import cluelessBg from "../images/clueless_bg.jpg";
-import colMustard from "../images/c_mustard.jpg";
+import React from 'react';
+import './Views.css';
+import '../App.css';
+import Container from 'react-bootstrap/cjs/Container';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { Link } from 'react-router-dom';
+import cluelessBg from '../images/clueless_bg.jpg';
+import colMustard from '../images/c_mustard.jpg';
 
 AOS.init();
 
@@ -54,45 +54,32 @@ function LandingPage() {
         </div>
         <div className="d-flex flex-row row">
           <div className="flex-column col-lg-12 col-md-12 col-sm-12">
-            <div
-              className="landing-content"
-              data-aos="zoom-in"
-              data-aos-delay="200"
-            >
+            <div className="landing-content" data-aos="zoom-in" data-aos-delay="200">
               <p>
-                Mr. Boddy, a 50 year old businessman from Baltimore, Maryland,
-                has been officially declared dead 1 day ago on August 27th,
-                2020. The cause of his death is as-yet-unknown, but forensic
-                evidence from labs strongly indicate that a murder has taken
-                place. On the day of his death, Mr Boddy hosted a gathering at
-                his mansion for this 50th birthday and had invited a total of 6
-                guests: Mrs. White, Ms. Scarlet, Mrs. Peacock, Mr. Green,
-                Professor Plum, and Colonel Mustard. Although no direct evidence
-                was found on the scene when the crime occurred, both the police
-                and the guests agreed to return to the mansion the following day
-                for further investigation.
+                Mr. Boddy, a 50 year old businessman from Baltimore, Maryland, has been officially
+                declared dead 1 day ago on August 27th, 2020. The cause of his death is
+                as-yet-unknown, but forensic evidence from labs strongly indicate that a murder has
+                taken place. On the day of his death, Mr Boddy hosted a gathering at his mansion for
+                this 50th birthday and had invited a total of 6 guests: Mrs. White, Ms. Scarlet,
+                Mrs. Peacock, Mr. Green, Professor Plum, and Colonel Mustard. Although no direct
+                evidence was found on the scene when the crime occurred, both the police and the
+                guests agreed to return to the mansion the following day for further investigation.
                 <br />
                 <br />
-                In order to solve this mystery in a timely manner, we would like
-                to ask for your help in finding clues. Click the button "Solve
-                Mystery" below to help your local community as soon as possible!
+                In order to solve this mystery in a timely manner, we would like to ask for your
+                help in finding clues. Click the button "Solve Mystery" below to help your local
+                community as soon as possible!
                 <br />
-                Most importantly,{" "}
-                <span className="text-emphasis2">
-                  don't give up until you find out!
-                </span>
+                Most importantly,{' '}
+                <span className="text-emphasis2">don't give up until you find out!</span>
                 <br />
               </p>
             </div>
           </div>
         </div>
         <div className="d-flex flex-row row">
-          <Link to="/game">
-            <div
-              className="play-button"
-              data-aos="zoom-in"
-              data-aos-delay="200"
-            >
+          <Link to="/0/lobby">
+            <div className="play-button" data-aos="zoom-in" data-aos-delay="200">
               SOLVE MYSTERY
             </div>
           </Link>
