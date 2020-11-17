@@ -102,6 +102,7 @@ var roomCardSet = new Set([
   diningRoom,
   loungeRoom,
 ]);
+
 var validatedMove = false;
 var currentPlayer = colMustardPlayer; // define current client character
 var nextPlayer = getNextPlayer(currentPlayer);
@@ -259,8 +260,8 @@ function makeAccusation(playerCard, weaponCard, roomCard) {}
 function makeSuggestion(playerCard, weaponCard, roomCard) {}
 
 // update player location
-function updatePlayerLocation(playerMoving, locationMovingTo) {
-  if (movingFromRoom(playerMoving, locationMovingTo)) {
+function moveFromRoom(playerMoving, locationMovingTo) {
+  if (validateRoomMove(playerMoving, locationMovingTo)) {
     if (locationMovingTo instanceof hallway.Hallway) {
       playerLocation.set(playerMoving, hallwayLocation.get(locationMovingTo));
     } else {
@@ -279,8 +280,25 @@ function updatePlayerLocation(playerMoving, locationMovingTo) {
   }
 }
 
+// update player location
+function moveFromHallway(playerMoving, locationMovingTo) {
+  if (validateHallwayMove(playerMoving, locationMovingTo)) {
+    playerLocation.set(playerMoving, roomLocation.get(locationMovingTo));
+    console.log(
+      playerMoving.getName() + " has moved to " + locationMovingTo.getName()
+    );
+  } else {
+    console.log(
+      "ERROR: Invalid move: " +
+        playerMoving.getName() +
+        " cannot move to " +
+        locationMovingTo.getName()
+    );
+  }
+}
+
 //validate move from hallway
-function movingFromRoom(playerMoving, locationMovingTo) {
+function validateRoomMove(playerMoving, locationMovingTo) {
   var validMove = true;
   var currentRoom;
 
@@ -292,6 +310,11 @@ function movingFromRoom(playerMoving, locationMovingTo) {
       currentRoom = room;
     }
   });
+
+  if (!roomCardSet.has(currentRoom)) {
+    console.log("ERROR: Move only valid if you are in a room");
+    validMove = false;
+  }
 
   // check if moving to hallway or moving to room
   if (locationMovingTo instanceof hallway.Hallway) {
@@ -339,20 +362,51 @@ function movingFromRoom(playerMoving, locationMovingTo) {
   return validMove;
 }
 
-function movingFromHallway(playerMoving, locationMovingTo) {
+function validateHallwayMove(playerMoving, locationMovingTo) {
   var validMove = true;
-  var currentRoom;
+  var currentHallway;
 
   // determine what hallway player is in
-  hallwayLocation.forEach(function (hallwayCoordinate) {
-    console.log(hallwayCoordinate);
-  });
+  for (var i = 0; i < hallwayLocation.size; i++) {
+    currentHallway = hallwayLocation.keys().next().value;
+
+    if (
+      hallwayLocation
+        .get(currentHallway)
+        .compareCoordinate(playerLocation.get(playerMoving))
+    ) {
+      // break when we find the right hallway
+      break;
+    } else {
+      currentHallway = undefined;
+    }
+  }
+
+  if (currentHallway === undefined) {
+    console.log("ERROR: Move only valid if you are in a hallway");
+    validMove = false;
+    return validMove;
+  }
+
+  if (locationMovingTo instanceof room.Room) {
+    if (!locationMovingTo.getAdjacentHallways().has(currentHallway)) {
+      console.log(
+        "ERROR: Can only move to a room that is adjascent to hallway"
+      );
+      validMove = false;
+    }
+  } else {
+    console.log("ERROR: Can only move into room from hallway");
+    validMove = false;
+  }
+
+  return validMove;
 }
 
 // // update weapon location if move from suggestion is made (target)
 // function updateWeaponLocation(weaponCard,axisX,axisY) {}
 
 // testing game logic
-updatePlayerLocation(mrsPeacockPlayer, conservatoryRoom);
-//debugger;
-updatePlayerLocation(mrsPeacockPlayer, loungeRoom);
+moveFromHallway(mrsPeacockPlayer, conservatoryRoom);
+moveFromRoom(mrsPeacockPlayer, loungeRoom);
+moveFromRoom(mrsPeacockPlayer, hallway12);
