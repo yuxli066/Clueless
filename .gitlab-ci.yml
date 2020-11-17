@@ -1,5 +1,11 @@
+stages:
+  - build
+  - test
+
 include:
-  - template: "Workflows/MergeRequest-Pipelines.gitlab-ci.yml"
+  - template: 'Workflows/MergeRequest-Pipelines.gitlab-ci.yml'
+
+# TODO maybe some setup so that every yarn task gets the before_script and the cache
 
 build:
   stage: build
@@ -7,11 +13,28 @@ build:
   before_script:
     - yarn install --cache-folder .yarn
   script:
-    - cd client
     - yarn build
   cache:
     paths:
+      - .yarn
       - $CI_PROJECT_DIR/node_modules
       - $CI_PROJECT_DIR/client/node_modules
       - $CI_PROJECT_DIR/server/node_modules
+
+test:
+  stage: test
+  image: node:lts-alpine
+  before_script:
+    - yarn install --cache-folder .yarn
+  script:
+    - yarn test-server
+  cache:
+    paths:
       - .yarn
+      - $CI_PROJECT_DIR/node_modules
+      - $CI_PROJECT_DIR/client/node_modules
+      - $CI_PROJECT_DIR/server/node_modules
+  artifacts:
+    when: always
+    reports:
+      junit: server/test/*.xml
