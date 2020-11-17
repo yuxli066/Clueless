@@ -55,8 +55,15 @@ export default function Board() {
           <Col md={9}>
             <figure>
               <img src={clue_board} className="board" />
-              <Colonel />
             </figure>
+            {Object.entries(positions).map(([key, pos]) => (
+              <Colonel
+                key={key}
+                id={key}
+                initialPos={{ x: pos.x, y: pos.y }}
+                movable={key === id.current}
+              />
+            ))}
           </Col>
           {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
           <Col md={3}>

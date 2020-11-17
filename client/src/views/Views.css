@@ -261,5 +261,7 @@ card {
 }
 
 .character {
-  z-index: 1;
+  position: absolute;
+  left: 0;
+  bottom: 360px;
 }
