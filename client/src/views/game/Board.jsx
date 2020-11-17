@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } 
 import clue_board from '../../images/clue_board.jpg';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
+import { AppToaster } from '../toaster';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Button, Card, Elevation } from '@blueprintjs/core';
 
@@ -11,8 +12,8 @@ export default function Board() {
   const initialLocation = useMemo(() => ({ x: Math.random() * 700, y: Math.random() * 600 }), []);
   const id = useRef(undefined);
   const [positions, setPositions] = useState({ temp_initial: initialLocation });
-
   const positionRef = useRef(positions);
+
   useEffect(() => {
     positionRef.current = positions;
   }, [positions]);
@@ -25,6 +26,11 @@ export default function Board() {
 
   // use of useCallback here allows for these messages to only be registered once to the websocket
   const handleResponse = useCallback((resp) => console.log('Response from server: ', resp), []);
+
+  const handleMessageResponse = useCallback((resp) => {
+    console.log('client said:', resp);
+    AppToaster.show({ message: resp });
+  }, []);
 
   const handlePosition = useCallback((pos) => {
     console.log('Changed Position!', pos);
@@ -39,14 +45,21 @@ export default function Board() {
     socket.on('response', handleResponse);
     socket.on('playerMoved', handlePosition);
     socket.on('clientId', handleId);
+    socket.on('notification', handleMessageResponse);
 
     // make sure to un-register ourselves when we unmount!
     return () => {
       socket.off('response', handleResponse);
       socket.off('playerMoved', handlePosition);
       socket.off('clientId', handleId);
+      socket.off('notification', handleResponse);
     };
-  }, [socket, handlePosition, handleResponse, handleId]);
+  }, [socket, handlePosition, handleResponse, handleMessageResponse, handleId]);
+
+  function showToast() {
+    var notificationString = 'Player made a suggestion/accusation';
+    socket.emit('display_notification', notificationString);
+  }
 
   return (
     <div>
@@ -81,7 +94,7 @@ export default function Board() {
               <p style={{ textAlign: 'center' }}> Game Card </p>
               <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
                 Guess Type
-                <div class="pt-select">
+                <div className="pt-select" id="guessType">
                   <select>
                     <option selected>Choose an item...</option>
                     <option value="1">Suggestion</option>
@@ -92,8 +105,8 @@ export default function Board() {
               {/*Dropdown for weapon*/}
               <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
                 Weapon
-                <div class="pt-select">
-                  <select>
+                <div className="pt-select">
+                  <select id="weaponType">
                     <option selected>Choose an item...</option>
                     <option value="1">Candlestick</option>
                     <option value="2">Dagger/Knife</option>
@@ -108,8 +121,8 @@ export default function Board() {
               {/*Dropdown for room TODO: This should be current room that the player is in*/}
               <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
                 Room
-                <div class="pt-select">
-                  <select>
+                <div className="pt-select">
+                  <select id="roomType">
                     <option selected>Choose an item...</option>
                     <option value="1">Kitchen</option>
                     <option value="2">Hall</option>
@@ -127,8 +140,8 @@ export default function Board() {
               {/*Dropdown for player*/}
               <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
                 Player
-                <div class="pt-select">
-                  <select>
+                <div className="pt-select">
+                  <select id="playerType">
                     <option selected>Choose an item...</option>
                     <option value="1">Miss Scarlett</option>
                     <option value="2">Professor Plum</option>
@@ -141,7 +154,9 @@ export default function Board() {
               </label>
 
               <br />
-              <Button style={{ marginLeft: 70 }}>Submit</Button>
+              <Button style={{ marginLeft: 70 }} onClick={showToast}>
+                Submit
+              </Button>
             </Card>
           </Col>
         </Row>
