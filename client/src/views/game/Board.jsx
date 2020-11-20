@@ -2,9 +2,9 @@ import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } 
 import clue_board from '../../images/custom_game_board.png';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
-import { AppToaster } from '../toaster';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Button, Card, Elevation } from '@blueprintjs/core';
+import { useToast } from '@chakra-ui/react';
 
 export default function Board() {
   // TODO we can inline this var if we want!
@@ -13,6 +13,7 @@ export default function Board() {
   const id = useRef(undefined);
   const [positions, setPositions] = useState({ temp_initial: initialLocation });
   const positionRef = useRef(positions);
+  const showToast = useToast();
 
   useEffect(() => {
     positionRef.current = positions;
@@ -27,10 +28,18 @@ export default function Board() {
   // use of useCallback here allows for these messages to only be registered once to the websocket
   const handleResponse = useCallback((resp) => console.log('Response from server: ', resp), []);
 
-  const handleMessageResponse = useCallback((resp) => {
-    console.log('client said:', resp);
-    AppToaster.show({ message: resp });
-  }, []);
+  const handleMessageResponse = useCallback(
+    (resp) => {
+      console.log('client said:', resp);
+      showToast({
+        description: resp,
+        isClosable: true,
+        position: 'top',
+        status: 'success',
+      });
+    },
+    [showToast],
+  );
 
   const handlePosition = useCallback((pos) => {
     console.log('Changed Position!', pos);
@@ -56,7 +65,7 @@ export default function Board() {
     };
   }, [socket, handlePosition, handleResponse, handleMessageResponse, handleId]);
 
-  function showToast() {
+  function handleSubmitAccusation() {
     var notificationString = 'Player made a suggestion/accusation';
     socket.emit('display_notification', notificationString);
   }
@@ -158,7 +167,7 @@ export default function Board() {
               </label>
 
               <br />
-              <Button onClick={showToast}>Submit</Button>
+              <Button onClick={handleSubmitAccusation}>Submit</Button>
             </Card>
           </Col>
         </Row>
