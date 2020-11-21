@@ -3,8 +3,6 @@ import { Button, Card, ListGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import SocketContext from '../SocketContext';
 import LobbyPlayer from './LobbyPlayer';
-// import { Button, Card } from "@blueprintjs/core";
-// import { INTENT_PRIMARY } from "@blueprintjs/core/lib/esm/common/classes";
 
 export default function GameLobby() {
   const socket = useContext(SocketContext);
@@ -36,7 +34,6 @@ export default function GameLobby() {
   }, [socket, handleGameStart]);
 
   return (
-    // TODO blueprint or bootstrap?
     <Card className="text-center">
       <Card.Body>
         {/* TODO make the title bigger! (currently h1's css seems to make things slightly off-center) */}
