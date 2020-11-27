@@ -2,9 +2,19 @@ import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } 
 import clue_board from '../../images/custom_game_board.png';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
-import { Container, Row, Col } from 'react-bootstrap';
-import { Button, Card, Elevation } from '@blueprintjs/core';
-import { useToast } from '@chakra-ui/react';
+import {
+  useToast,
+  Grid,
+  GridItem,
+  Button,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Checkbox,
+  Text,
+} from '@chakra-ui/react';
 
 export default function Board() {
   // TODO we can inline this var if we want!
@@ -72,106 +82,291 @@ export default function Board() {
 
   return (
     <div>
-      <Container>
-        <Row>
-          <Col md={9}>
-            <div
-              style={{
-                backgroundImage: `url(${clue_board})`,
-                backgroundSize: '100% 100%',
-                backgroundRepeat: 'no-repeat',
-                width: '100%',
-                height: '100%',
-              }}
-            >
-              {/* <img src={clue_board} className="board" /> */}
-              {Object.entries(positions).map(([key, pos]) => (
-                <Colonel
-                  key={key}
-                  id={key}
-                  initialPos={{ x: pos.x, y: pos.y }}
-                  movable={key === id.current}
-                />
-              ))}
-            </div>
-          </Col>
-          {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
-          <Col md={3}>
-            <Card
-              className="card"
-              interactive={true}
-              elevation={Elevation.TWO}
-              style={{ color: 'rgb(206, 217, 224)', width: 'fit-content', height: 598 }}
-            >
-              {/*Dropdown for suggestion or accusation*/}
-              <p style={{ textAlign: 'center' }}> Game Card </p>
-              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
-                Guess Type
-                <div className="pt-select" id="guessType">
-                  <select>
-                    <option selected>Choose an item...</option>
-                    <option value="1">Suggestion</option>
-                    <option value="2">Accusation</option>
-                  </select>
-                </div>
-              </label>
-              {/*Dropdown for weapon*/}
-              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
-                Weapon
-                <div className="pt-select">
-                  <select id="weaponType">
-                    <option selected>Choose an item...</option>
-                    <option value="1">Candlestick</option>
-                    <option value="2">Dagger/Knife</option>
-                    <option value="3">Lead Pipe</option>
-                    <option value="4">Revolver/Colt</option>
-                    <option value="5">Rope</option>
-                    <option value="6">Spanner/monkey wrench</option>
-                  </select>
-                </div>
-              </label>
+      <Grid templateRows="repeat(12, 63px)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
+        <GridItem rowSpan={13} colSpan={1}>
+          <div> Nav Bar Goes Here</div>
+        </GridItem>
+        <GridItem rowSpan={2} colSpan={4}>
+          <div
+            style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
+          >
+            Players go here
+          </div>
+        </GridItem>
+        <GridItem rowSpan={8} colSpan={4}>
+          <div
+            style={{
+              backgroundImage: `url(${clue_board})`,
+              backgroundSize: '100% 100%',
+              backgroundRepeat: 'no-repeat',
+              width: '100%',
+              height: '100%',
+            }}
+          >
+            {/* <img src={clue_board} className="board" /> */}
+            {Object.entries(positions).map(([key, pos]) => (
+              <Colonel
+                key={key}
+                id={key}
+                initialPos={{ x: pos.x, y: pos.y }}
+                movable={key === id.current}
+              />
+            ))}
+          </div>
+        </GridItem>
+        {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
+        <GridItem colStart={6} colEnd={6} rowStart={1} rowEnd={13}>
+          <Tabs
+            isFitted
+            variant="enclosed"
+            style={{
+              background: '#fffdeb',
+              textAlign: 'center',
+              width: '100%',
+              height: '100%',
+              borderRadius: 12,
+            }}
+          >
+            <TabList mb="1em">
+              <Tab>Game Card</Tab>
+              <Tab>Suggestion/Accusation</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <Grid templateRows="repeat(23, 1fr)" templateColumns="repeat(2, 1fr)">
+                  <GridItem
+                    rowSpan={1}
+                    colSpan={2}
+                    style={{ backgroundColor: '#fff6bf', borderRadius: 6 }}
+                  >
+                    <Text as="u" fontSize="md">
+                      Suspects
+                    </Text>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Person</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Person</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Person</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Person</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Person</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Person</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem
+                    rowSpan={1}
+                    colSpan={2}
+                    style={{ backgroundColor: '#fff6bf', borderRadius: 6 }}
+                  >
+                    <Text as="u" fontSize="md">
+                      Weapons
+                    </Text>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Weapon</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Weapon</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Weapon</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Weapon</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Weapon</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Weapon</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem
+                    rowSpan={1}
+                    colSpan={2}
+                    style={{ backgroundColor: '#fff6bf', borderRadius: 6 }}
+                  >
+                    <Text as="u" fontSize="md">
+                      Rooms
+                    </Text>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Room</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Room</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Room</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Room</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Room</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Room</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Room</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <p>Room</p>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Checkbox size="md"></Checkbox>
+                  </GridItem>
+                </Grid>
+              </TabPanel>
+              <TabPanel style={{ textAlign: 'left' }}>
+                {/*Dropdown for suggestion or accusation*/}
+                <label>
+                  <Text fontSize="md">Guess Type</Text>
+                  <br />
+                  <div>
+                    <select>
+                      <option selected>Choose an item...</option>
+                      <option value="1">Suggestion</option>
+                      <option value="2">Accusation</option>
+                    </select>
+                  </div>
+                </label>
+                <br />
+                {/*Dropdown for weapon*/}
+                <label>
+                  <Text fontSize="md">Weapon</Text>
+                  <br />
+                  <div>
+                    <select>
+                      <option selected>Choose an item...</option>
+                      <option value="1">Candlestick</option>
+                      <option value="2">Dagger/Knife</option>
+                      <option value="3">Lead Pipe</option>
+                      <option value="4">Revolver/Colt</option>
+                      <option value="5">Rope</option>
+                      <option value="6">Spanner/monkey wrench</option>
+                    </select>
+                  </div>
+                </label>
+                <br />
+                {/*Dropdown for room TODO: This should be current room that the player is in*/}
+                <label>
+                  <Text fontSize="md">Room</Text>
+                  <br />
+                  <div>
+                    <select>
+                      <option selected>Choose an item...</option>
+                      <option value="1">Kitchen</option>
+                      <option value="2">Hall</option>
+                      <option value="3">Ballroom</option>
+                      <option value="4">Conservatory</option>
+                      <option value="5">Dining Room</option>
+                      <option value="6">Cellar</option>
+                      <option value="7">Billard Room</option>
+                      <option value="8">Library</option>
+                      <option value="9">Lounge</option>
+                      <option value="9">Study</option>
+                    </select>
+                  </div>
+                </label>
+                <br />
+                {/*Dropdown for player*/}
+                <label>
+                  <Text fontSize="md">Player</Text>
+                  <br />
+                  <div>
+                    <select>
+                      <option selected>Choose an item...</option>
+                      <option value="1">Miss Scarlett</option>
+                      <option value="2">Professor Plum</option>
+                      <option value="3">Mrs Peacock</option>
+                      <option value="4">Reverend Green</option>
+                      <option value="5">Colonel Mustard</option>
+                      <option value="6">Dr Orchid</option>
+                    </select>
+                  </div>
+                </label>
 
-              {/*Dropdown for room TODO: This should be current room that the player is in*/}
-              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
-                Room
-                <div className="pt-select">
-                  <select id="roomType">
-                    <option selected>Choose an item...</option>
-                    <option value="1">Kitchen</option>
-                    <option value="2">Hall</option>
-                    <option value="3">Ballroom</option>
-                    <option value="4">Conservatory</option>
-                    <option value="5">Dining Room</option>
-                    <option value="6">Cellar</option>
-                    <option value="7">Billard Room</option>
-                    <option value="8">Library</option>
-                    <option value="9">Lounge</option>
-                    <option value="9">Study</option>
-                  </select>
-                </div>
-              </label>
-              {/*Dropdown for player*/}
-              <label className="pt-label .modifier" style={{ marginLeft: 10, color: 'black' }}>
-                Player
-                <div className="pt-select">
-                  <select id="playerType">
-                    <option selected>Choose an item...</option>
-                    <option value="1">Miss Scarlett</option>
-                    <option value="2">Professor Plum</option>
-                    <option value="3">Mrs Peacock</option>
-                    <option value="4">Reverend Green</option>
-                    <option value="5">Colonel Mustard</option>
-                    <option value="6">Dr Orchid</option>
-                  </select>
-                </div>
-              </label>
+                <br />
+                <Button onClick={handleSubmitAccusation}>Submit</Button>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </GridItem>
 
-              <br />
-              <Button onClick={handleSubmitAccusation}>Submit</Button>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+        <GridItem rowSpan={2} colSpan={4}>
+          <div
+            style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
+          >
+            Deck goes here
+          </div>
+        </GridItem>
+      </Grid>
     </div>
   );
 }
