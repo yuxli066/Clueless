@@ -265,11 +265,25 @@ function getNextPlayer(currentPlayer) {
     case mrGreenPlayer:
       return mrsPeacockPlayer;
       break;
+    default:
+      return colMustardPlayer;
+      break;
   }
 }
 
 // validate accusation made by current player
-function makeAccusation(playerCard, weaponCard, roomCard) {}
+function makeAccusation(playerCard, weaponCard, roomCard) {
+  // must compare murder cards to players accusation card choice
+  var accusation = false;
+  if (playerCard === murderPlayer && weaponCard === murderWeapon && roomCard === murderRoom) {
+    console.log('Accusation was correct!');
+    accusation = true;
+  } else {
+    console.log('Accusation was incorrect!');
+    accusation = false;
+  }
+  return accusation;
+}
 
 // validate suggestion made by current player
 function makeSuggestion(playerCard, weaponCard, roomCard) {}
@@ -455,3 +469,5 @@ moveFromRoom(mrsPeacockPlayer,hallway12);
 //invalid move 
 console.log("\n");
  */
+
+playerAssignment();
