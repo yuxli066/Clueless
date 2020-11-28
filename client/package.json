@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@blueprintjs/core": "^3.36.0",
     "@chakra-ui/icons": "^1.0.1",
     "@chakra-ui/react": "^1.0.0",
     "@emotion/react": "^11.1.1",
