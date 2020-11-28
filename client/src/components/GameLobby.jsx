@@ -3,6 +3,8 @@ import { Button, Card, ListGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import SocketContext from '../SocketContext';
 import LobbyPlayer from './LobbyPlayer';
+// FIXME this is a temporary solution to have a lobby until we move to chakra!
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function GameLobby() {
   const socket = useContext(SocketContext);
@@ -48,6 +50,7 @@ export default function GameLobby() {
           ))}
         </ListGroup>
         <Card.Text>Get 3-5 friends to join this lobby to start!</Card.Text>
+        {/* FIXME don't forget to undo this! */}
         <Link
           disabled={connectedPlayers.length < 4 || connectedPlayers.length > 6}
           component={StartGameButton}

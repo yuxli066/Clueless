@@ -1,0 +1,87 @@
+{
+  "mainTitle": "THE JHU TIMES",
+  "teamMotto": "Don't forget, don't give up until you find out!",
+  "title1": "Colonel Mustards investigating murder case",
+  "title2": "Suspects under investigation",
+  "title3": "Rules of the game",
+  "ButtonName": "PLAY NOW!",
+  "footer": "Copyright \u00a9 The Colonel Mustards 2020",
+  "Introduction1": "Mr. Boddy, a 50 year old businessman from Baltimore, Maryland, has been officially declared dead on August 27th, 2020. The cause of his death is as-yet-unknown, but forensic evidencefrom labs strongly indicate that a murder has taken place. On the day of his death, Mr Boddy hosted a gathering at his mansion for this 50th birthday and had invited a total of 6 guests:  Mrs. White, Ms. Scarlet, Mrs. Peacock, Mr. Green, Professor Plum, and Colonel Mustard. Suspects have been taken in for questioning by the police, but due to the lack of evidence, the investigation was inconclusive.",
+  "Introduction2": "Although no direct evidence was found on the scene when the crime occurred, both the police and the guests agreed to return to the mansion the following day for further investigation. In order to solve this mystery in a timely manner, we would like to ask for your help in finding clues. Click the \"Avenge Mr. Boddy\" button to your right to help your community as soon as possible! ",
+  "ButtonText": "CLICK HERE TO HELP!",
+  "Instructions1": "Are you up to the challenge of solving the murder mystery of Mr. Boddy? Can you find out in which room the murder occurred in, which weapon the killer used, and who the killer was amongst the 6 suspects? If you can find the answers to all of those questions above, then you have won the game.",
+  "Instructions2": "Clue-Less is an online adaption of the traditional board game Clue and can support up to 6 players per game. In this adaptation, a die will not be used because we have limited the size of the board to a 3x3 grid.",
+  "Instructions3": "To enter the game lobby Click the SOLVE MYSTERY button on the main page",
+  "Instructions4": "To enter the game lobby Click the SOLVE MYSTERY button on the main page. To start the game Once you are in the lobby, you can invite your friends to join your game by sharing with them your lobby code, or you can make the lobby public and wait for other players online to join. When there are 3 to 6 players within the lobby, you will be given the option to start the game.",
+  "Instructions5": "Player Movement:-Enter a hallway from a room-Enter a room from a hallway-Enter a room from a secret passage-Make a suggestion-Make an accusation",
+  "Instructions6": "Game Rules:-The Player's first move must be: Entering the hallway next to the player's home square-Players in the hallway may: Enter a room from a hallway OR Make a suggestion-Players that have been moved to a room by another player may: Enter a hallway from a room OR Make a suggestion-Players in rooms with exits blocked may: Skip their turn OR Make a suggestion-Suggestions and Accusations can be made at any time during a player's turn. However, when making a suggestion, the the player must currently in the room that he/she is suggesting.",
+  "Game": {
+    "guessTypes": ["Make Suggestion", "Make Accusation"],
+    "weapons": [
+      "Candlestick",
+      "Dagger/Knife",
+      "Lead Pipe",
+      "Revolver/Colt",
+      "Rope",
+      "Spanner/monkey wrench"
+    ],
+    "rooms": [
+      "Kitchen",
+      "Hall",
+      "Ballroom",
+      "Conservatory",
+      "Dining Room",
+      "Cellar",
+      "Billard Room",
+      "Library",
+      "Lounge",
+      "Study"
+    ],
+    "characters": [
+      "Miss Scarlett",
+      "Professor Plum",
+      "Mrs Peacock",
+      "Reverend Green",
+      "Colonel Mustard",
+      "Dr Orchid"
+    ]
+  },
+  "Suspects": [
+    {
+      "name": "Tony Lawrence",
+      "title": "Project Manager",
+      "bio": "Tony Lawrence is a network engineer at the Patuxent River Naval Air Station working on the MQ-4C unmanned aircraft system. Tony graduated with a Bachelor of Science degree in Computer Science, May 2017. He is currently responsible for leading his team of network engineers to ensure that connectivity with the aircraft and various other systems remains fully operational and to provide technical support for flight and ground testing. Tony is pursuing a master's degree in Information Systems Engineering with a focus in Network Engineering.",
+      "location": "Baltimore, MD"
+    },
+    {
+      "name": "Kyle Spivak",
+      "title": "Lead Configuration Manager",
+      "bio": "Kyle Spivak is a software engineer at Lockheed Martin. Kyle graduated from the University at Buffalo in 2019 with a B.S in Computer Engineering. Kyle is now part of the Engineering Leadership Development Program (ELDP) at Lockheed Martin. This position entails completing different rotational assignments doing software engineering for different programs at Lockheed Martin in Syracuse, NY. So far he has worked on Radar and Electronic Warfare programs for the Army, Navy, and the Marines. Kyle has the most experience with C++ and C but he has also worked in Java and python. He is currently pursuing a master's degree in Computer Science from Johns Hopkins University.",
+      "location": "Syracuse, NY"
+    },
+    {
+      "name": "David Phillips",
+      "title": "Lead Programmer",
+      "bio": "David Phillips is a software engineer living in Columbia, MD, currently working for defense contractor Visionist, Inc. David has been with Visionist since 2015, where he worked as an intern until receiving his Bachelor of Science in Computer Engineering from UMBC in 2018. His previous work at Visionist involved development of several software applications across many disciplines including big data analytics, test data generation, network characterization, and collaborative report generation. Currently, David's team is providing software engineering support for a long-standing desktop application while simultaneously working on modernizing the feature set using modern architectures. David is also pursuing a master's degree in Computer Science from Johns Hopkins University.",
+      "location": "Columbia, MD"
+    },
+    {
+      "name": "Savannah Blades",
+      "title": "Lead UI/UX Designer",
+      "bio": "Savannah Blades works as a software and product developer at Bureau Veritas North America, Project Management Division. She graduated with a Bachelor of Science degree in Engineering Science with a concentration in Environmental Engineering in May of 2018. Savannah's current responsibilities include using existing technologies from Microsoft (PowerApps, Power BI, Microsoft Forms) to help automate business processes, as well as work on a team supporting, maintaining, and further developing a web application. She is pursuing her master's degree in Computer Science from Johns Hopkins University.",
+      "location": "Baltimore, MD"
+    },
+    {
+      "name": "David Tigreros",
+      "title": "Lead Architect",
+      "bio": "David Tigreros is a research scientist at Lockheed Martin. David graduated from Drexel University in 2017 with a B.S. in Electrical Engineering. At Lockheed Martin David focuses on research and development towards developing new technologies that utilize the electromagnetic spectrum. Research efforts have included developing small cost-effective radars using software-defined radios, using machine learning to develop clutter mitigation algorithms, and development of adaptive waveforms. In addition to his career at Lockheed Martin David is pursuing a master's degree in Computer Science at Johns Hopkins University. David has experience in using Python, MATLAB, C++, and Java.",
+      "location": "Philadelphia, Pennsylvania"
+    },
+    {
+      "name": "Leo Li",
+      "title": "Lead Software Quality",
+      "bio": "Leo Li is a software QA engineer from Los Angeles, California. Leo graduated from the University of California, Riverside in 2016 with a B.S. in Computer Engineering and is currently working at Glidewell Dental Labs as a Software QA Automation Engineer. His current role involves improving software products at Glidewell by developing testing solutions, utilizing automation tools, and streamlining the testing process with CI/CD. The goal is to be able to keep up with the acceleration of change in applications through the push of a button. Leo is currently pursuing a master's degree in Computer Science from Johns Hopkins University.",
+      "location": "Los Angeles, CA"
+    }
+  ]
+}

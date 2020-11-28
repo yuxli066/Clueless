@@ -1,0 +1,223 @@
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+.innerContainer {
+  min-width: 1000px;
+  background-color: #f9f7f1;
+  width: 70%;
+  height: 100%;
+  margin: auto;
+}
+
+.title-large {
+  text-align: center;
+  margin-bottom: 0.8rem;
+}
+
+.sections {
+  margin-left: 2em;
+  margin-right: 2em;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/*--------------------------------------------------------------
+# Header and Footer
+--------------------------------------------------------------*/
+.header {
+  padding-top: 3rem;
+  text-align: center;
+}
+
+.footer {
+  margin-top: 1em;
+  padding-top: 1em;
+  margin-bottom: 1em;
+  color: #6c757d !important;
+  text-align: center;
+}
+
+/*--------------------------------------------------------------
+# Borders
+--------------------------------------------------------------*/
+
+.with-border-top {
+  border-top: 1px solid;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.with-border-bottom {
+  border-width: 1px 0;
+  padding-bottom: 1rem;
+}
+
+.with-border-left {
+  border-left: 1px solid;
+}
+
+.with-border-right {
+  border-right: 1px solid;
+}
+
+/*--------------------------------------------------------------
+# Newspaper Date
+--------------------------------------------------------------*/
+.dateTime {
+  text-align: center;
+  padding: 3px 0;
+  border: solid black;
+  border-width: 2px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 1.5rem 0;
+}
+
+/*--------------------------------------------------------------
+# Images & Suspects Imgs
+--------------------------------------------------------------*/
+.gameCharacters {
+  height: 100%;
+}
+
+.gameCharacters img:nth-child(1) {
+  filter: grayscale(100%) !important;
+  margin-bottom: 1.5em;
+  height: 35%;
+}
+
+.gameCharacters img:nth-child(2),
+.gameCharacters img:nth-child(3) {
+  filter: grayscale(100%);
+  border: none;
+  height: 20%;
+  margin-bottom: 0.5em;
+}
+
+.innerContainer img:hover,
+.suspects img:hover,
+.gameCharacters img:hover {
+  filter: grayscale(0) !important;
+}
+
+.innerContainer img {
+  filter: grayscale(95%);
+  margin-bottom: 0.5rem;
+  border: 1px solid #1c1f33;
+  transition: 0.3s ease;
+  width: 100%;
+}
+
+.landingPageBoard {
+  margin-top: 2em;
+}
+
+.caption {
+  text-align: center;
+}
+
+.suspects {
+  padding: 1rem;
+}
+
+.suspects img {
+  filter: grayscale(95%);
+  border: none;
+  object-fit: cover;
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.suspects figure {
+  float: left;
+  margin: 1em;
+  width: 200px;
+  min-height: 185px;
+}
+
+.title-large > p {
+  writing-mode: horizontal-tb;
+}
+
+/*--------------------------------------------------------------
+# Banner/Button
+--------------------------------------------------------------*/
+.banner {
+  cursor: pointer;
+  padding: 1rem 0.5rem 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid;
+  transition-delay: 0.05s;
+  transition-duration: 0.05s;
+  position: relative;
+}
+
+.banner img:hover {
+  filter: grayscale(95%);
+}
+
+.banner:hover .secondary {
+  opacity: 1;
+  transform: translate3d(0, -150px, 0);
+}
+
+.banner:hover .primary p,
+.banner:hover .primary img,
+.banner:hover .primary {
+  opacity: 0.3;
+}
+
+.banner:hover {
+  background-color: #f9e7c0;
+  border-width: 0;
+}
+
+.primary {
+  width: 100%;
+  transform: scale3d(1, 1, 1);
+  transition: 200ms ease-out;
+  transition-delay: 0.05s;
+  transition-duration: 0.4s;
+  text-align: center;
+}
+
+a p {
+  color: black;
+}
+
+.secondary {
+  opacity: 0;
+  bottom: 20px;
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  transition: opacity 0.2s, transform 0.35s;
+  transition-delay: 0.05s;
+  transition-duration: 0.4s;
+  text-decoration: none;
+}
+
+.secondary img {
+  border: none;
+  margin: auto;
+  margin-top: 2rem;
+}
+
+.centered {
+  position: relative;
+  left: -45%;
+}
+
+/* Game Board Page */
+.card {
+  background-color: rgb(206, 217, 224);
+  width: fit-content;
+  height: fit-content;
+  padding: 5em;
+  text-align: center;
+}
+
+.cardContainer div {
+  padding: unset;
+}
