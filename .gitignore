@@ -9,7 +9,6 @@ yarn-debug.log*
 yarn-error.log*
 .idea
 .vscode/
-.vs/
 .env
 
 # since we're using yarn we should avoid checking in npm's lockfile

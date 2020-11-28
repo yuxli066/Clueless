@@ -1,11 +1,8 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+node_modules/
 
-# dependencies
-/node_modules
-/.pnp
+build/
+dist/
 
-# testing
-/coverage
 *.xml
 
 # misc
@@ -18,10 +15,14 @@
 
 # IDE
 .idea
-.vscode/
-
+.vs/
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# since we're using yarn we should avoid checking in npm's lockfile
+package-lock.json
+
+# for now, remove yarn 2's directory so that we don't keep accidentally committing them
+.yarn/

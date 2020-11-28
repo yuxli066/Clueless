@@ -1,41 +1,41 @@
-import './App.css';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import GamePage from './views/GamePage';
-import CombinedLandingPage from './views/CombinedLandingPage';
+import backgroundImg from './images/background.jpg';
+import LandingPage from './views/LandingPage';
 import SocketContext, { SocketProvider, SocketGate } from './SocketContext';
-import backgroundImage from './images/bg_2.jpg';
+import { ContentProvider } from './ContentProvider';
+import GamePage from './views/GamePage';
 import GameLobby from './components/GameLobby';
-import { useEffect } from 'react';
 
-/* TODO if we add the "bp3-dark" class here (or any container) we get dark theme! (consider making a switch to do this) */
-/* TODO add route for specific game board */
-/* TODO Improve landing page UI and colors */
 function App() {
   return (
-    <div id="app">
+    <div>
       <Helmet>
         <style>
           {`
-                    body {
-                      background: linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%), url(${backgroundImage});
-                      background-position: center center;
-                      background-size: cover
-                    }
-                `}
+                body {
+                  background: linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%), url(${backgroundImg});
+                  background-position: center center;
+                  background-size: cover
+                }
+              `}
         </style>
       </Helmet>
-      <div className="outerContainer">
+      <div>
         <Switch>
           <Route exact path="/">
-            <CombinedLandingPage />
+            <ContentProvider>
+              <LandingPage />
+            </ContentProvider>
           </Route>
           <Route path="/:game">
             <SocketProvider>
               {/* TODO make a more aesthetic loading component */}
               <SocketGate loading={<p>establishing websocket connection...</p>}>
-                <GameSession />
+                <ContentProvider>
+                  <GameSession />
+                </ContentProvider>
               </SocketGate>
             </SocketProvider>
           </Route>
@@ -45,7 +45,6 @@ function App() {
   );
 }
 
-// TODO I feel like this could have a better name
 function GameSession() {
   const socket = useContext(SocketContext);
   useEffect(() => {

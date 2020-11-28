@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { createBreakpoints } from '@chakra-ui/theme-tools';
+import { textStyles, colorStyles, Popover } from './theme'; // import custom typography styles
+const breakpoints = createBreakpoints({ sm: '0px' }); // adding custom sm breakpoint to 0 px
+const theme = extendTheme({ breakpoints, ...textStyles, ...colorStyles, ...Popover });
 
 ReactDOM.render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
