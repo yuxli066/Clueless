@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } from 'react';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
+import { useToast, Grid, GridItem } from '@chakra-ui/react';
 import GameCard from './GameCard';
-import { Grid, useToast } from '@chakra-ui/react';
 import { useContentContext } from '../../ContentProvider';
 
 export default function Board() {
@@ -73,30 +73,52 @@ export default function Board() {
   }
 
   return (
-    <Grid
-      rowGap={'2ch'}
-      templateColumns={{
-        xl: '1fr 35%',
-      }}
-      templateRows={{ xl: '1000px' }}
-    >
-      <div
-        style={{
-          backgroundImage: `url(${Content.images['custom_game_board'].default})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: '100% 100%',
-        }}
-      >
-        {Object.entries(positions).map(([key, pos]) => (
-          <Colonel
-            key={key}
-            id={key}
-            initialPos={{ x: pos.x, y: pos.y }}
-            movable={key === id.current}
-          />
-        ))}
-      </div>
-      <GameCard />
-    </Grid>
+    <div>
+      <Grid templateRows="repeat(12, 63px)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
+        <GridItem rowSpan={13} colSpan={1}>
+          <div> Nav Bar Goes Here</div>
+        </GridItem>
+        <GridItem rowSpan={2} colSpan={4}>
+          <div
+            style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
+          >
+            Players go here
+          </div>
+        </GridItem>
+        <GridItem rowSpan={8} colSpan={4}>
+          <div
+            style={{
+              backgroundImage: `url(${Content.images['custom_game_board'].default})`,
+              backgroundSize: '100% 100%',
+              backgroundRepeat: 'no-repeat',
+              width: '100%',
+              height: '100%',
+            }}
+          >
+            {/* <img src={clue_board} className="board" /> */}
+            {Object.entries(positions).map(([key, pos]) => (
+              <Colonel
+                key={key}
+                id={key}
+                initialPos={{ x: pos.x, y: pos.y }}
+                movable={key === id.current}
+              />
+            ))}
+          </div>
+        </GridItem>
+        {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
+        <GridItem colStart={6} colEnd={6} rowStart={1} rowEnd={13}>
+          <GameCard />
+        </GridItem>
+
+        <GridItem rowSpan={2} colSpan={4}>
+          <div
+            style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
+          >
+            Deck goes here
+          </div>
+        </GridItem>
+      </Grid>
+    </div>
   );
 }
