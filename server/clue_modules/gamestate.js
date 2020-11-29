@@ -10,6 +10,8 @@ var hallway = require('./hallway');
 var coordinate = require('./coordinates');
 var gamecard = require('./gamecard');
 
+var gameWon = false;
+
 // Instantiate Players
 var colMustardPlayer = new player.Player('Colonel Mustard');
 var missScarletPlayer = new player.Player('Miss Scarlet');
@@ -117,6 +119,10 @@ var hallwayCardSet = new Set([
   hallway11,
   hallway12,
 ]);
+
+// list to track current amount of connected players
+var inGamePlayerSet = new Set();
+var clientPlayerMap = new Map();
 
 var validatedMove = false;
 var currentPlayer = colMustardPlayer; // define current client character
@@ -271,6 +277,33 @@ function getNextPlayer(currentPlayer) {
   }
 }
 
+// function for return of object with string
+function getPlayerObject(characterName) {
+  switch (characterName) {
+    case profPlumPlayer.getName():
+      return profPlumPlayer;
+      break;
+    case missScarletPlayer.getName():
+      return missScarletPlayer;
+      break;
+    case colMustardPlayer.getName():
+      return colMustardPlayer;
+      break;
+    case mrsWhitePlayer.getName():
+      return mrsWhitePlayer;
+      break;
+    case mrGreenPlayer.getName():
+      return mrGreenPlayer;
+      break;
+    case mrsPeacockPlayer.getName():
+      return mrsPeacockPlayer;
+      break;
+    default:
+      return '';
+      break;
+  }
+}
+
 // validate accusation made by current player
 function makeAccusation(playerCard, weaponCard, roomCard) {
   // must compare murder cards to players accusation card choice
@@ -285,7 +318,7 @@ function makeAccusation(playerCard, weaponCard, roomCard) {
   return accusation;
 }
 
-// validate suggestion made by current player
+// TODO: function that broadcasts suggestion and has players show cards to disprove
 function makeSuggestion(playerCard, weaponCard, roomCard) {}
 
 // update player location
@@ -344,7 +377,7 @@ function validateRoomMove(playerMoving, locationMovingTo) {
     if (currentRoom instanceof room.Room) {
       // determine the linked hallways and make sure it is a valid one to move to
       if (currentRoom.getAdjacentHallways().has(locationMovingTo)) {
-        playerCardSet.forEach(function (player) {
+        inGamePlayerSet.forEach(function (player) {
           if (playerLocation.get(player).compareCoordinate(hallwayLocation.get(locationMovingTo))) {
             console.log('ERROR: Someone is in this hallways, move to empty hallway');
             validMove = false;
@@ -400,6 +433,38 @@ function validateHallwayMove(playerMoving, locationMovingTo) {
   }
 
   return validMove;
+}
+
+// get random item from a Set
+function getRandomItem(set) {
+  let items = Array.from(set);
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+// function to assign players to connected clients
+function assignClientPlayer(clientID, player = '') {
+  // return player object from message string
+  player = getPlayerObject(player);
+  // randomly select player if one was not chose by client
+  if (player === '') {
+    player = getRandomItem(playerCardSet);
+  }
+
+  // if this player is already taken:
+  while (inGamePlayerSet.has(player)) {
+    player = getRandomItem(playerCardSet);
+  }
+
+  // add player to in game set
+  inGamePlayerSet.add(player);
+
+  // map player to client
+  clientPlayerMap.set(clientID, player);
+}
+
+function gamePlay() {
+  // game runs until a player wins (makes correct accusation)
+  while (accusation === false) {}
 }
 
 /**
@@ -469,5 +534,3 @@ moveFromRoom(mrsPeacockPlayer,hallway12);
 //invalid move 
 console.log("\n");
  */
-
-playerAssignment();
