@@ -7,6 +7,16 @@ class GameCard {
 
   gameCardList = new Set();
 
+  clientPlayer = undefined;
+
+  getClientPlayer() {
+    return this.clientPlayer;
+  }
+
+  setClientPlayer(player) {
+    this.clientPlayer = player;
+  }
+
   getGameCardList() {
     return this.gameCardList;
   }
