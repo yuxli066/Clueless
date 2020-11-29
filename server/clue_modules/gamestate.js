@@ -459,7 +459,7 @@ function assignClientPlayer(clientID, player = '') {
   inGamePlayerSet.add(player);
 
   // map player to client
-  clientPlayerMap.set(clientID, player);
+  cardMap.get(clientID).setClientPlayer(player);
 }
 
 function gamePlay() {
@@ -534,3 +534,6 @@ moveFromRoom(mrsPeacockPlayer,hallway12);
 //invalid move 
 console.log("\n");
  */
+
+assignClientPlayer('client0', 'Colonel Mustard');
+console.log(cardMap);
