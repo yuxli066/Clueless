@@ -130,7 +130,7 @@ io.on('connect', (socket) => {
       // delete the player from the playerMap inside of the room
       // this way the character can be reused
       console.log('removing player from room:', room);
-      roomMap.get(room)?.delete(socket.id);
+      roomMap.get(room).delete(socket.id);
 
       // TODO update the remaining clients!
     });
