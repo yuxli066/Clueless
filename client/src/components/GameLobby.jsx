@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import { Link, useHistory } from 'react-router-dom';
 import SocketContext from '../SocketContext';
 import LobbyPlayer from './LobbyPlayer';
-import { Box, Button, Divider, Heading, List, ListItem, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Divider, Heading, List, ListItem, Text } from '@chakra-ui/react';
 
 export default function GameLobby() {
   const socket = useContext(SocketContext);
@@ -35,25 +35,34 @@ export default function GameLobby() {
   // TODO better styling!
   return (
     <Box bg="white">
-      {/* TODO make the title bigger! (currently h1's css seems to make things slightly off-center) */}
-      <Heading>Game Lobby</Heading>
+      {/* TODO I feel like there's a better way to handle all of this than with center components everywhere... */}
+      <Center>
+        <Heading>Game Lobby</Heading>
+      </Center>
+      <Divider margin={4} />
       <List>
         {connectedPlayers.map((player) => (
           <ListItem key={player.id}>
-            <LobbyPlayer name={player.name} self={player.id === socket.id} />
-            <Divider />
+            <Center>
+              <LobbyPlayer name={player.name} self={player.id === socket.id} />
+            </Center>
+            <Divider margin={4} />
           </ListItem>
         ))}
       </List>
-      <Text>Get 3-5 friends to join this lobby to start!</Text>
-      {/* FIXME don't forget to undo this! */}
-      <Link
-        disabled={connectedPlayers.length < 4 || connectedPlayers.length > 6}
-        component={StartGameButton}
-        to="/0/game"
-      >
-        Start the Game!
-      </Link>
+      <Center>
+        <Text>Get 3-5 friends to join this lobby to start!</Text>
+      </Center>
+      <Center>
+        {/* FIXME don't forget to undo this! */}
+        <Link
+          disabled={connectedPlayers.length < 4 || connectedPlayers.length > 6}
+          component={StartGameButton}
+          to="/0/game"
+        >
+          Start the Game!
+        </Link>
+      </Center>
     </Box>
   );
 }
@@ -67,6 +76,7 @@ const StartGameButton = React.forwardRef((props, ref) => {
   return (
     <Button
       colorScheme="blue"
+      margin={4}
       disabled={disabled}
       onClick={() => socket.emit('requestGameStart', 'single-instance-game')}
     >
