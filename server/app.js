@@ -29,11 +29,11 @@ const roomMap = new Map();
 
 const PLAYERS = new Set([
   'Colonel Mustard',
-  'Mr. Green',
+  'Rev. Green',
   'Professor Plum',
   'Miss Scarlet',
   'Mrs. Peacock',
-  'Dr. Orchid',
+  'Mrs. White',
 ]);
 
 // TODO we should move the socket handling code to a new file!
