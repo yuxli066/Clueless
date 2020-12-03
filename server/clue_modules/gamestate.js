@@ -122,9 +122,7 @@ var hallwayCardSet = new Set([
 
 // list to track current amount of connected players
 var inGamePlayerSet = new Set();
-var clientPlayerMap = new Map();
 
-var validatedMove = false;
 var currentPlayer = colMustardPlayer; // define current client character
 var nextPlayer = getNextPlayer(currentPlayer);
 var murderPlayer = randomCard(playerCardSet); // choose random card to select murder character
@@ -459,12 +457,25 @@ function assignClientPlayer(clientID, player = '') {
   inGamePlayerSet.add(player);
 
   // map player to client
-  cardMap.get(clientID).setClientPlayer(player);
+  gameCardMap.get(clientID).setClientPlayer(player);
 }
 
+// TODO function for server to display each players disprove card for suggestion
+function displayDisproveCard() {}
+
+// TODO: flush out pseudo code for this
 function gamePlay() {
   // game runs until a player wins (makes correct accusation)
-  while (accusation === false) {}
+  accusation = false;
+  while (accusation === false) {
+    // iterate through clients for their turn
+    gameCardMap.forEach(function (client) {
+      // first player makes a move into a room
+      // when player makes suggestion, coordinates update
+
+      console.log();
+    });
+  }
 }
 
 /**
@@ -535,5 +546,6 @@ moveFromRoom(mrsPeacockPlayer,hallway12);
 console.log("\n");
  */
 
-assignClientPlayer('client0', 'Colonel Mustard');
-console.log(cardMap);
+// testing client player assignment and game map
+// assignClientPlayer('client0', 'Colonel Mustard');
+// console.log(gameCardMap);
