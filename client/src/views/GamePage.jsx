@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styles from './css/views.module.css';
-import Container from 'react-bootstrap/cjs/Container';
 import GameController from './game/GameController';
 
 function GamePage() {
@@ -23,9 +22,7 @@ function GamePage() {
   }, []);
   return (
     <section id="team" className="team">
-      <Container fluid>
-        <GameController />
-      </Container>
+      <GameController />
     </section>
   );
 }

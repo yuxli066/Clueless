@@ -1,10 +1,8 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { Button, Card, ListGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import SocketContext from '../SocketContext';
 import LobbyPlayer from './LobbyPlayer';
-// FIXME this is a temporary solution to have a lobby until we move to chakra!
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Box, Button, Center, Divider, Heading, List, ListItem, Text } from '@chakra-ui/react';
 
 export default function GameLobby() {
   const socket = useContext(SocketContext);
@@ -17,7 +15,6 @@ export default function GameLobby() {
     historyRef.current = history;
   }, [history]);
 
-  // TODO make sure this will actually be okay (i think history is mutable?)
   const handleGameStart = useCallback(() => {
     console.log('redirecting!!');
     historyRef.current.push('/0/game');
@@ -35,21 +32,28 @@ export default function GameLobby() {
     };
   }, [socket, handleGameStart]);
 
+  // TODO better styling!
   return (
-    <Card className="text-center">
-      <Card.Body>
-        {/* TODO make the title bigger! (currently h1's css seems to make things slightly off-center) */}
-        <Card.Title>Game Lobby</Card.Title>
-        {/* TODO add in connected player list */}
-        <ListGroup>
-          {/* TODO based off the player list! */}
-          {connectedPlayers.map((player) => (
-            <ListGroup.Item key={player.id}>
+    <Box bg="white">
+      {/* TODO I feel like there's a better way to handle all of this than with center components everywhere... */}
+      <Center>
+        <Heading>Game Lobby</Heading>
+      </Center>
+      <Divider margin={4} />
+      <List>
+        {connectedPlayers.map((player) => (
+          <ListItem key={player.id}>
+            <Center>
               <LobbyPlayer name={player.name} self={player.id === socket.id} />
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-        <Card.Text>Get 3-5 friends to join this lobby to start!</Card.Text>
+            </Center>
+            <Divider margin={4} />
+          </ListItem>
+        ))}
+      </List>
+      <Center>
+        <Text>Get 3-5 friends to join this lobby to start!</Text>
+      </Center>
+      <Center>
         {/* FIXME don't forget to undo this! */}
         <Link
           disabled={connectedPlayers.length < 4 || connectedPlayers.length > 6}
@@ -58,8 +62,8 @@ export default function GameLobby() {
         >
           Start the Game!
         </Link>
-      </Card.Body>
-    </Card>
+      </Center>
+    </Box>
   );
 }
 
@@ -71,7 +75,8 @@ const StartGameButton = React.forwardRef((props, ref) => {
   // FIXME update socket to properly emit game start (either via game room prop or on the server side!)
   return (
     <Button
-      variant="primary"
+      colorScheme="blue"
+      margin={4}
       disabled={disabled}
       onClick={() => socket.emit('requestGameStart', 'single-instance-game')}
     >

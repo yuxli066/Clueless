@@ -29,11 +29,11 @@ const roomMap = new Map();
 
 const PLAYERS = new Set([
   'Colonel Mustard',
-  'Mr. Green',
+  'Rev. Green',
   'Professor Plum',
   'Miss Scarlet',
   'Mrs. Peacock',
-  'Dr. Orchid',
+  'Mrs. White',
 ]);
 
 // TODO we should move the socket handling code to a new file!
@@ -130,7 +130,12 @@ io.on('connect', (socket) => {
       // delete the player from the playerMap inside of the room
       // this way the character can be reused
       console.log('removing player from room:', room);
-      roomMap.get(room)?.delete(socket.id);
+
+      // TODO I want to use #get()?.delete() but some it seemed like some people's node had trouble?
+      const roomToDelete = roomMap.get(room);
+      if (roomToDelete) {
+        roomToDelete.delete(socket.id);
+      }
 
       // TODO update the remaining clients!
     });

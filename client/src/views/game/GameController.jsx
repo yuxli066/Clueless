@@ -1,12 +1,11 @@
 import React from 'react';
 import Board from './Board';
-import { Container } from 'react-bootstrap';
 
 function GameController() {
   return (
-    <Container fluid className="innerContainer">
+    <div className="innerContainer">
       <Board />
-    </Container>
+    </div>
   );
 }
 
