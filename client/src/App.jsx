@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Redirect, Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import backgroundImg from './images/background.jpg';
 import LandingPage from './views/LandingPage';
