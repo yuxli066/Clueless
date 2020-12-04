@@ -74,7 +74,7 @@ export default function Board() {
 
   return (
     <div>
-      <Grid templateRows="repeat(12, 63px)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
+      <Grid templateRows="repeat(12, 1fr)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
         <GridItem rowSpan={13} colSpan={1}>
           <div> Nav Bar Goes Here</div>
         </GridItem>
@@ -86,25 +86,168 @@ export default function Board() {
           </div>
         </GridItem>
         <GridItem rowSpan={8} colSpan={4}>
-          <div
-            style={{
-              backgroundImage: `url(${Content.images['custom_game_board'].default})`,
-              backgroundSize: '100% 100%',
-              backgroundRepeat: 'no-repeat',
-              width: '100%',
-              height: '100%',
-            }}
+          <Grid
+            backgroundColor="white"
+            templateRows="repeat(5, 200px)"
+            templateColumns="repeat(5, 1fr)"
+            w="100%"
+            h="100%"
           >
-            {/* <img src={clue_board} className="board" /> */}
-            {Object.entries(positions).map(([key, pos]) => (
-              <Colonel
-                key={key}
-                id={key}
-                initialPos={{ x: pos.x, y: pos.y }}
-                movable={key === id.current}
-              />
-            ))}
-          </div>
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['study-room'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['hall-room'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['lounge-room'].default})`}
+            />
+
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundColor="white"
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundColor="white"
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+            />
+
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['library-room'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['billiards-room'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['dining-room'].default})`}
+            />
+
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundColor="white"
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundColor="white"
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+            />
+
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['conservatory-room'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['ball-room'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+            />
+            <GridItem
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundImage={`url(${Content.images['kitchen-room'].default})`}
+            />
+          </Grid>
         </GridItem>
         {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
         <GridItem colStart={6} colEnd={6} rowStart={1} rowEnd={13}>
@@ -122,3 +265,26 @@ export default function Board() {
     </div>
   );
 }
+
+/*
+<div
+style={{
+  backgroundImage: `url(${Content.images['custom_game_board'].default})`,
+  backgroundSize: '100% 100%',
+  backgroundRepeat: 'no-repeat',
+  width: '100%',
+  height: '100%',
+}}
+>
+{Object.entries(positions).map(([key, pos]) => (
+  <Colonel
+    key={key}
+    id={key}
+    initialPos={{ x: pos.x, y: pos.y }}
+    movable={key === id.current}
+  />
+))}
+</div>
+*/
+
+/* Need to generate initial positions on board for characters */
