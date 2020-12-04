@@ -47,25 +47,23 @@ function App() {
 
 function GameSession() {
   const socket = useContext(SocketContext);
+  const lobby = useRouteMatch();
   useEffect(() => {
-    console.log('joining the single instance room...');
-    // TODO in the future, we will need a request/response for getting a lobby
-    socket.emit('join', 'single-instance-game');
+    console.log('joining lobby', lobby.path);
+    socket.emit('join', lobby.path);
 
     return () => {
-      console.log('unmounting and disconnecting from the single instance room...');
-      socket.emit('leave', 'single-instance-game');
+      console.log('unmounting and disconnecting from lobby', lobby.path);
+      socket.emit('leave', lobby.path);
     };
-  }, [socket]);
-
-  const match = useRouteMatch();
+  }, [socket, lobby]);
 
   return (
     <Switch>
-      <Route path={`${match.path}/game`}>
+      <Route path={`${lobby.path}/game`}>
         <GamePage />
       </Route>
-      <Route path={`${match.path}/lobby`}>
+      <Route path={`${lobby.path}/lobby`}>
         <GameLobby />
       </Route>
     </Switch>
