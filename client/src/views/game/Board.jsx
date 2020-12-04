@@ -78,46 +78,56 @@ export default function Board() {
         <GridItem rowSpan={13} colSpan={1}>
           <div> Nav Bar Goes Here</div>
         </GridItem>
-        <GridItem rowSpan={2} colSpan={4}>
+        <GridItem rowSpan={1} colSpan={4}>
           <div
             style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
           >
             Players go here
           </div>
         </GridItem>
-        <GridItem rowSpan={8} colSpan={4}>
+        <GridItem padding="1em" rowSpan={8} colSpan={4}>
           <Grid
             backgroundColor="white"
-            templateRows="repeat(5, 200px)"
-            templateColumns="repeat(5, 1fr)"
+            templateRows="10% repeat(5, 200px) 10%"
+            templateColumns="10% repeat(5, 1fr) 10%"
             w="100%"
             h="100%"
           >
             <GridItem
+              colStart={2}
+              rowStart={2}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['study-room'].default})`}
             />
             <GridItem
+              colStart={3}
+              rowStart={2}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
             />
             <GridItem
+              colStart={4}
+              rowStart={2}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['hall-room'].default})`}
             />
             <GridItem
+              colStart={5}
+              rowStart={2}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
             />
             <GridItem
+              colStart={6}
+              rowStart={2}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
@@ -125,30 +135,40 @@ export default function Board() {
             />
 
             <GridItem
+              colStart={2}
+              rowStart={3}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['vertical-hall'].default})`}
             />
             <GridItem
+              colStart={3}
+              rowStart={3}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundColor="white"
             />
             <GridItem
+              colStart={4}
+              rowStart={3}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['vertical-hall'].default})`}
             />
             <GridItem
+              colStart={5}
+              rowStart={3}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundColor="white"
             />
             <GridItem
+              colStart={6}
+              rowStart={3}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
@@ -156,30 +176,40 @@ export default function Board() {
             />
 
             <GridItem
+              colStart={2}
+              rowStart={4}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['library-room'].default})`}
             />
             <GridItem
+              colStart={3}
+              rowStart={4}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
             />
             <GridItem
+              colStart={4}
+              rowStart={4}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['billiards-room'].default})`}
             />
             <GridItem
+              colStart={5}
+              rowStart={4}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
             />
             <GridItem
+              colStart={6}
+              rowStart={4}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
@@ -187,30 +217,40 @@ export default function Board() {
             />
 
             <GridItem
+              colStart={2}
+              rowStart={5}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['vertical-hall'].default})`}
             />
             <GridItem
+              colStart={3}
+              rowStart={5}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundColor="white"
             />
             <GridItem
+              colStart={4}
+              rowStart={5}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['vertical-hall'].default})`}
             />
             <GridItem
+              colStart={5}
+              rowStart={5}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundColor="white"
             />
             <GridItem
+              colStart={6}
+              rowStart={5}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
@@ -218,35 +258,83 @@ export default function Board() {
             />
 
             <GridItem
+              colStart={1}
+              rowStart={6}
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundColor="white"
+            />
+
+            <GridItem
+              colStart={2}
+              rowStart={6}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['conservatory-room'].default})`}
             />
             <GridItem
+              colStart={3}
+              rowStart={6}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
             />
             <GridItem
+              colStart={4}
+              rowStart={6}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['ball-room'].default})`}
             />
             <GridItem
+              colStart={5}
+              rowStart={6}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
             />
             <GridItem
+              colStart={6}
+              rowStart={6}
               backgroundRepeat="no-repeat"
               backgroundSize="cover"
               backgroundPosition="center"
               backgroundImage={`url(${Content.images['kitchen-room'].default})`}
             />
+
+            <GridItem
+              colStart={7}
+              rowStart={6}
+              backgroundRepeat="no-repeat"
+              backgroundSize="cover"
+              backgroundPosition="center"
+              backgroundColor="white"
+            />
+            {[1, 2, 3, 4, 5, 6, 7].map((col) => (
+              <GridItem
+                colStart={col}
+                rowStart={7}
+                backgroundRepeat="no-repeat"
+                backgroundSize="cover"
+                backgroundPosition="center"
+                backgroundColor="white"
+              />
+            ))}
+
+            {/**TODO: create initial positions for characters */}
+            {Object.entries(positions).map(([key, pos]) => (
+              <Colonel
+                key={key}
+                id={key}
+                initialPos={{ x: pos.x, y: pos.y }}
+                movable={key === id.current}
+              />
+            ))}
           </Grid>
         </GridItem>
         {/*Game Card - TODO: Dropdowns for these should be variables outside of this*/}
@@ -254,7 +342,7 @@ export default function Board() {
           <GameCard />
         </GridItem>
 
-        <GridItem rowSpan={2} colSpan={4}>
+        <GridItem rowStart={11} colStart={2} rowSpan={1} colSpan={4}>
           <div
             style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
           >
@@ -265,26 +353,3 @@ export default function Board() {
     </div>
   );
 }
-
-/*
-<div
-style={{
-  backgroundImage: `url(${Content.images['custom_game_board'].default})`,
-  backgroundSize: '100% 100%',
-  backgroundRepeat: 'no-repeat',
-  width: '100%',
-  height: '100%',
-}}
->
-{Object.entries(positions).map(([key, pos]) => (
-  <Colonel
-    key={key}
-    id={key}
-    initialPos={{ x: pos.x, y: pos.y }}
-    movable={key === id.current}
-  />
-))}
-</div>
-*/
-
-/* Need to generate initial positions on board for characters */
