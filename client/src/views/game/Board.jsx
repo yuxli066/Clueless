@@ -86,7 +86,7 @@ export default function Board() {
             Players go here
           </div>
         </GridItem>
-        <GridItem padding="1em" rowSpan={8} colSpan={4}>
+        <GridItem padding="2em" rowSpan={8} colSpan={4}>
           <Grid
             backgroundColor="white"
             templateRows="10% repeat(5, 200px) 10%"
@@ -94,249 +94,116 @@ export default function Board() {
             w="100%"
             h="100%"
           >
-            <GridItem
-              colStart={2}
-              rowStart={2}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['study-room'].default})`}
-            />
-            <GridItem
+            <RoomHallway colStart={2} rowStart={2} imageUrl={Content.images['study-room'].default}>
+              <Colonel id="testing1" movable={true} initialPos={initialLocation} />
+            </RoomHallway>
+            <RoomHallway
               colStart={3}
               rowStart={2}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+              imageUrl={Content.images['horizontal-hall'].default}
             />
-            <GridItem
-              colStart={4}
-              rowStart={2}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['hall-room'].default})`}
-            />
-            <GridItem
+            <RoomHallway colStart={4} rowStart={2} imageUrl={Content.images['hall-room'].default} />
+            <RoomHallway
               colStart={5}
               rowStart={2}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+              imageUrl={Content.images['horizontal-hall'].default}
             />
-            <GridItem
+            <RoomHallway
               colStart={6}
               rowStart={2}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['lounge-room'].default})`}
+              imageUrl={Content.images['lounge-room'].default}
             />
 
-            <GridItem
+            <RoomHallway
               colStart={2}
               rowStart={3}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+              imageUrl={Content.images['vertical-hall'].default}
             />
-            <GridItem
-              colStart={3}
-              rowStart={3}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundColor="white"
-            />
-            <GridItem
+            <EmptySpace colStart={3} rowStart={3} />
+            <RoomHallway
               colStart={4}
               rowStart={3}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+              imageUrl={Content.images['vertical-hall'].default}
             />
-            <GridItem
-              colStart={5}
-              rowStart={3}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundColor="white"
-            />
-            <GridItem
+            <EmptySpace colStart={5} rowStart={3} />
+            <RoomHallway
               colStart={6}
               rowStart={3}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+              imageUrl={Content.images['vertical-hall'].default}
             />
 
-            <GridItem
+            <RoomHallway
               colStart={2}
               rowStart={4}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['library-room'].default})`}
+              imageUrl={Content.images['library-room'].default}
             />
-            <GridItem
+            <RoomHallway
               colStart={3}
               rowStart={4}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+              imageUrl={Content.images['horizontal-hall'].default}
             />
-            <GridItem
+            <RoomHallway
               colStart={4}
               rowStart={4}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['billiards-room'].default})`}
+              imageUrl={Content.images['billiards-room'].default}
             />
-            <GridItem
+            <RoomHallway
               colStart={5}
               rowStart={4}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+              imageUrl={Content.images['horizontal-hall'].default}
             />
-            <GridItem
+            <RoomHallway
               colStart={6}
               rowStart={4}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['dining-room'].default})`}
+              imageUrl={Content.images['dining-room'].default}
             />
 
-            <GridItem
+            <RoomHallway
               colStart={2}
               rowStart={5}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+              imageUrl={Content.images['vertical-hall'].default}
             />
-            <GridItem
-              colStart={3}
-              rowStart={5}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundColor="white"
-            />
-            <GridItem
+            <EmptySpace colStart={3} rowStart={5} />
+            <RoomHallway
               colStart={4}
               rowStart={5}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+              imageUrl={Content.images['vertical-hall'].default}
             />
-            <GridItem
-              colStart={5}
-              rowStart={5}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundColor="white"
-            />
-            <GridItem
+            <EmptySpace colStart={5} rowStart={5} />
+            <RoomHallway
               colStart={6}
               rowStart={5}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['vertical-hall'].default})`}
+              imageUrl={Content.images['vertical-hall'].default}
             />
 
-            <GridItem
-              colStart={1}
-              rowStart={6}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundColor="white"
-            />
+            <EmptySpace colStart={1} rowStart={6} />
 
-            <GridItem
+            <RoomHallway
               colStart={2}
               rowStart={6}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['conservatory-room'].default})`}
+              imageUrl={Content.images['conservatory-room'].default}
             />
-            <GridItem
+            <RoomHallway
               colStart={3}
               rowStart={6}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+              imageUrl={Content.images['horizontal-hall'].default}
             />
-            <GridItem
-              colStart={4}
-              rowStart={6}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['ball-room'].default})`}
-            />
-            <GridItem
+            <RoomHallway colStart={4} rowStart={6} imageUrl={Content.images['ball-room'].default} />
+            <RoomHallway
               colStart={5}
               rowStart={6}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['horizontal-hall'].default})`}
+              imageUrl={Content.images['horizontal-hall'].default}
             />
-            <GridItem
+            <RoomHallway
               colStart={6}
               rowStart={6}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundImage={`url(${Content.images['kitchen-room'].default})`}
+              imageUrl={Content.images['kitchen-room'].default}
             />
 
-            <GridItem
-              colStart={7}
-              rowStart={6}
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundPosition="center"
-              backgroundColor="white"
-            />
+            <EmptySpace colStart={7} rowStart={6} />
+
             {[1, 2, 3, 4, 5, 6, 7].map((col) => (
-              <GridItem
-                colStart={col}
-                rowStart={7}
-                backgroundRepeat="no-repeat"
-                backgroundSize="cover"
-                backgroundPosition="center"
-                backgroundColor="white"
-              />
-            ))}
-
-            {/**TODO: create initial positions for characters */}
-            {Object.entries(positions).map(([key, pos]) => (
-              <GridItem colStart={pos.x} rowStart={pos.y}>
-                <Colonel
-                  key={key}
-                  id={key}
-                  initialPos={{ x: pos.x, y: pos.y }}
-                  movable={key === id.current}
-                />
-              </GridItem>
+              <EmptySpace colStart={col} rowStart={7} key={col} />
             ))}
           </Grid>
         </GridItem>
@@ -345,7 +212,7 @@ export default function Board() {
           <GameCard />
         </GridItem>
 
-        <GridItem rowStart={11} colStart={2} rowSpan={1} colSpan={4}>
+        <GridItem rowStart={12} colStart={2} rowSpan={1} colSpan={4}>
           <div
             style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
           >
@@ -354,5 +221,50 @@ export default function Board() {
         </GridItem>
       </Grid>
     </div>
+  );
+}
+
+function RoomHallway(props) {
+  const drop = (e) => {
+    e.preventDefault();
+    const player_id = e.dataTransfer.getData('player_id');
+    const player = document.getElementById(player_id);
+    player.style.display = 'block';
+    player.style.margin = 'auto';
+    player.style.marginTop = '2em';
+    e.target.appendChild(player);
+  };
+
+  const dragOver = (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <GridItem
+      id={props.id}
+      onDrop={drop}
+      onDragOver={dragOver}
+      backgroundRepeat="no-repeat"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      colStart={props.colStart}
+      rowStart={props.rowStart}
+      backgroundImage={`url(${props.imageUrl})`}
+    >
+      {props.children}
+    </GridItem>
+  );
+}
+
+function EmptySpace(props) {
+  return (
+    <GridItem
+      colStart={props.colStart}
+      rowStart={props.rowStart}
+      backgroundRepeat="no-repeat"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundColor="white"
+    />
   );
 }
