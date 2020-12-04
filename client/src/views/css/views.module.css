@@ -209,7 +209,9 @@ a p {
   left: -45%;
 }
 
-/* Game Board Page */
+/*--------------------------------------------------------------
+* Game Board Page 
+--------------------------------------------------------------*/
 .card {
   background-color: rgb(206, 217, 224);
   width: fit-content;
@@ -220,4 +222,23 @@ a p {
 
 .cardContainer div {
   padding: unset;
+}
+
+/*--------------------------------------------------------------
+* 404 NOT FOUND PAGE
+--------------------------------------------------------------*/
+.notFoundPage {
+  width: 100%;
+  filter: grayscale(100);
+}
+
+.notFoundImage {
+  height: 500px;
+}
+
+.notFoundText {
+  font-size: 80px;
+  margin-top: 1.5em;
+  color: black;
+  width: fit-content;
 }

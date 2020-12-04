@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Redirect, Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import backgroundImg from './images/background.jpg';
 import LandingPage from './views/LandingPage';
@@ -7,6 +7,7 @@ import SocketContext, { SocketProvider, SocketGate } from './SocketContext';
 import { ContentProvider } from './ContentProvider';
 import GamePage from './views/GamePage';
 import GameLobby from './components/GameLobby';
+import PageNotFound from './views/PageNotFound';
 
 function App() {
   return (
@@ -39,6 +40,9 @@ function App() {
               </SocketGate>
             </SocketProvider>
           </Route>
+          <Route path="*">
+            <PageNotFound />
+          </Route>
         </Switch>
       </div>
     </div>
@@ -67,6 +71,9 @@ function GameSession() {
       </Route>
       <Route path={`${match.path}/lobby`}>
         <GameLobby />
+      </Route>
+      <Route path="*">
+        <PageNotFound />
       </Route>
     </Switch>
   );
