@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } from 'react';
-import Colonel from './Colonal';
-import SocketContext from '../../../src/SocketContext';
 import { useToast, Grid, GridItem } from '@chakra-ui/react';
+import Colonel from './Colonal';
 import GameCard from './GameCard';
+import SocketContext from '../../../src/SocketContext';
 import { useContentContext } from '../../ContentProvider';
 
 export default function Board() {

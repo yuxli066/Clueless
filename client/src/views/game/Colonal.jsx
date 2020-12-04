@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { Box } from '@chakra-ui/react';
 import colonel_mustard from '../../images/colonel_mustard.jpg';
 import not_colonel_mustard from '../../images/colonel_mustard_Not_You.jpg';
-import { Box } from '@chakra-ui/react';
-import SocketContext from '../../SocketContext';
 
 export default function Colonel(props) {
   const [pos, setPos] = useState(props.initialPos);
