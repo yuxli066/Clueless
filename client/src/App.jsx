@@ -66,10 +66,10 @@ function GameSession() {
 
   return (
     <Switch>
-      <Route path={`${match.path}/game`}>
+      <Route exact path={`${match.path}/game`}>
         <GamePage />
       </Route>
-      <Route path={`${match.path}/lobby`}>
+      <Route exact path={`${match.path}/lobby`}>
         <GameLobby />
       </Route>
       <Route path="*">
