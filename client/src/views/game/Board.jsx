@@ -9,7 +9,8 @@ export default function Board() {
   // TODO we can inline this var if we want!
   // using useMemo so that eslint is happy
   const Content = useContentContext();
-  const initialLocation = useMemo(() => ({ x: Math.random() * 700, y: Math.random() * 600 }), []);
+  // const initialLocation = useMemo(() => ({ x: Math.random() * 700, y: Math.random() * 600 }), []);
+  const initialLocation = useMemo(() => ({ x: 2, y: 7 }), []);
   const id = useRef(undefined);
   const [positions, setPositions] = useState({ temp_initial: initialLocation });
   const positionRef = useRef(positions);
@@ -328,12 +329,14 @@ export default function Board() {
 
             {/**TODO: create initial positions for characters */}
             {Object.entries(positions).map(([key, pos]) => (
-              <Colonel
-                key={key}
-                id={key}
-                initialPos={{ x: pos.x, y: pos.y }}
-                movable={key === id.current}
-              />
+              <GridItem colStart={pos.x} rowStart={pos.y}>
+                <Colonel
+                  key={key}
+                  id={key}
+                  initialPos={{ x: pos.x, y: pos.y }}
+                  movable={key === id.current}
+                />
+              </GridItem>
             ))}
           </Grid>
         </GridItem>
