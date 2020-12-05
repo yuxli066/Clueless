@@ -1,10 +1,10 @@
 import React from 'react';
 import Board from './Board';
 
-function GameController() {
+function GameController(props) {
   return (
     <div className="innerContainer">
-      <Board />
+      <Board playerMap={props.playerMap} />
     </div>
   );
 }

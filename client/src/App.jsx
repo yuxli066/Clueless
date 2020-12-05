@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import backgroundImg from './images/background.jpg';
@@ -7,6 +7,8 @@ import SocketContext, { SocketProvider, SocketGate } from './SocketContext';
 import { ContentProvider } from './ContentProvider';
 import GamePage from './views/GamePage';
 import GameLobby from './components/GameLobby';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
   return (
@@ -34,7 +36,9 @@ function App() {
               {/* TODO make a more aesthetic loading component */}
               <SocketGate loading={<p>establishing websocket connection...</p>}>
                 <ContentProvider>
-                  <GameSession />
+                  <DndProvider backend={HTML5Backend}>
+                    <GameSession />
+                  </DndProvider>
                 </ContentProvider>
               </SocketGate>
             </SocketProvider>
@@ -47,14 +51,17 @@ function App() {
 
 function GameSession() {
   const socket = useContext(SocketContext);
+  const [playerMap, setPlayerMap] = useState();
   useEffect(() => {
     console.log('joining the single instance room...');
     // TODO in the future, we will need a request/response for getting a lobby
     socket.emit('join', 'single-instance-game');
+    socket.on('playerMap', setPlayerMap);
 
     return () => {
       console.log('unmounting and disconnecting from the single instance room...');
       socket.emit('leave', 'single-instance-game');
+      socket.off('playerMap', setPlayerMap);
     };
   }, [socket]);
 
@@ -63,7 +70,7 @@ function GameSession() {
   return (
     <Switch>
       <Route path={`${match.path}/game`}>
-        <GamePage />
+        <GamePage playerMap={playerMap} />
       </Route>
       <Route path={`${match.path}/lobby`}>
         <GameLobby />

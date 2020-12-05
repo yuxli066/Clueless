@@ -1,37 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box } from '@chakra-ui/react';
 import colonel_mustard from '../../images/colonel_mustard.jpg';
-import not_colonel_mustard from '../../images/colonel_mustard_Not_You.jpg';
+// import not_colonel_mustard from '../../images/colonel_mustard_Not_You.jpg';
+import { useDrag } from 'react-dnd';
+import { ItemTypes } from './ItemTypes';
 
-export default function Colonel(props) {
-  const [pos, setPos] = useState(props.initialPos);
-
-  useEffect(() => {
-    setPos(props.initialPos);
-  }, [props.initialPos]);
-
-  const dragStart = (e) => {
-    const target = e.target;
-    e.dataTransfer.setData('player_id', target.id);
-    setTimeout(() => {
-      target.style.display = 'none';
-    }, 0);
-  };
-
-  const dragOver = (e) => {
-    e.stopPropagation();
-  };
-
+export default function Colonel({ id, movable }) {
+  const [{}, drag] = useDrag({
+    item: { type: ItemTypes.PLAYER },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
   return (
     <Box
-      id={props.id}
-      draggable={props.movable}
-      onDragStart={dragStart}
-      onDragOver={dragOver}
+      ref={drag}
+      id={id}
       backgroundColor="black"
-      backgroundImage={props.movable ? `url(${colonel_mustard})` : `url(${not_colonel_mustard})`}
+      backgroundImage={`url(${colonel_mustard})`}
       width="100px"
       height="100px"
-    />
+    ></Box>
   );
 }

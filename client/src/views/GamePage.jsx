@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './css/views.module.css';
 import GameController from './game/GameController';
 
-function GamePage() {
+function GamePage(props) {
   // FIXME get rid of this eslint disable!
   // eslint-disable-next-line no-unused-vars
   const [fields, setFields] = useState([]);
@@ -22,7 +22,7 @@ function GamePage() {
   }, []);
   return (
     <section id="team" className="team">
-      <GameController />
+      <GameController playerMap={props.playerMap} />
     </section>
   );
 }
