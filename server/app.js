@@ -93,11 +93,12 @@ io.on('connect', (socket) => {
     // If no room, create room, else create new player in existing room.
     let characterName,
       playerMap = roomMap.has(joinedRoom) ? roomMap.get(joinedRoom) : new Map(),
-      usedPlayerNames = new Set(playerMap.values()),
+      playerNamesArray = [];
+    playerMap.forEach((playa) => playerNamesArray.push(playa.name));
+    let usedPlayerNames = new Set(playerNamesArray),
       remainingNames = new Set([...PLAYERS].filter((player) => !usedPlayerNames.has(player))),
       initialPosition,
       playerInfo = {};
-
     if (!roomMap.has(joinedRoom)) {
       characterName = Array.from(PLAYERS)[Math.floor(Math.random() * PLAYERS.size)];
       roomMap.set(joinedRoom, new Map([]));
