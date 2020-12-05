@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box } from '@chakra-ui/react';
 import colonel_mustard from '../../images/colonel_mustard.jpg';
 import not_colonel_mustard from '../../images/colonel_mustard_Not_You.jpg';
@@ -7,7 +7,6 @@ export default function Colonel(props) {
   const [pos, setPos] = useState(props.initialPos);
 
   useEffect(() => {
-    console.log('pos:' + pos);
     setPos(props.initialPos);
   }, [props.initialPos]);
 

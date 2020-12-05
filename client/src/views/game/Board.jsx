@@ -223,7 +223,7 @@ export default function Board() {
 
 function RoomHallway(props) {
   const socket = useContext(SocketContext);
-  let children;
+  // let children;
 
   const drop = (e) => {
     e.preventDefault();
