@@ -33,7 +33,7 @@ export default function Board(props) {
   const socket = useContext(SocketContext);
   const id = useRef(undefined);
   const showToast = useToast();
-  const initialLocation = useMemo(() => getInitialLocation('Colonel Mustard'), [props.playerMap]);
+  const initialLocation = useMemo(() => getInitialLocation('Colonel Mustard'), []);
   const [positions, setPositions] = useState(initialLocation);
   const positionRef = useRef(positions);
 
@@ -62,7 +62,7 @@ export default function Board(props) {
 
   const handlePosition = useCallback((pos) => {
     console.log('Changed Position!', pos);
-    setPositions(pos);
+    //setPositions(pos);
   }, []);
 
   const handleId = useCallback((clientId) => {
