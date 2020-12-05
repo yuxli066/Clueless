@@ -92,6 +92,7 @@ io.on('connect', (socket) => {
 
       console.log('your player name is going to be:', characterName);
       playerMap.set(socket.id, characterName);
+      io.in(joinedRoom).emit('playerMap', playerMap);
     }
 
     // TODO can we get the player map sooner than here?

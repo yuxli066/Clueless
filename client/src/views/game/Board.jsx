@@ -330,7 +330,6 @@ const RoomHallway = ({ colStart, rowStart, children, id, imageUrl }) => {
       rowStart={rowStart}
       backgroundImage={`url(${imageUrl})`}
     >
-      {' '}
       {children}
     </GridItem>
   );
