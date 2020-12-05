@@ -27,8 +27,8 @@ export default function GameLobby() {
     socket.on('startGame', handleGameStart);
 
     return () => {
-      socket.off('playerList', setConnectedPlayers);
-      socket.off('startGame', handleGameStart);
+      socket.off('playerList');
+      socket.off('startGame');
     };
   }, [socket, handleGameStart]);
 
@@ -54,7 +54,6 @@ export default function GameLobby() {
         <Text>Get 3-5 friends to join this lobby to start!</Text>
       </Center>
       <Center>
-        {/* FIXME don't forget to undo this! */}
         <Link
           disabled={connectedPlayers.length < 4 || connectedPlayers.length > 6}
           component={StartGameButton}

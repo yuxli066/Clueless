@@ -58,10 +58,10 @@ export default function Board() {
 
     // make sure to un-register ourselves when we unmount!
     return () => {
-      socket.off('response', handleResponse);
-      socket.off('playerMoved', handlePosition);
-      socket.off('clientId', handleId);
-      socket.off('notification', handleResponse);
+      socket.off('response');
+      socket.off('playerMoved');
+      socket.off('clientId');
+      socket.off('notification');
     };
   }, [socket, handlePosition, handleResponse, handleMessageResponse, handleId]);
 
