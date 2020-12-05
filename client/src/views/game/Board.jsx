@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
 import { useToast, Grid, GridItem } from '@chakra-ui/react';
 import { useDrop } from 'react-dnd';
+// eslint-disable-next-line no-unused-vars
 import Colonel from './Colonal';
 import GameCard from './GameCard';
 import { ItemTypes } from './ItemTypes';
@@ -8,41 +9,17 @@ import { observe, movePlayer } from './observers';
 import SocketContext from '../../../src/SocketContext';
 import { useContentContext } from '../../ContentProvider';
 
-const getInitialLocation = (playerName) => {
-  switch (playerName) {
-    case 'Colonel Mustard':
-      return [2, 2];
-    case 'Rev. Green':
-      return [3, 7];
-    case 'Professor Plum':
-      return [1, 3];
-    case 'Miss Scarlet':
-      return [5, 1];
-    case 'Mrs. Peacock':
-      return [1, 5];
-    case 'Mrs. White':
-      return [5, 7];
-    default:
-      return 'none';
-  }
-};
-
-export default function Board(props) {
+export default function Board({ playerMap, initLocation }) {
   // using useMemo so that eslint is happy
   const Content = useContentContext();
   const socket = useContext(SocketContext);
-  const id = useRef(undefined);
   const showToast = useToast();
-  const initialLocation = useMemo(() => getInitialLocation('Colonel Mustard'), []);
-  const [positions, setPositions] = useState(initialLocation);
+  const [positions, setPositions] = useState([initLocation]);
   const positionRef = useRef(positions);
 
   useEffect(() => {
     positionRef.current = positions;
   }, [positions]);
-  useEffect(() => {
-    socket.emit('newPlayer', initialLocation);
-  }, [socket, initialLocation]);
   useEffect(() => observe((newPos) => setPositions(newPos)));
   // use of useCallback here allows for these messages to only be registered once to the websocket
   const handleResponse = useCallback((resp) => console.log('Response from server: ', resp), []);
@@ -65,34 +42,16 @@ export default function Board(props) {
     //setPositions(pos);
   }, []);
 
-  const handleId = useCallback((clientId) => {
-    id.current = clientId;
-  }, []);
-
   useEffect(() => {
     socket.on('response', handleResponse);
     socket.on('playerMoved', handlePosition);
-    socket.on('clientId', handleId);
     socket.on('notification', handleMessageResponse);
-    // console.log("playa playa map")
-    // console.log(props.playerMap)
-    // console.log("playa playa map")
-    // console.log(`You are playing as: ${props.playerMap[id.current]}, your initial location is: ${JSON.stringify(initialLocation)}`)
     return () => {
       socket.off('response', handleResponse);
       socket.off('playerMoved', handlePosition);
-      socket.off('clientId', handleId);
       socket.off('notification', handleResponse);
     };
-  }, [
-    socket,
-    handlePosition,
-    handleResponse,
-    handleMessageResponse,
-    handleId,
-    props.playerMap,
-    initialLocation,
-  ]);
+  }, [socket, handlePosition, handleResponse, handleMessageResponse]);
 
   // FIXME handle this eslint diable!
   // eslint-disable-next-line no-unused-vars
@@ -101,11 +60,37 @@ export default function Board(props) {
     socket.emit('display_notification', notificationString);
   }
 
+  // render client
   const renderPiece = (x, y) => {
-    const [playerX, playerY] = positions;
-    const playerExists = x === playerX && y === playerY;
-    return playerExists ? <Colonel id={'mustard'} /> : null;
+    // console.log(props.playerMap)
+    // console.log(positions)
+    // let player;
+    // Object.entries(positions).forEach(([key, pos]) => {
+    //   const [playerX, playerY] = pos;
+    //   const playerExists = x === playerX && y === playerY;
+    //   player = ( playerExists ?
+    //     <Colonel
+    //       key={key}
+    //       id={key} />
+    //     : null)
+    // })
+    // return player;
   };
+
+  // // render other clients
+  // const renderPiece = (x, y) => {
+  //   {Object.entries(positions).map(([key, pos]) => (
+  //     <Colonel
+  //       key={key}
+  //       id={key}
+  //       initialPos={{ x: pos.x, y: pos.y }}
+  //       movable={key === id.current}
+  //     />
+  //   ))}
+  //   const [playerX, playerY] = positions;
+  //   const playerExists = x === playerX && y === playerY;
+  //   return playerExists ? <Colonel id={'mustard'} /> : null;
+  // };
 
   return (
     <div>
