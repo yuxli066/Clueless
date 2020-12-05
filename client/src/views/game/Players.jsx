@@ -1,3 +1,4 @@
+//TODO: Do we even need this? Can change UI of lobby to use same image sizes and reuse LobbyPlayer
 import React from 'react';
 import { useContentContext } from '../../ContentProvider';
 
@@ -33,7 +34,7 @@ export default function Players({ name, self }) {
       <img
         alt={name}
         src={content.images[profilePicture].default}
-        style={{ width: '50%', height: '50%', alignContent: 'center' }}
+        style={{ width: '50%', height: '50%' }}
       />
       <div></div>
       {/* TODO i want this and the image on one line! */}

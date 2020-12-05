@@ -113,11 +113,10 @@ export default function Board() {
           >
             <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
               {connectedPlayers.map((player) => (
-                <GridItem rowSpan={13} colSpan={1} key={player.id}>
+                <GridItem rowSpan={1} colSpan={1} key={player.id} style={{ textAlign: 'center' }}>
                   <Center>
                     <Players name={player.name} self={player.id === socket.id} />
                   </Center>
-                  <Divider margin={5} />
                 </GridItem>
               ))}
             </Grid>
