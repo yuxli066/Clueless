@@ -192,7 +192,7 @@ function GameCard() {
             <br />
             <div>
               <select>
-                <option selected>Choose an item...</option>
+                <option value="0">Choose an item...</option>
                 <option value="1">Suggestion</option>
                 <option value="2">Accusation</option>
               </select>
@@ -205,7 +205,7 @@ function GameCard() {
             <br />
             <div>
               <select>
-                <option selected>Choose an item...</option>
+                <option value="0">Choose an item...</option>
                 <option value="1">Candlestick</option>
                 <option value="2">Dagger/Knife</option>
                 <option value="3">Lead Pipe</option>
@@ -222,7 +222,7 @@ function GameCard() {
             <br />
             <div>
               <select>
-                <option selected>Choose an item...</option>
+                <option value="0">Choose an item...</option>
                 <option value="1">Kitchen</option>
                 <option value="2">Hall</option>
                 <option value="3">Ballroom</option>
@@ -243,7 +243,7 @@ function GameCard() {
             <br />
             <div>
               <select>
-                <option selected>Choose an item...</option>
+                <option value="0">Choose an item...</option>
                 <option value="1">Miss Scarlett</option>
                 <option value="2">Professor Plum</option>
                 <option value="3">Mrs Peacock</option>

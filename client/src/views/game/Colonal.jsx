@@ -5,9 +5,9 @@ import not_colonel_mustard from '../../images/colonel_mustard_Not_You.jpg';
 
 export default function Colonel(props) {
   const [pos, setPos] = useState(props.initialPos);
-  const socket = useContext(SocketContext);
 
   useEffect(() => {
+    console.log('pos:' + pos);
     setPos(props.initialPos);
   }, [props.initialPos]);
 
@@ -22,15 +22,6 @@ export default function Colonel(props) {
   const dragOver = (e) => {
     e.stopPropagation();
   };
-
-  // function handleOnStop(e, pos) {
-  //   if (movable) {
-  //     const { x, y } = pos;
-  //     setPos({ x, y });
-  //     socket.emit('playerMovement', { x: pos.x, y: pos.y });
-  //   }
-  //   console.log('pos is', pos);
-  // }
 
   return (
     <Box

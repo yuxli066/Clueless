@@ -6,21 +6,18 @@ import SocketContext from '../../../src/SocketContext';
 import { useContentContext } from '../../ContentProvider';
 
 export default function Board() {
-  // TODO we can inline this var if we want!
   // using useMemo so that eslint is happy
   const Content = useContentContext();
-  // const initialLocation = useMemo(() => ({ x: Math.random() * 700, y: Math.random() * 600 }), []);
+  const socket = useContext(SocketContext);
   const initialLocation = useMemo(() => ({ x: 2, y: 7 }), []);
-  const id = useRef(undefined);
   const [positions, setPositions] = useState({ temp_initial: initialLocation });
+  const id = useRef(undefined);
   const positionRef = useRef(positions);
   const showToast = useToast();
 
   useEffect(() => {
     positionRef.current = positions;
   }, [positions]);
-
-  const socket = useContext(SocketContext);
 
   useEffect(() => {
     socket.emit('newPlayer', initialLocation);
@@ -225,6 +222,9 @@ export default function Board() {
 }
 
 function RoomHallway(props) {
+  const socket = useContext(SocketContext);
+  let children;
+
   const drop = (e) => {
     e.preventDefault();
     const player_id = e.dataTransfer.getData('player_id');
@@ -233,6 +233,17 @@ function RoomHallway(props) {
     player.style.margin = 'auto';
     player.style.marginTop = '2em';
     e.target.appendChild(player);
+    const newPos = { x: props.colStart, y: props.rowStart };
+    socket.emit('playerMovement', newPos);
+    console.log('pos is', newPos);
+    // Not sure if we need this below:
+    // was thinking of passing position to children so other clients can have access to those positions
+    // bind children to props to pass position to player level comp
+    // children = React.children.map(props.children, child => {
+    //   return React.cloneElement(child, {
+    //     someFunction: () => this.setPos(newPos)
+    //   });
+    // });
   };
 
   const dragOver = (e) => {
