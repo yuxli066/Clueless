@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } from 'react';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
-import { useToast, Grid, GridItem, Center, Divider } from '@chakra-ui/react';
+import { useToast, Grid, GridItem, Center } from '@chakra-ui/react';
 import GameCard from './GameCard';
 import Players from './Players';
 import { useContentContext } from '../../ContentProvider';
