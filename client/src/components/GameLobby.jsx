@@ -4,12 +4,18 @@ import SocketContext from '../SocketContext';
 import LobbyPlayer from './LobbyPlayer';
 import { Box, Button, Center, Divider, Heading, List, ListItem, Text } from '@chakra-ui/react';
 
-export default function GameLobby() {
+export default function GameLobby({ lobby }) {
   const socket = useContext(SocketContext);
   const [connectedPlayers, setConnectedPlayers] = useState([]);
   const history = useHistory();
   // TODO I feel like there should be a better way to do this...
   const historyRef = useRef(history);
+  // NOTE we most likely don't need this but I'm putting it here in the very rare chance lobby changes
+  const lobbyRef = useRef(lobby);
+
+  useEffect(() => {
+    lobbyRef.current = lobby;
+  }, [lobby]);
 
   useEffect(() => {
     historyRef.current = history;
@@ -17,7 +23,7 @@ export default function GameLobby() {
 
   const handleGameStart = useCallback(() => {
     console.log('redirecting!!');
-    historyRef.current.push('/0/game');
+    historyRef.current.push(`/${lobbyRef.current}/game`);
   }, []);
 
   // TODO we should just listen for the message type we need for the lobby. the room was established in the session component!
@@ -56,8 +62,8 @@ export default function GameLobby() {
       <Center>
         <Link
           disabled={connectedPlayers.length < 4 || connectedPlayers.length > 6}
+          lobby={lobbyRef.current}
           component={StartGameButton}
-          to="/0/game"
         >
           Start the Game!
         </Link>
@@ -69,7 +75,7 @@ export default function GameLobby() {
 const StartGameButton = React.forwardRef((props, ref) => {
   const socket = useContext(SocketContext);
 
-  const { disabled } = props;
+  const { disabled, lobby } = props;
 
   // FIXME update socket to properly emit game start (either via game room prop or on the server side!)
   return (
@@ -77,7 +83,7 @@ const StartGameButton = React.forwardRef((props, ref) => {
       colorScheme="blue"
       margin={4}
       disabled={disabled}
-      onClick={() => socket.emit('requestGameStart', 'single-instance-game')}
+      onClick={() => socket.emit('requestGameStart', lobby)}
     >
       Start the Game!
     </Button>

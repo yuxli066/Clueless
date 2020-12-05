@@ -29,6 +29,7 @@ function App() {
               <LandingPage />
             </ContentProvider>
           </Route>
+          {/* TODO consider adding something here first to create a new lobby or join a random one */}
           <Route path="/:game">
             <SocketProvider>
               {/* TODO make a more aesthetic loading component */}
@@ -47,24 +48,26 @@ function App() {
 
 function GameSession() {
   const socket = useContext(SocketContext);
-  const lobby = useRouteMatch();
+  const match = useRouteMatch();
+  const lobby = match.url.substring(1);
+
   useEffect(() => {
-    console.log('joining lobby', lobby.path);
-    socket.emit('join', lobby.path);
+    console.log('joining lobby', lobby);
+    socket.emit('join', lobby);
 
     return () => {
-      console.log('unmounting and disconnecting from lobby', lobby.path);
-      socket.emit('leave', lobby.path);
+      console.log('unmounting and disconnecting from lobby', lobby);
+      socket.emit('leave', lobby);
     };
   }, [socket, lobby]);
 
   return (
     <Switch>
-      <Route path={`${lobby.path}/game`}>
+      <Route path={`${match.path}/game`}>
         <GamePage />
       </Route>
-      <Route path={`${lobby.path}/lobby`}>
-        <GameLobby />
+      <Route path={`${match.path}/lobby`}>
+        <GameLobby lobby={lobby} />
       </Route>
     </Switch>
   );
