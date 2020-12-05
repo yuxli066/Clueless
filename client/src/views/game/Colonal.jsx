@@ -6,6 +6,7 @@ import { useDrag } from 'react-dnd';
 import { ItemTypes } from './ItemTypes';
 
 export default function Colonel({ id, movable }) {
+  // eslint-disable-next-line
   const [{}, drag] = useDrag({
     item: { type: ItemTypes.PLAYER },
     collect: (monitor) => ({

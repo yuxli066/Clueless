@@ -310,6 +310,7 @@ export default function Board(props) {
 }
 
 const RoomHallway = ({ colStart, rowStart, children, id, imageUrl }) => {
+  // eslint-disable-next-line
   const [{ canDrop }, drop] = useDrop({
     accept: ItemTypes.PLAYER,
     canDrop: () => true,
