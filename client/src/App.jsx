@@ -49,6 +49,7 @@ function App() {
   );
 }
 
+// NOTE: how come socket io does not work if I wrap it with a Promise?
 function GameSession() {
   const socket = useContext(SocketContext);
   const [connectedPlayers, setConnectedPlayers] = useState([]);
