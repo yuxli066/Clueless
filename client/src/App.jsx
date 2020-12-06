@@ -7,6 +7,7 @@ import SocketContext, { SocketProvider, SocketGate } from './SocketContext';
 import { ContentProvider } from './ContentProvider';
 import GamePage from './views/GamePage';
 import GameLobby from './components/GameLobby';
+import PageNotFound from './views/PageNotFound';
 
 function App() {
   return (
@@ -39,6 +40,9 @@ function App() {
               </SocketGate>
             </SocketProvider>
           </Route>
+          <Route path="*">
+            <PageNotFound />
+          </Route>
         </Switch>
       </div>
     </div>
@@ -62,11 +66,14 @@ function GameSession() {
 
   return (
     <Switch>
-      <Route path={`${match.path}/game`}>
+      <Route exact path={`${match.path}/game`}>
         <GamePage />
       </Route>
-      <Route path={`${match.path}/lobby`}>
+      <Route exact path={`${match.path}/lobby`}>
         <GameLobby />
+      </Route>
+      <Route path="*">
+        <PageNotFound />
       </Route>
     </Switch>
   );
