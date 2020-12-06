@@ -126,6 +126,11 @@ io.on('connect', (socket) => {
     }
     // TODO broadcast that the client joined the room!
     io.in(joinedRoom).emit('playerList', serializedPlayerMap);
+    io.in(joinedRoom).emit('yourClient', {
+      id: socket.id,
+      name: characterName,
+      initPosition: initialPosition,
+    });
   });
 
   // TODO do we want to move this to the client not having to say they left the room? (assumes clients can only be in one room at a time!)

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
 import { useToast, Grid, GridItem } from '@chakra-ui/react';
 import { useDrop } from 'react-dnd';
-// eslint-disable-next-line no-unused-vars
 import Colonel from './Colonal';
 import GameCard from './GameCard';
 import { ItemTypes } from './ItemTypes';
@@ -9,21 +8,19 @@ import { observe, movePlayer } from './observers';
 import SocketContext from '../../../src/SocketContext';
 import { useContentContext } from '../../ContentProvider';
 
-export default function Board({ playerMap, initLocation }) {
+export default function Board({ playerMap, yourself }) {
   // using useMemo so that eslint is happy
   const Content = useContentContext();
   const socket = useContext(SocketContext);
   const showToast = useToast();
-  const [positions, setPositions] = useState([initLocation]);
-  const positionRef = useRef(positions);
-
+  const [connectedPlayers, setConnectedPlayers] = useState([]);
+  const [currentPosition, setCurrentPosition] = useState(yourself.initPosition);
+  const positionRef = useRef(currentPosition);
   useEffect(() => {
-    positionRef.current = positions;
-  }, [positions]);
-  useEffect(() => observe((newPos) => setPositions(newPos)));
-  // use of useCallback here allows for these messages to only be registered once to the websocket
+    positionRef.current = currentPosition;
+  }, [currentPosition]);
+  useEffect(() => observe((newPos) => setCurrentPosition(newPos)));
   const handleResponse = useCallback((resp) => console.log('Response from server: ', resp), []);
-
   const handleMessageResponse = useCallback(
     (resp) => {
       console.log('client said:', resp);
@@ -43,6 +40,7 @@ export default function Board({ playerMap, initLocation }) {
   }, []);
 
   useEffect(() => {
+    setConnectedPlayers(playerMap);
     socket.on('response', handleResponse);
     socket.on('playerMoved', handlePosition);
     socket.on('notification', handleMessageResponse);
@@ -51,7 +49,7 @@ export default function Board({ playerMap, initLocation }) {
       socket.off('playerMoved', handlePosition);
       socket.off('notification', handleResponse);
     };
-  }, [socket, handlePosition, handleResponse, handleMessageResponse]);
+  }, [socket, handlePosition, handleResponse, handleMessageResponse, playerMap]);
 
   // FIXME handle this eslint diable!
   // eslint-disable-next-line no-unused-vars
@@ -60,37 +58,24 @@ export default function Board({ playerMap, initLocation }) {
     socket.emit('display_notification', notificationString);
   }
 
-  // render client
-  const renderPiece = (x, y) => {
-    // console.log(props.playerMap)
-    // console.log(positions)
-    // let player;
-    // Object.entries(positions).forEach(([key, pos]) => {
-    //   const [playerX, playerY] = pos;
-    //   const playerExists = x === playerX && y === playerY;
-    //   player = ( playerExists ?
-    //     <Colonel
-    //       key={key}
-    //       id={key} />
-    //     : null)
-    // })
-    // return player;
+  // render client and other players
+  const renderClient = (x, y) => {
+    const [playerX, playerY] = currentPosition;
+    const playerExists = x === playerX && y === playerY;
+    let otherPlayerExists;
+    if (connectedPlayers.length > 0) {
+      for (let other of connectedPlayers) {
+        const [playerX, playerY] = other.playaInformation.initPosition;
+        otherPlayerExists = x === playerX && y === playerY;
+        if (otherPlayerExists) {
+          console.log(other, otherPlayerExists);
+        }
+      }
+    }
+    if (playerExists) return <Colonel id={'Client'} />;
+    else if (otherPlayerExists) return <Colonel id={'Other'} />;
+    else return null;
   };
-
-  // // render other clients
-  // const renderPiece = (x, y) => {
-  //   {Object.entries(positions).map(([key, pos]) => (
-  //     <Colonel
-  //       key={key}
-  //       id={key}
-  //       initialPos={{ x: pos.x, y: pos.y }}
-  //       movable={key === id.current}
-  //     />
-  //   ))}
-  //   const [playerX, playerY] = positions;
-  //   const playerExists = x === playerX && y === playerY;
-  //   return playerExists ? <Colonel id={'mustard'} /> : null;
-  // };
 
   return (
     <div>
@@ -113,8 +98,24 @@ export default function Board({ playerMap, initLocation }) {
             w="100%"
             h="100%"
           >
+            <StartingLocations colStart={3} rowStart={7}>
+              {renderClient(3, 7)}
+            </StartingLocations>
+            <StartingLocations colStart={1} rowStart={3}>
+              {renderClient(1, 3)}
+            </StartingLocations>
+            <StartingLocations colStart={5} rowStart={1}>
+              {renderClient(5, 1)}
+            </StartingLocations>
+            <StartingLocations colStart={1} rowStart={5}>
+              {renderClient(1, 5)}
+            </StartingLocations>
+            <StartingLocations colStart={5} rowStart={7}>
+              {renderClient(5, 7)}
+            </StartingLocations>
+
             <RoomHallway colStart={2} rowStart={2} imageUrl={Content.images['study-room'].default}>
-              {renderPiece(2, 2)}
+              {renderClient(2, 2)}
             </RoomHallway>
 
             <RoomHallway
@@ -122,11 +123,11 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={2}
               imageUrl={Content.images['horizontal-hall'].default}
             >
-              {renderPiece(3, 2)}
+              {renderClient(3, 2)}
             </RoomHallway>
 
             <RoomHallway colStart={4} rowStart={2} imageUrl={Content.images['hall-room'].default}>
-              {renderPiece(4, 2)}
+              {renderClient(4, 2)}
             </RoomHallway>
 
             <RoomHallway
@@ -134,11 +135,11 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={2}
               imageUrl={Content.images['horizontal-hall'].default}
             >
-              {renderPiece(5, 2)}
+              {renderClient(5, 2)}
             </RoomHallway>
 
             <RoomHallway colStart={6} rowStart={2} imageUrl={Content.images['lounge-room'].default}>
-              {renderPiece(6, 2)}
+              {renderClient(6, 2)}
             </RoomHallway>
 
             <RoomHallway
@@ -146,7 +147,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={3}
               imageUrl={Content.images['vertical-hall'].default}
             >
-              {renderPiece(2, 3)}
+              {renderClient(2, 3)}
             </RoomHallway>
 
             <EmptySpace colStart={3} rowStart={3} />
@@ -156,7 +157,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={3}
               imageUrl={Content.images['vertical-hall'].default}
             >
-              {renderPiece(4, 3)}
+              {renderClient(4, 3)}
             </RoomHallway>
 
             <EmptySpace colStart={5} rowStart={3} />
@@ -166,7 +167,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={3}
               imageUrl={Content.images['vertical-hall'].default}
             >
-              {renderPiece(6, 3)}
+              {renderClient(6, 3)}
             </RoomHallway>
 
             <RoomHallway
@@ -174,7 +175,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={4}
               imageUrl={Content.images['library-room'].default}
             >
-              {renderPiece(2, 4)}
+              {renderClient(2, 4)}
             </RoomHallway>
 
             <RoomHallway
@@ -182,7 +183,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={4}
               imageUrl={Content.images['horizontal-hall'].default}
             >
-              {renderPiece(3, 4)}
+              {renderClient(3, 4)}
             </RoomHallway>
 
             <RoomHallway
@@ -190,7 +191,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={4}
               imageUrl={Content.images['billiards-room'].default}
             >
-              {renderPiece(4, 4)}
+              {renderClient(4, 4)}
             </RoomHallway>
 
             <RoomHallway
@@ -198,11 +199,11 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={4}
               imageUrl={Content.images['horizontal-hall'].default}
             >
-              {renderPiece(5, 4)}
+              {renderClient(5, 4)}
             </RoomHallway>
 
             <RoomHallway colStart={6} rowStart={4} imageUrl={Content.images['dining-room'].default}>
-              {renderPiece(6, 4)}
+              {renderClient(6, 4)}
             </RoomHallway>
 
             <RoomHallway
@@ -210,7 +211,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={5}
               imageUrl={Content.images['vertical-hall'].default}
             >
-              {renderPiece(2, 5)}
+              {renderClient(2, 5)}
             </RoomHallway>
 
             <EmptySpace colStart={3} rowStart={5} />
@@ -220,7 +221,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={5}
               imageUrl={Content.images['vertical-hall'].default}
             >
-              {renderPiece(4, 5)}
+              {renderClient(4, 5)}
             </RoomHallway>
 
             <EmptySpace colStart={5} rowStart={5} />
@@ -230,7 +231,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={5}
               imageUrl={Content.images['vertical-hall'].default}
             >
-              {renderPiece(6, 5)}
+              {renderClient(6, 5)}
             </RoomHallway>
 
             <EmptySpace colStart={1} rowStart={6} />
@@ -240,7 +241,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={6}
               imageUrl={Content.images['conservatory-room'].default}
             >
-              {renderPiece(2, 6)}
+              {renderClient(2, 6)}
             </RoomHallway>
 
             <RoomHallway
@@ -248,11 +249,11 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={6}
               imageUrl={Content.images['horizontal-hall'].default}
             >
-              {renderPiece(3, 6)}
+              {renderClient(3, 6)}
             </RoomHallway>
 
             <RoomHallway colStart={4} rowStart={6} imageUrl={Content.images['ball-room'].default}>
-              {renderPiece(4, 6)}
+              {renderClient(4, 6)}
             </RoomHallway>
 
             <RoomHallway
@@ -260,7 +261,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={6}
               imageUrl={Content.images['horizontal-hall'].default}
             >
-              {renderPiece(5, 6)}
+              {renderClient(5, 6)}
             </RoomHallway>
 
             <RoomHallway
@@ -268,7 +269,7 @@ export default function Board({ playerMap, initLocation }) {
               rowStart={6}
               imageUrl={Content.images['kitchen-room'].default}
             >
-              {renderPiece(6, 6)}
+              {renderClient(6, 6)}
             </RoomHallway>
 
             <EmptySpace colStart={7} rowStart={6} />
@@ -320,6 +321,31 @@ const RoomHallway = ({ colStart, rowStart, children, id, imageUrl }) => {
     </GridItem>
   );
 };
+
+function StartingLocations({ colStart, rowStart, children }) {
+  // eslint-disable-next-line
+  const [{ canDrop }, drop] = useDrop({
+    accept: ItemTypes.PLAYER,
+    canDrop: () => true,
+    drop: () => movePlayer(colStart, rowStart),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
+    }),
+  });
+  return (
+    <GridItem
+      colStart={colStart}
+      rowStart={rowStart}
+      backgroundRepeat="no-repeat"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundColor="tomato"
+    >
+      {children}
+    </GridItem>
+  );
+}
 
 function EmptySpace(props) {
   return (
