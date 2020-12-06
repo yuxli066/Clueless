@@ -51,38 +51,21 @@ function App() {
 
 function GameSession() {
   const socket = useContext(SocketContext);
-
   const [connectedPlayers, setConnectedPlayers] = useState([]);
-  // const [currentPlayer,setCurrentPlayer] = useState({});
-
-  const handleEvent = useCallback(
-    (eventName, timeout = 5000) => {
-      return new Promise((resolve, reject) => {
-        let timer;
-        function responseHandler(clientId) {
-          resolve(clientId);
-          clearTimeout(timer);
-        }
-        socket.once(eventName, responseHandler);
-        timer = setTimeout(() => {
-          reject(new Error(`timeout waiting for event ${eventName}`));
-        }, timeout);
-      });
-    },
-    [socket],
-  );
+  const handleJoin = useCallback((playerInfo) => {
+    setConnectedPlayers(playerInfo);
+  }, []);
 
   useEffect(() => {
     console.log('joining the single instance room...');
-    // TODO in the future, we will need a request/response for getting a lobby
     socket.emit('join', 'single-instance-game');
-    handleEvent('playerList').then((playas) => setConnectedPlayers(playas));
+    socket.on('playerList', handleJoin);
     return () => {
       console.log('unmounting and disconnecting from the single instance room...');
-      socket.off('playerList', setConnectedPlayers);
+      socket.off('playerList', handleJoin);
       socket.emit('leave', 'single-instance-game');
     };
-  }, [socket, handleEvent]);
+  }, [socket, handleJoin]);
 
   const match = useRouteMatch();
 
@@ -92,7 +75,7 @@ function GameSession() {
         <GamePage playerMap={connectedPlayers} />
       </Route>
       <Route path={`${match.path}/lobby`}>
-        <GameLobby connectedPlayers={connectedPlayers} />
+        <GameLobby allPlayers={connectedPlayers} />
       </Route>
     </Switch>
   );
