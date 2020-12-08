@@ -61,7 +61,7 @@ io.on('connect', (socket) => {
 
   socket.on('disconnect', () => {
     delete position[socket.id];
-    io.emit('playerMoved', position);
+    // io.emit('playerMoved', position);
     console.log(`client ${socket.id} disconnected!`);
   });
 
@@ -194,14 +194,14 @@ io.on('connect', (socket) => {
     socket.emit('clientId', socket.id);
 
     // send positions to all clients so they get the new player
-    io.emit('playerMoved', position);
+    // io.emit('playerMoved', position);
   });
 
   socket.on('playerMovement', (movementData) => {
-    position[socket.id].x = movementData.x;
-    position[socket.id].y = movementData.y;
+    // position[socket.id].x = movementData.x;
+    // position[socket.id].y = movementData.y;
     // emit a message to all players about the player that moved
-    io.emit('playerMoved', position);
+    io.emit('playerMoved', movementData);
   });
 });
 

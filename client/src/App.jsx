@@ -5,7 +5,7 @@ import backgroundImg from './images/background.jpg';
 import LandingPage from './views/LandingPage';
 import SocketContext, { SocketProvider, SocketGate } from './SocketContext';
 import { ContentProvider } from './ContentProvider';
-import GamePage from './views/GamePage';
+import GameController from './views/game/GameController';
 import GameLobby from './components/GameLobby';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -58,7 +58,6 @@ function GameSession() {
     setConnectedPlayers(playerInfo);
   }, []);
   const handleClient = useCallback((curPlaya) => {
-    console.log(curPlaya);
     setCurrentPlayer(curPlaya);
   }, []);
 
@@ -80,7 +79,7 @@ function GameSession() {
   return (
     <Switch>
       <Route path={`${match.path}/game`}>
-        <GamePage playerMap={connectedPlayers} yourself={currentPlayer} />
+        <GameController playerMap={connectedPlayers} yourself={currentPlayer} />
       </Route>
       <Route path={`${match.path}/lobby`}>
         <GameLobby allPlayers={connectedPlayers} />
