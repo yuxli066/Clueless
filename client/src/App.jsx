@@ -82,7 +82,7 @@ function GameSession() {
         <GameController playerMap={connectedPlayers} yourself={currentPlayer} />
       </Route>
       <Route path={`${match.path}/lobby`}>
-        <GameLobby allPlayers={connectedPlayers} />
+        <GameLobby connectedPlayers={connectedPlayers} />
       </Route>
     </Switch>
   );

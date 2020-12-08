@@ -1,15 +1,14 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import SocketContext from '../SocketContext';
 import LobbyPlayer from './LobbyPlayer';
 import { Box, Button, Center, Divider, Heading, List, ListItem, Text } from '@chakra-ui/react';
 
-export default function GameLobby({ allPlayers }) {
+export default function GameLobby({ connectedPlayers }) {
   const socket = useContext(SocketContext);
   const history = useHistory();
   // TODO I feel like there should be a better way to do this...
   const historyRef = useRef(history);
-  const [connectedPlayers, setConnectedPlayers] = useState([]);
 
   useEffect(() => {
     historyRef.current = history;
@@ -24,11 +23,10 @@ export default function GameLobby({ allPlayers }) {
   useEffect(() => {
     // TODO is just using the setter here directly safe or do we need a callback?
     socket.on('startGame', handleGameStart);
-    setConnectedPlayers(allPlayers);
     return () => {
       socket.off('startGame', handleGameStart);
     };
-  }, [socket, handleGameStart, allPlayers]);
+  }, [socket, handleGameStart]);
 
   // TODO better styling!
   return (
