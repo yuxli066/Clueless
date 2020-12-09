@@ -49,7 +49,7 @@ function App() {
 function GameSession() {
   const socket = useContext(SocketContext);
   const match = useRouteMatch();
-  const lobby = match.url.substring(1);
+  const lobby = match.url.substring(1); // drop the first character (it's a '/')
 
   useEffect(() => {
     console.log('joining lobby', lobby);
