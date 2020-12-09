@@ -8,7 +8,7 @@ import SocketContext from '../../../src/SocketContext';
 import { useContentContext } from '../../ContentProvider';
 import white from '../../board-images/white-image.PNG';
 
-export default function Board({ playerMap, yourself }) {
+export default function Board({ playerMap }) {
   // using useMemo so that eslint is happy
   const Content = useContentContext();
   const socket = useContext(SocketContext);
@@ -22,6 +22,27 @@ export default function Board({ playerMap, yourself }) {
   useEffect(() => {
     positionRef.current = currentPosition;
   }, [currentPosition]);
+
+  const getPlayerImage = (playerName) => {
+    switch (playerName) {
+      case 'Mrs. Peacock':
+        return Content.images['MrsPeacock'].default;
+      case 'Colonel Mustard':
+        return Content.images['ColonelMustard'].default;
+      case 'Rev. Green':
+        return Content.images['RevGreen'].default;
+      case 'Professor Plum':
+        return Content.images['ProfPlum'].default;
+      case 'Miss Scarlet':
+        return Content.images['MissScarlett'].default;
+      case 'Mrs. Peacock':
+        return Content.images['MrsPeacock'].default;
+      case 'Mrs. White':
+        return Content.images['MrsWhite'].default;
+      default:
+        break;
+    }
+  };
 
   const handleMessageResponse = useCallback(
     (resp) => {
@@ -38,9 +59,7 @@ export default function Board({ playerMap, yourself }) {
 
   const handlePosition = useCallback(
     (movementData) => {
-      console.log(movementData);
       let newConnectedPlayers = [...connectedPlayers];
-      console.log(newConnectedPlayers);
       newConnectedPlayers.find(
         (p) => p.playaInformation.id === movementData.id,
       ).playaInformation.initPosition = movementData.pos;
@@ -51,18 +70,16 @@ export default function Board({ playerMap, yourself }) {
 
   useEffect(() => {
     setConnectedPlayers(playerMap);
-    setCurrentPosition(yourself.initPosition);
-    if (connectedPlayers && yourself.initPosition) setIsLoading(false);
-  }, [playerMap, yourself.initPosition]);
+    if (connectedPlayers) setIsLoading(false);
+  }, [playerMap]);
   useEffect(() => {
     socket.on('playerMoved', handlePosition);
+    socket.on('notification', handleMessageResponse);
     return () => {
       socket.off('playerMoved', handlePosition);
+      socket.off('notification', handleMessageResponse);
     };
   }, [socket, handlePosition]);
-
-  // socket.off('notification', handleResponse);
-  // socket.on('notification', handleMessageResponse);
 
   // FIXME handle this eslint diable!
   // eslint-disable-next-line no-unused-vars
@@ -78,14 +95,15 @@ export default function Board({ playerMap, yourself }) {
       const [playerX, playerY] = player.playaInformation.initPosition;
       let playerExists = x === playerX && y === playerY;
       if (playerExists) {
-        console.log(player);
-        const id = 'Client';
+        const playerMovable = true;
         allPlayers.push(
           <Colonel
+            playerIcon={getPlayerImage(player.playaInformation.name)}
             id={player.playaInformation.id}
             colStart={playerX}
             rowStart={playerY}
-            key={id}
+            key={player.playaInformation.id}
+            movable={playerMovable}
           />,
         );
       }

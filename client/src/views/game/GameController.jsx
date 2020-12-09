@@ -4,7 +4,7 @@ import Board from './Board';
 function GameController({ playerMap, yourself }) {
   return (
     <div className="innerContainer">
-      <Board playerMap={playerMap} yourself={yourself} />
+      <Board playerMap={playerMap} />
     </div>
   );
 }

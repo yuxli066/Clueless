@@ -53,33 +53,27 @@ function App() {
 function GameSession() {
   const socket = useContext(SocketContext);
   const [connectedPlayers, setConnectedPlayers] = useState([]);
-  const [currentPlayer, setCurrentPlayer] = useState([]);
   const handleJoin = useCallback((playerInfo) => {
     setConnectedPlayers(playerInfo);
-  }, []);
-  const handleClient = useCallback((curPlaya) => {
-    setCurrentPlayer(curPlaya);
   }, []);
 
   useEffect(() => {
     console.log('joining the single instance room...');
     socket.emit('join', 'single-instance-game');
     socket.on('playerList', handleJoin);
-    socket.on('yourClient', handleClient);
     return () => {
       console.log('unmounting and disconnecting from the single instance room...');
       socket.off('playerList', handleJoin);
-      socket.off('yourClient', handleClient);
       socket.emit('leave', 'single-instance-game');
     };
-  }, [socket, handleJoin, handleClient]);
+  }, [socket, handleJoin]);
 
   const match = useRouteMatch();
 
   return (
     <Switch>
       <Route path={`${match.path}/game`}>
-        <GameController playerMap={connectedPlayers} yourself={currentPlayer} />
+        <GameController playerMap={connectedPlayers} />
       </Route>
       <Route path={`${match.path}/lobby`}>
         <GameLobby connectedPlayers={connectedPlayers} />
