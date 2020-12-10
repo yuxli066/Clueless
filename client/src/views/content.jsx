@@ -3,7 +3,6 @@ import styles from './css/views.module.css';
 import { Link as ReactLink } from 'react-router-dom';
 import { Link } from '@chakra-ui/react';
 import { GridItem, Text } from '@chakra-ui/react';
-import { nanoid } from 'nanoid';
 
 function ColText(props) {
   const teamMotto = props.content.teamMotto ? (
@@ -111,7 +110,7 @@ function Banner(props) {
     >
       <div className={styles.banner}>
         {/* each time the link is clicked a different nanoid is created, which is expected (we should only need it once) */}
-        <Link as={ReactLink} to={`/${nanoid(10)}/lobby`} style={{ textDecoration: 'none' }}>
+        <Link as={ReactLink} to="/create-or-join" style={{ textDecoration: 'none' }}>
           <div className={styles.primary}>
             <figure>
               <Text textStyle="h4">{buttonText}</Text>
