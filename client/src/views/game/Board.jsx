@@ -17,11 +17,7 @@ export default function Board({ playerMap }) {
   /* states */
   const [loading, setIsLoading] = useState(true);
   const [connectedPlayers, setConnectedPlayers] = useState([]);
-  const [currentPosition, setCurrentPosition] = useState();
-  const positionRef = useRef(currentPosition);
-  useEffect(() => {
-    positionRef.current = currentPosition;
-  }, [currentPosition]);
+  const [clientId, setClientId] = useState(undefined);
 
   const getPlayerImage = (playerName) => {
     switch (playerName) {
@@ -35,8 +31,6 @@ export default function Board({ playerMap }) {
         return Content.images['ProfPlum'].default;
       case 'Miss Scarlet':
         return Content.images['MissScarlett'].default;
-      case 'Mrs. Peacock':
-        return Content.images['MrsPeacock'].default;
       case 'Mrs. White':
         return Content.images['MrsWhite'].default;
       default:
@@ -68,18 +62,28 @@ export default function Board({ playerMap }) {
     [connectedPlayers],
   );
 
+  const handleClientId = useCallback((id) => {
+    console.log('Client ID is: ' + id);
+    setClientId(id);
+  }, []);
+
   useEffect(() => {
     setConnectedPlayers(playerMap);
-    if (connectedPlayers) setIsLoading(false);
-  }, [playerMap]);
+    if (connectedPlayers && clientId) setIsLoading(false);
+  }, [playerMap, connectedPlayers]);
   useEffect(() => {
-    socket.on('playerMoved', handlePosition);
-    socket.on('notification', handleMessageResponse);
-    return () => {
-      socket.off('playerMoved', handlePosition);
-      socket.off('notification', handleMessageResponse);
-    };
-  }, [socket, handlePosition]);
+    if (connectedPlayers) {
+      socket.emit('board', connectedPlayers);
+      socket.on('clientId', handleClientId);
+      socket.on('playerMoved', handlePosition);
+      socket.on('notification', handleMessageResponse);
+      return () => {
+        socket.off('playerMoved', handlePosition);
+        socket.off('notification', handleMessageResponse);
+        socket.off('clientId', handleClientId);
+      };
+    }
+  }, [socket, handlePosition, handleMessageResponse, handleClientId, connectedPlayers]);
 
   // FIXME handle this eslint diable!
   // eslint-disable-next-line no-unused-vars
@@ -95,7 +99,7 @@ export default function Board({ playerMap }) {
       const [playerX, playerY] = player.playaInformation.initPosition;
       let playerExists = x === playerX && y === playerY;
       if (playerExists) {
-        const playerMovable = true;
+        const playerMovable = player.playaInformation.id === clientId;
         allPlayers.push(
           <Colonel
             playerIcon={getPlayerImage(player.playaInformation.name)}
@@ -314,7 +318,7 @@ const RoomHallway = ({ colStart, rowStart, children, id, imageUrl }) => {
     );
     socket.emit('playerMovement', { id: player.id, pos: [colStart, rowStart] });
   };
-
+  // eslint-disable-next-line
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ItemTypes.PLAYER,
     canDrop: () => true,

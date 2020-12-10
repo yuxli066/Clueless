@@ -13,10 +13,10 @@ export const ContentProvider = ({ children }) => {
   useEffect(() => {
     setLoading(true);
     const loadImages = new Promise((resolve) =>
-      resolve(require.context('./images', false, /\.(jpe?g|png)/)),
+      resolve(require.context('./images', false, /\.(jpe?g|png)/i)),
     );
     const loadBoardImages = new Promise((resolve) =>
-      resolve(require.context('./board-images', false, /\.(jpe?g|PNG)/)),
+      resolve(require.context('./board-images', false, /\.(jpe?g|png)/i)),
     );
     const loadText = new Promise((resolve) => resolve(require('./data/pageContent.json')));
     Promise.all([loadImages, loadBoardImages, loadText])

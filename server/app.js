@@ -197,6 +197,15 @@ io.on('connect', (socket) => {
     // io.emit('playerMoved', position);
   });
 
+  socket.on('board', (currentPlayers) => {
+    currentPlayers.forEach((playa) =>
+      console.log(
+        `Current players on the board: ${playa.playaInformation.id}:${playa.playaInformation.name}`,
+      ),
+    );
+    socket.emit('clientId', socket.id);
+  });
+
   socket.on('playerMovement', (movementData) => {
     // position[socket.id].x = movementData.x;
     // position[socket.id].y = movementData.y;
