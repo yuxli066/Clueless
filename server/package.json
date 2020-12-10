@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=production DEBUG='server:*' PORT=3001 node ./bin/www",
+    "start": "cross-env NODE_ENV=production DEBUG='server:*' node ./bin/www",
     "start-dev": "yarn dev",
     "dev": "cross-env NODE_ENV=development DEBUG='server:*' PORT=3001 nodemon ./bin/www",
     "test": "cross-env NODE_ENV=development DEBUG='server:*' PORT=3001 mocha test/tests.js --reporter xunit --reporter-options output=./test/results.xml --exit"
