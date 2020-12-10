@@ -20,6 +20,7 @@ COPY ./ ./
 RUN yarn build \
     && mv client/build/* server/public
 
+# NOTE this expose only works on local dev! (in heroku it's ignored!)
 EXPOSE 3001
 CMD ["yarn","workspace","server","start"]
 # =========================== Production Build =========================== #
