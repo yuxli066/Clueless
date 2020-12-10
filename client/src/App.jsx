@@ -9,6 +9,7 @@ import GameController from './views/game/GameController';
 import GameLobby from './components/GameLobby';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import PageNotFound from './views/PageNotFound';
 
 function App() {
   return (
@@ -43,6 +44,9 @@ function App() {
               </SocketGate>
             </SocketProvider>
           </Route>
+          <Route path="*">
+            <PageNotFound />
+          </Route>
         </Switch>
       </div>
     </div>
@@ -72,11 +76,14 @@ function GameSession() {
 
   return (
     <Switch>
-      <Route path={`${match.path}/game`}>
+      <Route exact path={`${match.path}/game`}>
         <GameController playerMap={connectedPlayers} />
       </Route>
-      <Route path={`${match.path}/lobby`}>
+      <Route exact path={`${match.path}/lobby`}>
         <GameLobby connectedPlayers={connectedPlayers} />
+      </Route>
+      <Route path="*">
+        <PageNotFound />
       </Route>
     </Switch>
   );
