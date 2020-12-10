@@ -1,9 +1,9 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import { useDrag } from 'react-dnd';
 import { ItemTypes } from './ItemTypes';
 
-export default function Colonel({ id, movable, playerIcon }) {
+export default function Colonel({ id, movable, playerIcon, atStartingLocation }) {
   // eslint-disable-next-line
   const [{ isDragging, canDrag }, drag] = useDrag({
     item: {
@@ -17,14 +17,19 @@ export default function Colonel({ id, movable, playerIcon }) {
     }),
   });
   return (
-    <Box
-      ref={drag}
-      opacity={isDragging ? '0.5' : '1'}
-      id={id}
-      backgroundImage={`url(${playerIcon})`}
-      width="100px"
-      height="100px"
-      zIndex={5}
-    ></Box>
+    <Center>
+      <Box
+        marginTop={atStartingLocation ? 0 : 10}
+        ref={drag}
+        opacity={isDragging ? '0.5' : '1'}
+        id={id}
+        backgroundImage={`url(${playerIcon})`}
+        width="100px"
+        height="100px"
+        zIndex={5}
+        borderRadius={20}
+        _hover={{ cursor: canDrag ? 'pointer' : 'no-drop' }}
+      ></Box>
+    </Center>
   );
 }

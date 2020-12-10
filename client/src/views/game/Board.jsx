@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { useToast, Grid, GridItem } from '@chakra-ui/react';
 import { useDrop } from 'react-dnd';
 import Colonel from './Colonal';
@@ -7,6 +7,25 @@ import { ItemTypes } from './ItemTypes';
 import SocketContext from '../../../src/SocketContext';
 import { useContentContext } from '../../ContentProvider';
 import white from '../../board-images/white-image.PNG';
+
+const getInitialLocation = (playerName) => {
+  switch (playerName) {
+    case 'Colonel Mustard':
+      return [2, 2];
+    case 'Rev. Green':
+      return [3, 7];
+    case 'Professor Plum':
+      return [1, 3];
+    case 'Miss Scarlet':
+      return [5, 1];
+    case 'Mrs. Peacock':
+      return [1, 5];
+    case 'Mrs. White':
+      return [5, 7];
+    default:
+      return 'none';
+  }
+};
 
 export default function Board({ playerMap }) {
   // using useMemo so that eslint is happy
@@ -70,7 +89,7 @@ export default function Board({ playerMap }) {
   useEffect(() => {
     setConnectedPlayers(playerMap);
     if (connectedPlayers && clientId) setIsLoading(false);
-  }, [playerMap, connectedPlayers]);
+  }, [playerMap, connectedPlayers, clientId]);
   useEffect(() => {
     if (connectedPlayers) {
       socket.emit('board', connectedPlayers);
@@ -100,6 +119,11 @@ export default function Board({ playerMap }) {
       let playerExists = x === playerX && y === playerY;
       if (playerExists) {
         const playerMovable = player.playaInformation.id === clientId;
+        const atStartingPosition =
+          JSON.stringify(getInitialLocation(player.playaInformation.name)) ===
+          JSON.stringify(player.playaInformation.initPosition)
+            ? true
+            : false;
         allPlayers.push(
           <Colonel
             playerIcon={getPlayerImage(player.playaInformation.name)}
@@ -108,6 +132,7 @@ export default function Board({ playerMap }) {
             rowStart={playerY}
             key={player.playaInformation.id}
             movable={playerMovable}
+            atStartingLocation={atStartingPosition}
           />,
         );
       }
@@ -138,19 +163,19 @@ export default function Board({ playerMap }) {
             w="100%"
             h="100%"
           >
-            <RoomHallway colStart={3} rowStart={7}>
+            <RoomHallway colStart={3} rowStart={7} cell="starting">
               {renderClient(3, 7)}
             </RoomHallway>
-            <RoomHallway colStart={1} rowStart={3}>
+            <RoomHallway colStart={1} rowStart={3} cell="starting">
               {renderClient(1, 3)}
             </RoomHallway>
-            <RoomHallway colStart={5} rowStart={1}>
+            <RoomHallway colStart={5} rowStart={1} cell="starting">
               {renderClient(5, 1)}
             </RoomHallway>
-            <RoomHallway colStart={1} rowStart={5}>
+            <RoomHallway colStart={1} rowStart={5} cell="starting">
               {renderClient(1, 5)}
             </RoomHallway>
-            <RoomHallway colStart={5} rowStart={7}>
+            <RoomHallway colStart={5} rowStart={7} cell="starting">
               {renderClient(5, 7)}
             </RoomHallway>
 
@@ -308,7 +333,7 @@ export default function Board({ playerMap }) {
   );
 }
 
-const RoomHallway = ({ colStart, rowStart, children, id, imageUrl }) => {
+const RoomHallway = ({ colStart, rowStart, children, id, imageUrl, cell }) => {
   // eslint-disable-next-line
   // TODO: Add fancy css for isOver and canDrop
   const socket = useContext(SocketContext);
@@ -321,7 +346,7 @@ const RoomHallway = ({ colStart, rowStart, children, id, imageUrl }) => {
   // eslint-disable-next-line
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ItemTypes.PLAYER,
-    canDrop: () => true,
+    canDrop: () => cell !== 'starting',
     drop: (item, monitor) => handlePlayerMove(item),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -338,6 +363,7 @@ const RoomHallway = ({ colStart, rowStart, children, id, imageUrl }) => {
       colStart={colStart}
       rowStart={rowStart}
       backgroundImage={imageUrl ? `url(${imageUrl})` : `url(${white})`}
+      opacity={isOver ? 0.5 : 1}
       zIndex={1}
     >
       {children}
