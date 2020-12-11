@@ -3,10 +3,15 @@
  * Player Class
  */
 
+var hallway = require('./hallway');
+var room = require('./room');
+
 class Player {
   constructor(name) {
     this.name = name;
   }
+
+  location = '';
 
   // return name of player
   getName() {
@@ -16,6 +21,14 @@ class Player {
   // change/setname of player
   setName(name) {
     this.name = name;
+  }
+
+  getLocation() {
+    return this.location;
+  }
+
+  setLocation(location) {
+    this.location = location;
   }
 }
 

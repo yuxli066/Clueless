@@ -3,12 +3,13 @@
  */
 
 class Hallway {
-  constructor(num) {
+  constructor(num, hallwayCoordinate) {
     this.num = num;
+    this.hallwayCoordinate = hallwayCoordinate;
   }
 
   getName() {
-    return "Hallway " + this.num.toString();
+    return 'Hallway ' + this.num.toString();
   }
 
   // return name of Hallway
@@ -19,6 +20,14 @@ class Hallway {
   // change/setname of Hallway
   setHallwayNum(num) {
     this.num = num;
+  }
+
+  getLocation() {
+    return this.hallwayCoordinate;
+  }
+
+  setLocation(hallwayCoordinate) {
+    this.hallwayCoordinate = hallwayCoordinate;
   }
 }
 
