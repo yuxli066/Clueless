@@ -28,5 +28,7 @@
       "pre-commit": "pretty-quick --staged"
     }
   },
-  "dependencies": {}
+  "dependencies": {
+    "react-dnd": "^11.1.3"
+  }
 }
