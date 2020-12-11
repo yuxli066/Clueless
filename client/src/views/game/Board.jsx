@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } from 'react';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
-import { useToast, Grid, GridItem } from '@chakra-ui/react';
+import { useToast, Grid, GridItem, Center } from '@chakra-ui/react';
 import GameCard from './GameCard';
+import Players from './Players';
 import { useContentContext } from '../../ContentProvider';
 
 export default function Board() {
@@ -14,6 +15,34 @@ export default function Board() {
   const [positions, setPositions] = useState({ temp_initial: initialLocation });
   const positionRef = useRef(positions);
   const showToast = useToast();
+
+  //TODO: This needs to be recieved from lobby
+  const connectedPlayers = [
+    {
+      id: 1,
+      name: 'Colonel Mustard',
+    },
+    {
+      id: 2,
+      name: 'Rev. Green',
+    },
+    {
+      id: 3,
+      name: 'Professor Plum',
+    },
+    {
+      id: 4,
+      name: 'Miss Scarlet',
+    },
+    {
+      id: 5,
+      name: 'Mrs. Peacock',
+    },
+    {
+      id: 6,
+      name: 'Mrs. White',
+    },
+  ];
 
   useEffect(() => {
     positionRef.current = positions;
@@ -82,7 +111,15 @@ export default function Board() {
           <div
             style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
           >
-            Players go here
+            <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
+              {connectedPlayers.map((player) => (
+                <GridItem rowSpan={1} colSpan={1} key={player.id} style={{ textAlign: 'center' }}>
+                  <Center>
+                    <Players name={player.name} self={player.id === socket.id} />
+                  </Center>
+                </GridItem>
+              ))}
+            </Grid>
           </div>
         </GridItem>
         <GridItem rowSpan={8} colSpan={4}>
