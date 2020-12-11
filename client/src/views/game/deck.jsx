@@ -1,12 +1,12 @@
 import React from 'react';
-import { useContentContext } from '../ContentProvider';
+import { useContentContext } from '../../ContentProvider';
 
-function getContentName(name) {
-  switch (name) {
+function getContentName(namee) {
+  switch (namee) {
     case 'Colonel Mustard':
       return 'Player_ColonelMustard';
     case 'Rev. Green':
-      return 'Player_MrGreen';
+      return 'RevGreen';
     case 'Professor Plum':
       return 'Player_ProfPlum';
     case 'Miss Scarlet':
@@ -22,27 +22,26 @@ function getContentName(name) {
     case 'Conservatory':
       return 'Room_Cons';
     default:
-      // should never happen!
-      return '';
+      return 'logo';
   }
 }
 
-export default function LobbyPlayer({ name }) {
+export default function Deck({ namee }) {
   const content = useContentContext();
   console.log(content);
-  const cardPicture = getContentName(name);
+  const cardPicture = getContentName(namee);
 
   return (
     <>
       {/* TODO come up with a bettwer way to downsize the image! */}
       {/* TODO improve padding of image! */}
       <img
-        alt={name}
+        alt={namee}
         src={content.images[cardPicture].default}
         style={{ width: '10%', height: '10%' }}
       />
       {/* TODO i want this and the image on one line! */}
-      {<p>{name}</p>}
+      {<p>{namee}</p>}
     </>
   );
 }
