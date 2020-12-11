@@ -118,21 +118,28 @@ export default function Board({ playerMap }) {
 
   useEffect(() => {
     setConnectedPlayers(playerMap);
+  }, [playerMap]);
+
+  useEffect(() => {
     if (connectedPlayers && clientId) setIsLoading(false);
-  }, [playerMap, connectedPlayers, clientId]);
+  }, [connectedPlayers, clientId]);
+
   useEffect(() => {
     if (connectedPlayers) {
       socket.emit('board', connectedPlayers);
-      socket.on('clientId', handleClientId);
-      socket.on('playerMoved', handlePosition);
-      socket.on('notification', handleMessageResponse);
-      return () => {
-        socket.off('playerMoved');
-        socket.off('notification');
-        socket.off('clientId');
-      };
     }
-  }, [socket, handlePosition, handleMessageResponse, handleClientId, connectedPlayers]);
+  }, [connectedPlayers, socket]);
+
+  useEffect(() => {
+    socket.on('clientId', handleClientId);
+    socket.on('playerMoved', handlePosition);
+    socket.on('notification', handleMessageResponse);
+    return () => {
+      socket.off('playerMoved');
+      socket.off('notification');
+      socket.off('clientId');
+    };
+  }, [socket, handlePosition, handleMessageResponse, handleClientId]);
 
   // FIXME handle this eslint diable!
   // eslint-disable-next-line no-unused-vars
