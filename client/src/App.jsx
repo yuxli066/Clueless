@@ -36,18 +36,18 @@ function App() {
           </Route>
           <SocketProvider>
             <SocketGate loading={<p>establishing websocket connection...</p>}>
-              <Route exact path="/create-or-join">
-                <CreateOrJoin />
-              </Route>
-              {/* TODO consider adding something here first to create a new lobby or join a random one */}
-              <Route path="/:game">
-                {/* TODO make a more aesthetic loading component */}
-                <ContentProvider>
-                  <DndProvider backend={HTML5Backend}>
-                    <GameSession />
-                  </DndProvider>
-                </ContentProvider>
-              </Route>
+              <Switch>
+                <Route exact path="/create-or-join">
+                  <CreateOrJoin />
+                </Route>
+                <Route path="/:game">
+                  <ContentProvider>
+                    <DndProvider backend={HTML5Backend}>
+                      <GameSession />
+                    </DndProvider>
+                  </ContentProvider>
+                </Route>
+              </Switch>
             </SocketGate>
           </SocketProvider>
           <Route path="*">
