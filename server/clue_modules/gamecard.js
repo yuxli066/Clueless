@@ -6,8 +6,16 @@ class GameCard {
   constructor() {}
 
   gameCardList = new Set();
-
+  clientID = undefined;
   clientPlayer = undefined;
+
+  getClientID() {
+    return this.clientID;
+  }
+
+  setClientID(clientID) {
+    this.clientID = clientID;
+  }
 
   getClientPlayer() {
     return this.clientPlayer;
