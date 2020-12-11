@@ -290,14 +290,16 @@ function makeGuess(clientID) {
       break;
   }
   var guessMurderPlayer = reader.question(
-    gameCardMap.get(clientID).getClientPlayer() + `: Who are you ${guessType} is the murderer? `,
+    gameCardMap.get(clientID).getClientPlayer().getName() +
+      `: Who are you ${guessType} is the murderer? `,
   );
   var guessMurderRoom = reader.question(
-    gameCardMap.get(clientID).getClientPlayer() +
+    gameCardMap.get(clientID).getClientPlayer().getName() +
       `: Where do are you ${guessType} the murder happened? `,
   );
   var guessMurderWeapon = reader.question(
-    gameCardMap.get(clientID).getClientPlayer() + `: What are you ${guessType} the weapon was? `,
+    gameCardMap.get(clientID).getClientPlayer().getName() +
+      `: What are you ${guessType} the weapon was? `,
   );
 
   playerCardSet.forEach(function (player) {
@@ -504,8 +506,33 @@ function assignClientPlayer(clientID, player = '') {
   }
 }
 
+function getNextDisprovePlayer(disproveCounter) {
+  // var disproveCounter = playerCounter+1;
+  if (disproveCounter >= clientArray.length) {
+    return clientArray[0];
+  } else {
+    return clientArray[disproveCounter];
+  }
+}
 // TODO function for server to display each players disprove card for suggestion
-function displayDisproveCard() {}
+function disproveSuggestion(clientID) {
+  console.log(clientID + ' must show a card to disprove player: type the card you choose:');
+  gameCardMap
+    .get(clientID)
+    .getGameCardList()
+    .forEach(function (gameCard) {
+      console.log('    -' + gameCard.getName());
+    });
+
+  var disproveAnswer = reader.question(
+    'Type card that you select or type NONE if you do not have card to disprove: ',
+  );
+  if (disproveAnswer === 'NONE') {
+    return false;
+  } else {
+    return true;
+  }
+}
 
 // TODO: flush out pseudo code for this
 function main() {
@@ -516,6 +543,9 @@ function main() {
   var nextPlayer = false;
   var currentPlayerGuess = undefined;
   var accusation = false;
+  var disproved = false;
+  var currentDisprovePlayer = undefined;
+  var disproveCounter = 1;
 
   // distibute cards to each of the client's gamecard set
   distributeDeck(gameCardMap, gameDeck);
@@ -527,7 +557,7 @@ function main() {
     }
     currentPlayer = clientArray[playerCounter];
 
-    while (!nextPlayer) {
+    while (!nextPlayer && !gameOver) {
       if (!inGamePlayerSet.has(gameCardMap.get(currentPlayer).getClientPlayer())) {
         playerCounter++;
         nextPlayer = true;
@@ -572,18 +602,39 @@ function main() {
           currentPlayerGuess.getMurderRoom(),
           currentPlayerGuess.getMurderWeapon(),
         );
+        disproved = false;
+        disproveCounter = playerCounter + 1;
+        currentDisprovePlayer = getNextDisprovePlayer(disproveCounter);
+
+        while (!disproved) {
+          disproved = disproveSuggestion(currentDisprovePlayer);
+          disproveCounter++;
+
+          currentDisprovePlayer = getNextDisprovePlayer(disproveCounter);
+
+          //break out of while loop if all players have disproved and still no result
+          if (currentDisprovePlayer === currentPlayer) {
+            disproved = false;
+            console.log('No one was able to disprove');
+            break;
+          } else if (currentDisprovePlayer === clientArray[0]) {
+            disproveCounter = 1;
+          }
+        }
 
         playerCounter++;
         nextPlayer = true;
       }
     }
   }
+
+  console.log('End of Game');
 }
 
 // simulation
 assignClientPlayer('client0', 'Mrs. White');
-// assignClientPlayer('client1', 'Miss Scarlet');
-// assignClientPlayer('client2', 'Prof. Plum');
+assignClientPlayer('client1', 'Miss Scarlet');
+assignClientPlayer('client2', 'Prof. Plum');
 // assignClientPlayer('client3', 'Mrs. Peacock');
 // assignClientPlayer('client4', 'Mr. Green');
 // assignClientPlayer('client5', 'Mrs. White');
