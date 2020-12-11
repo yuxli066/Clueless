@@ -4,6 +4,7 @@ yarn-error.log*
 build/
 dist/
 .dockerignore
+Dockerfile
 **/.git
 **/.DS_Store
 **/node_modules
