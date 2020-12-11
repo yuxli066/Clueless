@@ -124,6 +124,7 @@ function CreateOrJoin() {
         <Center>
           <ButtonGroup p={4} colorScheme="blue">
             {/* TODO consider making this a general component */}
+            {/* each time the link is clicked a different nanoid is created, which is expected (we should only need it once) */}
             <Button as={Link} to={`/${nanoid(10)}/lobby`}>
               Create New Lobby
             </Button>

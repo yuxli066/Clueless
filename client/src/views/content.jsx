@@ -109,7 +109,6 @@ function Banner(props) {
       }}
     >
       <div className={styles.banner}>
-        {/* each time the link is clicked a different nanoid is created, which is expected (we should only need it once) */}
         <Link as={ReactLink} to="/create-or-join" style={{ textDecoration: 'none' }}>
           <div className={styles.primary}>
             <figure>
