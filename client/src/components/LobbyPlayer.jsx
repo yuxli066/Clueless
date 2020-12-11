@@ -23,7 +23,6 @@ function getContentName(name) {
 
 export default function LobbyPlayer({ name, self }) {
   const content = useContentContext();
-  console.log(content);
   const profilePicture = getContentName(name);
 
   return (
