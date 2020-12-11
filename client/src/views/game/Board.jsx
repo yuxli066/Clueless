@@ -28,6 +28,69 @@ const getInitialLocation = (playerName) => {
   }
 };
 
+const hallways = [
+  '[2,5]',
+  '[2,3]',
+  '[3,6]',
+  '[3,4]',
+  '[3,2]',
+  '[4,5]',
+  '[4,3]',
+  '[5,6]',
+  '[5,4]',
+  '[5,2]',
+  '[6,5]',
+  '[6,3]',
+];
+const getlocationname = (coordinates) => {
+  switch (JSON.stringify(coordinates)) {
+    case '[2,2]':
+      return 'Study';
+    case '[4,2]':
+      return 'Hall';
+    case '[6,2]':
+      return 'Lounge';
+    case '[2,4]':
+      return 'Library';
+    case '[4,4]':
+      return 'Billiards';
+    case '[6,4]':
+      return 'Dining';
+    case '[2,6]':
+      return 'Conservatory';
+    case '[4,6]':
+      return 'Ballroom';
+    case '[6,6]':
+      return 'Kitchen';
+    default:
+      return `Hallway ${hallways.indexOf(JSON.stringify(coordinates)) + 1}`;
+  }
+};
+const getcoordinate = (locationName) => {
+  switch (locationName) {
+    case 'Study':
+      return [2, 2];
+    case 'Hall':
+      return [4, 2];
+    case 'Lounge':
+      return [6, 2];
+    case 'Library':
+      return [2, 4];
+    case 'Billiards':
+      return [4, 4];
+    case 'Dining':
+      return [6, 4];
+    case 'Conservatory':
+      return [2, 6];
+    case 'Ballroom':
+      return [4, 6];
+    case 'Kitchen':
+      return [6, 6];
+    default:
+      return JSON.parse(hallways[Number(locationName.match(/\d+/gm)[0]) - 1]);
+  }
+};
+
 //TODO: This needs to be recieved from lobby
 const availablePlayers = [
   {
@@ -105,7 +168,7 @@ export default function Board({ playerMap }) {
       let newConnectedPlayers = [...connectedPlayers];
       newConnectedPlayers.find(
         (p) => p.playaInformation.id === movementData.id,
-      ).playaInformation.initPosition = movementData.pos;
+      ).playaInformation.initPosition = getcoordinate(movementData.pos);
       setConnectedPlayers(newConnectedPlayers);
     },
     [connectedPlayers],
@@ -385,9 +448,9 @@ const RoomHallway = ({ colStart, rowStart, children, id, imageUrl, cell }) => {
   const socket = useContext(SocketContext);
   const handlePlayerMove = (player) => {
     console.log(
-      'Player with id: ' + player.id + ' just moved to: [' + colStart + ', ' + rowStart + ']',
+      'Player with id: ' + player.id + ' just moved to: ' + getlocationname([colStart, rowStart]),
     );
-    socket.emit('playerMovement', { id: player.id, pos: [colStart, rowStart] });
+    socket.emit('playerMovement', { id: player.id, pos: getlocationname([colStart, rowStart]) });
   };
   // eslint-disable-next-line
   const [{ isOver, canDrop }, drop] = useDrop({

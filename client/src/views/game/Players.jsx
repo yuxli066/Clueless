@@ -24,7 +24,7 @@ function getContentName(name) {
 
 export default function Players({ name, self }) {
   const content = useContentContext();
-  console.log(content);
+  // console.log(content);
   const profilePicture = getContentName(name);
 
   return (
