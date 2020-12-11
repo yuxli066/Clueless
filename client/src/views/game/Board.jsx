@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
-import { useToast, Grid, GridItem } from '@chakra-ui/react';
-import { useDrop } from 'react-dnd';
 import Colonel from './Colonal';
-import GameCard from './GameCard';
-import { ItemTypes } from './ItemTypes';
 import SocketContext from '../../../src/SocketContext';
+import { useToast, Grid, GridItem, Center } from '@chakra-ui/react';
+import GameCard from './GameCard';
+import Players from './Players';
+import { useDrop } from 'react-dnd';
 import { useContentContext } from '../../ContentProvider';
 import white from '../../board-images/white-image.PNG';
+import { ItemTypes } from './ItemTypes';
 
 const getInitialLocation = (playerName) => {
   switch (playerName) {
@@ -27,11 +28,40 @@ const getInitialLocation = (playerName) => {
   }
 };
 
+//TODO: This needs to be recieved from lobby
+const availablePlayers = [
+  {
+    id: 1,
+    name: 'Colonel Mustard',
+  },
+  {
+    id: 2,
+    name: 'Rev. Green',
+  },
+  {
+    id: 3,
+    name: 'Professor Plum',
+  },
+  {
+    id: 4,
+    name: 'Miss Scarlet',
+  },
+  {
+    id: 5,
+    name: 'Mrs. Peacock',
+  },
+  {
+    id: 6,
+    name: 'Mrs. White',
+  },
+];
+
 export default function Board({ playerMap }) {
   // using useMemo so that eslint is happy
   const Content = useContentContext();
-  const socket = useContext(SocketContext);
   const showToast = useToast();
+
+  const socket = useContext(SocketContext);
 
   /* states */
   const [loading, setIsLoading] = useState(true);
@@ -152,7 +182,16 @@ export default function Board({ playerMap }) {
           <div
             style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
           >
-            Players go here
+            <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
+              {/* TODO move to connectedplayers (coming from the server) */}
+              {availablePlayers.map((player) => (
+                <GridItem rowSpan={1} colSpan={1} key={player.id} style={{ textAlign: 'center' }}>
+                  <Center>
+                    <Players name={player.name} self={player.id === socket.id} />
+                  </Center>
+                </GridItem>
+              ))}
+            </Grid>
           </div>
         </GridItem>
         <GridItem padding="2em" rowSpan={8} colSpan={4}>

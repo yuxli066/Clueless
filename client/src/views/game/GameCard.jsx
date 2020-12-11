@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import {
   Button,
   Checkbox,
@@ -13,9 +13,9 @@ import {
 } from '@chakra-ui/react';
 
 function GameCard() {
-  function handleSubmitAccusation() {
-    console.log('temporary!');
-  }
+  const handleSubmitAccusation = (e) => {
+    alert(`placeholder`);
+  };
 
   return (
     <Tabs
@@ -35,7 +35,7 @@ function GameCard() {
       </TabList>
       <TabPanels>
         <TabPanel>
-          <Grid templateRows="repeat(23, 1fr)" templateColumns="repeat(2, 1fr)">
+          <Grid templateRows="repeat(24, 0.55fr)" templateColumns="repeat(2, 1fr)">
             <GridItem
               rowSpan={1}
               colSpan={2}
@@ -46,37 +46,37 @@ function GameCard() {
               </Text>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Person</p>
+              <p>Miss Scarlett</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Person</p>
+              <p>Professor Plum</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Person</p>
+              <p>Mrs Peacock</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Person</p>
+              <p>Reverend Green</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Person</p>
+              <p>Colonel Mustard</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Person</p>
+              <p>Dr Orchid</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
@@ -91,37 +91,37 @@ function GameCard() {
               </Text>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Weapon</p>
+              <p>Candlestick</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Weapon</p>
+              <p>Dagger/Knife</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Weapon</p>
+              <p>Lead Pipe</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Weapon</p>
+              <p>Revolver/Colt</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Weapon</p>
+              <p>Rope</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Weapon</p>
+              <p>Spanner/monkey wrench</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
@@ -136,126 +136,134 @@ function GameCard() {
               </Text>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Room</p>
+              <p>Kitchen</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Room</p>
+              <p>Hall</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Room</p>
+              <p>Ballroom</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Room</p>
+              <p>Conservatory</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Room</p>
+              <p>Dining Room</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Room</p>
+              <p>Billard Room</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Room</p>
+              <p>Library</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Room</p>
+              <p>Lounge</p>
+            </GridItem>
+            <GridItem rowSpan={1} colSpan={1}>
+              <Checkbox size="md"></Checkbox>
+            </GridItem>
+            <GridItem rowSpan={1} colSpan={1}>
+              <p>Study</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
             </GridItem>
           </Grid>
         </TabPanel>
-        <TabPanel style={{ textAlign: 'left' }}>
-          {/*Dropdown for suggestion or accusation*/}
-          <label>
-            <Text fontSize="md">Guess Type</Text>
+        <TabPanel>
+          <div style={{ textAlign: 'left' }}>
+            {/*Dropdown for suggestion or accusation*/}
+            <label>
+              <Text fontSize="md">Guess Type</Text>
+              <br />
+              <div>
+                <select defaultValue={'DEFAULT'}>
+                  <option value="DEFAULT">Choose an item...</option>
+                  <option value="suggestion">Suggestion</option>
+                  <option value="accusation">Accusation</option>
+                </select>
+              </div>
+            </label>
             <br />
-            <div>
-              <select>
-                <option value="0">Choose an item...</option>
-                <option value="1">Suggestion</option>
-                <option value="2">Accusation</option>
-              </select>
-            </div>
-          </label>
-          <br />
-          {/*Dropdown for weapon*/}
-          <label>
-            <Text fontSize="md">Weapon</Text>
+            {/*Dropdown for weapon*/}
+            <label>
+              <Text fontSize="md">Weapon</Text>
+              <br />
+              <div>
+                <select defaultValue={'DEFAULT'}>
+                  <option value="DEFAULT">Choose an item...</option>
+                  <option value="candlestick">Candlestick</option>
+                  <option value="daggerKnife">Dagger/Knife</option>
+                  <option value="lead Pipe">Lead Pipe</option>
+                  <option value="revolverColt">Revolver/Colt</option>
+                  <option value="rope">Rope</option>
+                  <option value="spannerMonkeyWrench">Spanner/Monkey Wrench</option>
+                </select>
+              </div>
+            </label>
             <br />
-            <div>
-              <select>
-                <option value="0">Choose an item...</option>
-                <option value="1">Candlestick</option>
-                <option value="2">Dagger/Knife</option>
-                <option value="3">Lead Pipe</option>
-                <option value="4">Revolver/Colt</option>
-                <option value="5">Rope</option>
-                <option value="6">Spanner/monkey wrench</option>
-              </select>
-            </div>
-          </label>
-          <br />
-          {/*Dropdown for room TODO: This should be current room that the player is in*/}
-          <label>
-            <Text fontSize="md">Room</Text>
+            {/*Dropdown for room TODO: This should be current room that the player is in*/}
+            <label>
+              <Text fontSize="md">Room</Text>
+              <br />
+              <div>
+                <select defaultValue={'DEFAULT'}>
+                  <option value="DEFAULT">Choose an item...</option>
+                  <option value="kitchen">Kitchen</option>
+                  <option value="hall">Hall</option>
+                  <option value="ballroom">Ballroom</option>
+                  <option value="conservatory">Conservatory</option>
+                  <option value="diningRoom">Dining Room</option>
+                  <option value="billardRoom">Billard Room</option>
+                  <option value="library">Library</option>
+                  <option value="lounge">Lounge</option>
+                  <option value="study">Study</option>
+                </select>
+              </div>
+            </label>
             <br />
-            <div>
-              <select>
-                <option value="0">Choose an item...</option>
-                <option value="1">Kitchen</option>
-                <option value="2">Hall</option>
-                <option value="3">Ballroom</option>
-                <option value="4">Conservatory</option>
-                <option value="5">Dining Room</option>
-                <option value="6">Cellar</option>
-                <option value="7">Billard Room</option>
-                <option value="8">Library</option>
-                <option value="9">Lounge</option>
-                <option value="9">Study</option>
-              </select>
-            </div>
-          </label>
+            {/*Dropdown for player*/}
+            <label>
+              <Text fontSize="md">Player</Text>
+              <br />
+              <div>
+                <select defaultValue={'DEFAULT'}>
+                  <option value="DEFAULT">Choose an item...</option>
+                  <option value="missScarlett">Miss Scarlett</option>
+                  <option value="professorPlum">Professor Plum</option>
+                  <option value="mrsPeacock">Mrs Peacock</option>
+                  <option value="reverendGreen">Reverend Green</option>
+                  <option value="colonelMustard">Colonel Mustard</option>
+                  <option value="drOrchid">Dr Orchid</option>
+                </select>
+              </div>
+            </label>
+          </div>
           <br />
-          {/*Dropdown for player*/}
-          <label>
-            <Text fontSize="md">Player</Text>
-            <br />
-            <div>
-              <select>
-                <option value="0">Choose an item...</option>
-                <option value="1">Miss Scarlett</option>
-                <option value="2">Professor Plum</option>
-                <option value="3">Mrs Peacock</option>
-                <option value="4">Reverend Green</option>
-                <option value="5">Colonel Mustard</option>
-                <option value="6">Dr Orchid</option>
-              </select>
-            </div>
-          </label>
-
-          <br />
-          <Button onClick={handleSubmitAccusation}>Submit</Button>
+          <Button style={{ textAlign: 'center' }} onClick={handleSubmitAccusation}>
+            Submit
+          </Button>
         </TabPanel>
       </TabPanels>
     </Tabs>
