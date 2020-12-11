@@ -1,5 +1,6 @@
+//TODO: Do we even need this? Can change UI of lobby to use same image sizes and reuse LobbyPlayer
 import React from 'react';
-import { useContentContext } from '../ContentProvider';
+import { useContentContext } from '../../ContentProvider';
 
 function getContentName(name) {
   switch (name) {
@@ -21,19 +22,21 @@ function getContentName(name) {
   }
 }
 
-export default function LobbyPlayer({ name, self }) {
+export default function Players({ name, self }) {
   const content = useContentContext();
+  console.log(content);
   const profilePicture = getContentName(name);
 
   return (
-    <>
+    <div>
       {/* TODO come up with a bettwer way to downsize the image! */}
       {/* TODO improve padding of image! */}
       <img
         alt={name}
         src={content.images[profilePicture].default}
-        style={{ width: '10%', height: '10%' }}
+        style={{ width: '50%', height: '50%' }}
       />
+      <div></div>
       {/* TODO i want this and the image on one line! */}
       {self ? (
         <p>
@@ -43,6 +46,6 @@ export default function LobbyPlayer({ name, self }) {
       ) : (
         <p>{name}</p>
       )}
-    </>
+    </div>
   );
 }

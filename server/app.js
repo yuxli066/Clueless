@@ -36,13 +36,32 @@ const PLAYERS = new Set([
   'Mrs. White',
 ]);
 
+const getInitialLocation = (playerName) => {
+  switch (playerName) {
+    case 'Colonel Mustard':
+      return [2, 2];
+    case 'Rev. Green':
+      return [3, 7];
+    case 'Professor Plum':
+      return [1, 3];
+    case 'Miss Scarlet':
+      return [5, 1];
+    case 'Mrs. Peacock':
+      return [1, 5];
+    case 'Mrs. White':
+      return [5, 7];
+    default:
+      return 'none';
+  }
+};
+
 // TODO we should move the socket handling code to a new file!
 io.on('connect', (socket) => {
   console.log(`new websocket client with id ${socket.id} connected!`);
 
   socket.on('disconnect', () => {
     delete position[socket.id];
-    io.emit('playerMoved', position);
+    // io.emit('playerMoved', position);
     console.log(`client ${socket.id} disconnected!`);
   });
 
@@ -51,7 +70,6 @@ io.on('connect', (socket) => {
   // (namespaces would mean the server creating the namespace and then the client connecting to the namespace, so an extra trip)
   socket.on('join', (room = undefined) => {
     // FIXME there's a ton in here that can be cleaned and optimized!
-
     let joinedRoom = room;
     if (room) {
       console.log('client joining game room:', room);
@@ -76,39 +94,47 @@ io.on('connect', (socket) => {
       socket.emit('lobby', joinedRoom);
     }
 
-    // TODO do we want to send to the client the room they just joined?
-
+    // If no room, create room, else create new player in existing room.
+    let characterName,
+      playerMap = roomMap.has(joinedRoom) ? roomMap.get(joinedRoom) : new Map(),
+      playerNamesArray = [];
+    playerMap.forEach((playa) => playerNamesArray.push(playa.name));
+    let usedPlayerNames = new Set(playerNamesArray),
+      remainingNames = new Set([...PLAYERS].filter((player) => !usedPlayerNames.has(player))),
+      initialPosition,
+      playerInfo = {};
     if (!roomMap.has(joinedRoom)) {
-      // TODO create a new map for the clients and character names
-      const characterName = Array.from(PLAYERS)[Math.floor(Math.random() * PLAYERS.size)];
-      // TODO map or object?
-      roomMap.set(joinedRoom, new Map([[socket.id, characterName]]));
-      console.log('your player name is going to be:', characterName);
+      characterName = Array.from(PLAYERS)[Math.floor(Math.random() * PLAYERS.size)];
+      roomMap.set(joinedRoom, new Map([]));
     } else {
-      // update the entry to take a random available name
-      // get the player map for this room, find out the unused player names, and assign a random one
-      const playerMap = roomMap.get(joinedRoom);
-      const usedPlayerNames = new Set(playerMap.values());
-      const remainingNames = new Set([...PLAYERS].filter((player) => !usedPlayerNames.has(player)));
-      const characterName = Array.from(remainingNames)[
-        Math.floor(Math.random() * remainingNames.size)
-      ];
-
-      console.log('your player name is going to be:', characterName);
-      playerMap.set(socket.id, characterName);
+      characterName = Array.from(remainingNames)[Math.floor(Math.random() * remainingNames.size)];
     }
 
-    // TODO can we get the player map sooner than here?
-    const playerMap = roomMap.get(joinedRoom);
+    playerMap = roomMap.get(joinedRoom);
+    initialPosition = getInitialLocation(characterName);
 
-    // FIXME consider moving playerMap to just a json object? (if we want to keep lobbies around then it might make more sense to keep the ES6 map)
+    playerInfo = {
+      id: socket.id,
+      name: characterName,
+      initPosition: initialPosition,
+    };
+    playerMap.set(socket.id, playerInfo);
+    console.log(`Your Client ID is: ${socket.id}`);
+    console.log(`Your Player Name is: ${characterName}`);
+    console.log(`Your Starting Position is: [${initialPosition}]`);
+
+    // serialize player map
     let serializedPlayerMap = [];
     for ([key, value] of playerMap) {
-      serializedPlayerMap.push({ id: key, name: value });
+      serializedPlayerMap.push({ id: key, playaInformation: value });
     }
-
     // TODO broadcast that the client joined the room!
     io.in(joinedRoom).emit('playerList', serializedPlayerMap);
+    io.in(joinedRoom).emit('yourClient', {
+      id: socket.id,
+      name: characterName,
+      initPosition: initialPosition,
+    });
   });
 
   // TODO do we want to move this to the client not having to say they left the room? (assumes clients can only be in one room at a time!)
@@ -172,14 +198,23 @@ io.on('connect', (socket) => {
     socket.emit('clientId', socket.id);
 
     // send positions to all clients so they get the new player
-    io.emit('playerMoved', position);
+    // io.emit('playerMoved', position);
+  });
+
+  socket.on('board', (currentPlayers) => {
+    currentPlayers.forEach((playa) =>
+      console.log(
+        `Current players on the board: ${playa.playaInformation.id}:${playa.playaInformation.name}`,
+      ),
+    );
+    socket.emit('clientId', socket.id);
   });
 
   socket.on('playerMovement', (movementData) => {
-    position[socket.id].x = movementData.x;
-    position[socket.id].y = movementData.y;
+    // position[socket.id].x = movementData.x;
+    // position[socket.id].y = movementData.y;
     // emit a message to all players about the player that moved
-    io.emit('playerMoved', position);
+    io.emit('playerMoved', movementData);
   });
 });
 

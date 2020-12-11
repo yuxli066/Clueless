@@ -1,14 +1,17 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
-import { Switch, Route, useRouteMatch, Link, useHistory } from 'react-router-dom';
+import React, { useContext, useEffect, useState, useCallback, useRef } from 'react';
+import { Switch, Route, useRouteMatch, useHistory, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import backgroundImg from './images/background.jpg';
 import LandingPage from './views/LandingPage';
 import SocketContext, { SocketProvider, SocketGate } from './SocketContext';
 import { ContentProvider } from './ContentProvider';
-import GamePage from './views/GamePage';
+import GameController from './views/game/GameController';
 import GameLobby from './components/GameLobby';
 import { Box, Button, ButtonGroup, Center, Heading } from '@chakra-ui/react';
 import { nanoid } from 'nanoid';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import PageNotFound from './views/PageNotFound';
 
 function App() {
   return (
@@ -40,39 +43,54 @@ function App() {
               <Route path="/:game">
                 {/* TODO make a more aesthetic loading component */}
                 <ContentProvider>
-                  <GameSession />
+                  <DndProvider backend={HTML5Backend}>
+                    <GameSession />
+                  </DndProvider>
                 </ContentProvider>
               </Route>
             </SocketGate>
           </SocketProvider>
+          <Route path="*">
+            <PageNotFound />
+          </Route>
         </Switch>
       </div>
     </div>
   );
 }
 
+// NOTE: how come socket io does not work if I wrap it with a Promise?
 function GameSession() {
   const socket = useContext(SocketContext);
   const match = useRouteMatch();
   const lobby = match.url.substring(1); // drop the first character (it's a '/')
 
+  const [connectedPlayers, setConnectedPlayers] = useState([]);
+  const handleJoin = useCallback((playerInfo) => {
+    setConnectedPlayers(playerInfo);
+  }, []);
+
   useEffect(() => {
     console.log('joining lobby', lobby);
     socket.emit('join', lobby);
-
+    socket.on('playerList', handleJoin);
     return () => {
       console.log('unmounting and disconnecting from lobby', lobby);
       socket.emit('leave', lobby);
+      socket.off('playerList');
     };
-  }, [socket, lobby]);
+  }, [socket, handleJoin, lobby]);
 
   return (
     <Switch>
-      <Route path={`${match.path}/game`}>
-        <GamePage />
+      <Route exact path={`${match.path}/game`}>
+        <GameController playerMap={connectedPlayers} />
       </Route>
-      <Route path={`${match.path}/lobby`}>
-        <GameLobby lobby={lobby} />
+      <Route exact path={`${match.path}/lobby`}>
+        <GameLobby connectedPlayers={connectedPlayers} lobby={lobby} />
+      </Route>
+      <Route path="*">
+        <PageNotFound />
       </Route>
     </Switch>
   );
