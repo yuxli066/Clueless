@@ -2,24 +2,29 @@ import React, { useEffect, useState, useContext } from 'react';
 const importAll = (imports) =>
   imports
     .keys()
-    .map((item) => ({ [item.replace(/(\.\/)(.+)(\.jpe?g|\.png)/g, '$2')]: imports(item) }));
+    .map((item) => ({ [item.replace(/(\.\/)(.+)(\.jpe?g|\.png|\.PNG)/g, '$2')]: imports(item) }));
 const ContentContext = React.createContext();
 
 export const useContentContext = () => useContext(ContentContext);
 export const ContentProvider = ({ children }) => {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState({});
   const [text, setText] = useState({});
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(true);
     const loadImages = new Promise((resolve) =>
-      resolve(require.context('./images', false, /\.(jpe?g|png)/)),
+      resolve(require.context('./images', false, /\.(jpe?g|png)/i)),
+    );
+    const loadBoardImages = new Promise((resolve) =>
+      resolve(require.context('./board-images', false, /\.(jpe?g|png)/i)),
     );
     const loadText = new Promise((resolve) => resolve(require('./data/pageContent.json')));
-    Promise.all([loadImages, loadText])
+    Promise.all([loadImages, loadBoardImages, loadText])
       .then((data) => {
-        setImages(Object.assign({}, ...importAll(data[0])));
-        setText(data[1]);
+        const images = Object.assign({}, ...importAll(data[0]));
+        const board = Object.assign({}, ...importAll(data[1]));
+        setImages({ ...images, ...board });
+        setText(data[2]);
       })
       .finally(() => setLoading(false));
   }, []);

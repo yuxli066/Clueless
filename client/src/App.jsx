@@ -1,12 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import backgroundImg from './images/background.jpg';
 import LandingPage from './views/LandingPage';
 import SocketContext, { SocketProvider, SocketGate } from './SocketContext';
 import { ContentProvider } from './ContentProvider';
-import GamePage from './views/GamePage';
+import GameController from './views/game/GameController';
 import GameLobby from './components/GameLobby';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import PageNotFound from './views/PageNotFound';
 
 function App() {
   return (
@@ -34,10 +37,15 @@ function App() {
               {/* TODO make a more aesthetic loading component */}
               <SocketGate loading={<p>establishing websocket connection...</p>}>
                 <ContentProvider>
-                  <GameSession />
+                  <DndProvider backend={HTML5Backend}>
+                    <GameSession />
+                  </DndProvider>
                 </ContentProvider>
               </SocketGate>
             </SocketProvider>
+          </Route>
+          <Route path="*">
+            <PageNotFound />
           </Route>
         </Switch>
       </div>
@@ -45,28 +53,37 @@ function App() {
   );
 }
 
+// NOTE: how come socket io does not work if I wrap it with a Promise?
 function GameSession() {
   const socket = useContext(SocketContext);
+  const [connectedPlayers, setConnectedPlayers] = useState([]);
+  const handleJoin = useCallback((playerInfo) => {
+    setConnectedPlayers(playerInfo);
+  }, []);
+
   useEffect(() => {
     console.log('joining the single instance room...');
-    // TODO in the future, we will need a request/response for getting a lobby
     socket.emit('join', 'single-instance-game');
-
+    socket.on('playerList', handleJoin);
     return () => {
       console.log('unmounting and disconnecting from the single instance room...');
+      socket.off('playerList', handleJoin);
       socket.emit('leave', 'single-instance-game');
     };
-  }, [socket]);
+  }, [socket, handleJoin]);
 
   const match = useRouteMatch();
 
   return (
     <Switch>
-      <Route path={`${match.path}/game`}>
-        <GamePage />
+      <Route exact path={`${match.path}/game`}>
+        <GameController playerMap={connectedPlayers} />
       </Route>
-      <Route path={`${match.path}/lobby`}>
-        <GameLobby />
+      <Route exact path={`${match.path}/lobby`}>
+        <GameLobby connectedPlayers={connectedPlayers} />
+      </Route>
+      <Route path="*">
+        <PageNotFound />
       </Route>
     </Switch>
   );

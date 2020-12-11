@@ -1,30 +1,35 @@
-import React, { useEffect, useState, useContext } from 'react';
-import colonel_mustard from '../../images/colonel_mustard.jpg';
-import not_colonel_mustard from '../../images/colonel_mustard_Not_You.jpg';
-import Draggable from 'react-draggable';
-import SocketContext from '../../SocketContext';
+import React from 'react';
+import { Box, Center } from '@chakra-ui/react';
+import { useDrag } from 'react-dnd';
+import { ItemTypes } from './ItemTypes';
 
-export default function Colonel({ id, initialPos, movable }) {
-  const [pos, setPos] = useState(initialPos);
-
-  const socket = useContext(SocketContext);
-
-  useEffect(() => {
-    setPos(initialPos);
-  }, [initialPos]);
-
-  function handleOnStop(e, pos) {
-    if (movable) {
-      const { x, y } = pos;
-      setPos({ x, y });
-      socket.emit('playerMovement', { x: pos.x, y: pos.y });
-    }
-    console.log('pos is', pos);
-  }
-
+export default function Colonel({ id, movable, playerIcon, atStartingLocation }) {
+  // eslint-disable-next-line
+  const [{ isDragging, canDrag }, drag] = useDrag({
+    item: {
+      type: ItemTypes.PLAYER,
+      id: id,
+    },
+    canDrag: () => movable,
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+      canDrag: !!monitor.canDrag(),
+    }),
+  });
   return (
-    <Draggable position={pos} onStop={handleOnStop}>
-      <img src={movable ? colonel_mustard : not_colonel_mustard} alt="colonel mustard" />
-    </Draggable>
+    <Center>
+      <Box
+        marginTop={atStartingLocation ? 0 : 10}
+        ref={drag}
+        opacity={isDragging ? '0.5' : '1'}
+        id={id}
+        backgroundImage={`url(${playerIcon})`}
+        width="100px"
+        height="100px"
+        zIndex={5}
+        borderRadius={20}
+        _hover={{ cursor: canDrag ? 'pointer' : 'no-drop' }}
+      ></Box>
+    </Center>
   );
 }
