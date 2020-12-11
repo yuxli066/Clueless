@@ -54,11 +54,14 @@ export default function GameLobby({ connectedPlayers, lobby }) {
         ))}
       </List>
       <Center>
-        <Text>Get 3-5 friends to join this lobby to start!</Text>
+        <Text>
+          To start the game, make sure there are at least 3 players and no more than 6 in this
+          lobby!
+        </Text>
       </Center>
       <Center>
         <Link
-          disabled={connectedPlayers.length < 4 || connectedPlayers.length > 6}
+          disabled={connectedPlayers.length < 3 || connectedPlayers.length > 6}
           lobby={lobbyRef.current}
           component={StartGameButton}
         >
