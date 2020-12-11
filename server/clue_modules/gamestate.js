@@ -626,7 +626,9 @@ function main() {
             currentDisprovePlayer = getNextDisprovePlayer(disproveCounter);
 
             //break out of while loop if all players have disproved and still no result
-            if (currentDisprovePlayer === currentPlayer) {
+            if (disproved) {
+              break;
+            } else if (currentDisprovePlayer === currentPlayer) {
               disproved = false;
               console.log('No one was able to disprove');
               break;
