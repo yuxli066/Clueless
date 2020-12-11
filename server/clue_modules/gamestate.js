@@ -51,34 +51,30 @@ var hallway12 = new hallway.Hallway(12, new coordinate.Coordinate(4, 3));
 // link adjacent hallways
 // set secret passage way where applicable
 var studyRoom = new room.Room('Study', new coordinate.Coordinate(0, 4));
-studyRoom.addAdjacentHallways([hallway2, hallway5]);
-studyRoom.setSecretPassageWay(kitchenRoom);
-
 var hallRoom = new room.Room('Hall', new coordinate.Coordinate(2, 4));
-hallRoom.addAdjacentHallways([hallway5, hallway7, hallway10]);
-
 var loungeRoom = new room.Room('Lounge', new coordinate.Coordinate(4, 4));
-loungeRoom.addAdjacentHallways([hallway10, hallway12]);
-loungeRoom.setSecretPassageWay(conservatoryRoom);
-
 var libraryRoom = new room.Room('Library', new coordinate.Coordinate(0, 2));
-libraryRoom.addAdjacentHallways([hallway1, hallway2, hallway4]);
-
 var billiardsRoom = new room.Room('Billiards', new coordinate.Coordinate(2, 2));
-billiardsRoom.addAdjacentHallways([hallway4, hallway6, hallway7, hallway9]);
-
 var diningRoom = new room.Room('Dining', new coordinate.Coordinate(4, 2));
-diningRoom.addAdjacentHallways([hallway9, hallway11, hallway12]);
-
 var conservatoryRoom = new room.Room('Conservatory', new coordinate.Coordinate(0, 0));
-conservatoryRoom.addAdjacentHallways([hallway1, hallway3]);
-conservatoryRoom.setSecretPassageWay(loungeRoom);
-
 var ballroomRoom = new room.Room('Ballroom', new coordinate.Coordinate(2, 0));
-ballroomRoom.addAdjacentHallways([hallway3, hallway6, hallway8]);
-
 var kitchenRoom = new room.Room('Kitchen', new coordinate.Coordinate(4, 0));
+
+// setup room hallways
+studyRoom.addAdjacentHallways([hallway2, hallway5]);
+hallRoom.addAdjacentHallways([hallway5, hallway7, hallway10]);
+loungeRoom.addAdjacentHallways([hallway10, hallway12]);
+libraryRoom.addAdjacentHallways([hallway1, hallway2, hallway4]);
+billiardsRoom.addAdjacentHallways([hallway4, hallway6, hallway7, hallway9]);
+diningRoom.addAdjacentHallways([hallway9, hallway11, hallway12]);
+conservatoryRoom.addAdjacentHallways([hallway1, hallway3]);
+ballroomRoom.addAdjacentHallways([hallway3, hallway6, hallway8]);
 kitchenRoom.addAdjacentHallways([hallway8, hallway11]);
+
+//setup secret passageways
+studyRoom.setSecretPassageWay(kitchenRoom);
+loungeRoom.setSecretPassageWay(conservatoryRoom);
+conservatoryRoom.setSecretPassageWay(loungeRoom);
 kitchenRoom.setSecretPassageWay(studyRoom);
 
 // State Tracking
@@ -273,6 +269,9 @@ function makeSuggestion(playerCard, roomCard, weaponCard) {
       ' with a ' +
       weaponCard.getName(),
   );
+
+  playerCard.setLocation(roomCard);
+  console.log(playerCard.getName() + ' has moved to ' + roomCard.getName());
 }
 
 // TODO: function that broadcasts suggestion and has players show cards to disprove
@@ -370,6 +369,8 @@ function decodeMove(playerMoving, moveLocation) {
     });
   }
 
+  console.log(locationMovingTo);
+
   return locationMovingTo;
 }
 
@@ -400,6 +401,7 @@ function validateRoomMove(playerMoving, locationMovingTo) {
   if (!roomCardSet.has(currentRoom)) {
     console.log('ERROR: Move only valid if you are in a room');
     validMove = false;
+    return validMove;
   }
 
   // check if moving to hallway or moving to room
@@ -411,27 +413,36 @@ function validateRoomMove(playerMoving, locationMovingTo) {
           if (player.getLocation() === locationMovingTo) {
             console.log('ERROR: Someone is in this hallways, move to empty hallway');
             validMove = false;
+            return validMove;
           }
         });
       } else {
         console.log('ERROR: Must move into hallways adjascent to current room.');
         validMove = false;
+        return validMove;
       }
     } else {
       console.log('ERROR: Must be in a room to move to hallway');
       validMove = false;
+      return validMove;
     }
   } else if (locationMovingTo instanceof room.Room) {
     // check if move is to secret passage
     if (currentRoom instanceof room.Room) {
+      if (currentRoom === locationMovingTo) {
+        validMove = true;
+        return validMove;
+      }
       if (currentRoom.hasSecretPassageWay()) {
         if (currentRoom.getSecretPassageWay() != locationMovingTo) {
           console.log('ERROR: Only secret passage room allowed');
           validMove = false;
+          return validMove;
         }
       } else {
         console.log('ERROR: Can only move to room when is it secret passage way');
         validMove = false;
+        return validMove;
       }
     }
   }
@@ -554,17 +565,28 @@ function main() {
           nextPlayer = true;
         }
       }
+
+      if (currentPlayerGuess.getGuessType() == 'Suggestion') {
+        makeSuggestion(
+          currentPlayerGuess.getMurderPlayer(),
+          currentPlayerGuess.getMurderRoom(),
+          currentPlayerGuess.getMurderWeapon(),
+        );
+
+        playerCounter++;
+        nextPlayer = true;
+      }
     }
   }
 }
 
 // simulation
-assignClientPlayer('client0', 'Colonel Mustard');
-assignClientPlayer('client1', 'Miss Scarlet');
-assignClientPlayer('client2', 'Prof. Plum');
-assignClientPlayer('client3', 'Mrs. Peacock');
-assignClientPlayer('client4', 'Mr. Green');
-assignClientPlayer('client5', 'Mrs. White');
+assignClientPlayer('client0', 'Mrs. White');
+// assignClientPlayer('client1', 'Miss Scarlet');
+// assignClientPlayer('client2', 'Prof. Plum');
+// assignClientPlayer('client3', 'Mrs. Peacock');
+// assignClientPlayer('client4', 'Mr. Green');
+// assignClientPlayer('client5', 'Mrs. White');
 
 main();
 
