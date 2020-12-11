@@ -203,7 +203,12 @@ function shuffleDeck(cardDeck) {
 function addClient(clientID, cardMap) {
   cardMap.set(clientID, new gamecard.GameCard());
   cardMap.get(clientID).setClientID(clientID);
-  clientArray.push(clientID);
+}
+
+function removeClient(clientID) {
+  gameCardMap.delete(clientID);
+  inGamePlayerSet.delete(clientID);
+  clientArray = Array.from(gameCardMap.keys());
 }
 
 // distribute shuffled deck to each client
@@ -277,7 +282,8 @@ function makeSuggestion(playerCard, roomCard, weaponCard) {
 // TODO: function that broadcasts suggestion and has players show cards to disprove
 function makeGuess(clientID) {
   var guessType = reader.question(
-    gameCardMap.get(clientID).getClientPlayer() + ': Make a suggestion (S) or accusation (A)? ',
+    gameCardMap.get(clientID).getClientPlayer().getName() +
+      ': Make a suggestion (S) or accusation (A)? ',
   );
   switch (guessType) {
     case 'A':
@@ -370,8 +376,6 @@ function decodeMove(playerMoving, moveLocation) {
       }
     });
   }
-
-  console.log(locationMovingTo);
 
   return locationMovingTo;
 }
@@ -534,10 +538,19 @@ function disproveSuggestion(clientID) {
   }
 }
 
+function turnIsOver(player) {
+  if (player.getLocation() instanceof hallway.Hallway) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // TODO: flush out pseudo code for this
 function main() {
   debugger;
   // game runs until a player wins (makes correct accusation)
+  clientArray = Array.from(gameCardMap.keys());
   var gameOver = false;
   var playerCounter = 0;
   var nextPlayer = false;
@@ -558,7 +571,7 @@ function main() {
     currentPlayer = clientArray[playerCounter];
 
     while (!nextPlayer && !gameOver) {
-      if (!inGamePlayerSet.has(gameCardMap.get(currentPlayer).getClientPlayer())) {
+      if (!gameCardMap.has(currentPlayer)) {
         playerCounter++;
         nextPlayer = true;
       }
@@ -566,64 +579,65 @@ function main() {
       movePlayerLocation(gameCardMap.get(currentPlayer).getClientPlayer());
 
       // if move was to a hallway, time for next players turn
-      if (
-        gameCardMap.get(currentPlayer).getClientPlayer().getLocation() instanceof hallway.Hallway
-      ) {
+      if (turnIsOver(gameCardMap.get(currentPlayer).getClientPlayer())) {
         playerCounter++;
         nextPlayer = true;
-      }
-
-      // if move was to a room, need to make a suggestion
-      currentPlayerGuess = makeGuess(currentPlayer);
-
-      if (currentPlayerGuess.getGuessType() === 'Accusation') {
-        accusation = makeAccusation(
-          currentPlayerGuess.getMurderPlayer(),
-          currentPlayerGuess.getMurderRoom(),
-          currentPlayerGuess.getMurderWeapon(),
-        );
-        if (accusation) {
-          console.log(gameCardMap.get(currentPlayer).getClientPlayer().getName() + ' Wins!');
-          gameOver = true;
-        } else {
-          console.log(
-            gameCardMap.get(currentPlayer).getClientPlayer().getName() +
-              ' lost and is out the game!',
+        console.log('turn is over');
+      } else {
+        // if move was to a room, need to make a suggestion
+        currentPlayerGuess = makeGuess(currentPlayer);
+        if (currentPlayerGuess.getGuessType() === 'Accusation') {
+          accusation = makeAccusation(
+            currentPlayerGuess.getMurderPlayer(),
+            currentPlayerGuess.getMurderRoom(),
+            currentPlayerGuess.getMurderWeapon(),
           );
-          inGamePlayerSet.delete(gameCardMap.get(currentPlayer).getClientPlayer());
-          playerCounter++;
-          nextPlayer = true;
-        }
-      }
-
-      if (currentPlayerGuess.getGuessType() == 'Suggestion') {
-        makeSuggestion(
-          currentPlayerGuess.getMurderPlayer(),
-          currentPlayerGuess.getMurderRoom(),
-          currentPlayerGuess.getMurderWeapon(),
-        );
-        disproved = false;
-        disproveCounter = playerCounter + 1;
-        currentDisprovePlayer = getNextDisprovePlayer(disproveCounter);
-
-        while (!disproved) {
-          disproved = disproveSuggestion(currentDisprovePlayer);
-          disproveCounter++;
-
-          currentDisprovePlayer = getNextDisprovePlayer(disproveCounter);
-
-          //break out of while loop if all players have disproved and still no result
-          if (currentDisprovePlayer === currentPlayer) {
-            disproved = false;
-            console.log('No one was able to disprove');
-            break;
-          } else if (currentDisprovePlayer === clientArray[0]) {
-            disproveCounter = 1;
+          if (accusation) {
+            console.log(gameCardMap.get(currentPlayer).getClientPlayer().getName() + ' Wins!');
+            gameOver = true;
+          } else {
+            console.log(
+              gameCardMap.get(currentPlayer).getClientPlayer().getName() +
+                ' lost and is out the game!',
+            );
+            removeClient(currentPlayer);
+            if (gameCardMap.size < 1) {
+              gameOver = true;
+            }
+            playerCounter++;
+            nextPlayer = true;
           }
         }
 
-        playerCounter++;
-        nextPlayer = true;
+        if (currentPlayerGuess.getGuessType() == 'Suggestion') {
+          makeSuggestion(
+            currentPlayerGuess.getMurderPlayer(),
+            currentPlayerGuess.getMurderRoom(),
+            currentPlayerGuess.getMurderWeapon(),
+          );
+          disproved = false;
+          disproveCounter = playerCounter + 1;
+          currentDisprovePlayer = getNextDisprovePlayer(disproveCounter);
+
+          while (!disproved) {
+            disproved = disproveSuggestion(currentDisprovePlayer);
+            disproveCounter++;
+
+            currentDisprovePlayer = getNextDisprovePlayer(disproveCounter);
+
+            //break out of while loop if all players have disproved and still no result
+            if (currentDisprovePlayer === currentPlayer) {
+              disproved = false;
+              console.log('No one was able to disprove');
+              break;
+            } else if (currentDisprovePlayer === clientArray[0]) {
+              disproveCounter = 1;
+            }
+          }
+
+          playerCounter++;
+          nextPlayer = true;
+        }
       }
     }
   }
@@ -634,7 +648,7 @@ function main() {
 // simulation
 assignClientPlayer('client0', 'Mrs. White');
 assignClientPlayer('client1', 'Miss Scarlet');
-assignClientPlayer('client2', 'Prof. Plum');
+// assignClientPlayer('client2', 'Prof. Plum');
 // assignClientPlayer('client3', 'Mrs. Peacock');
 // assignClientPlayer('client4', 'Mr. Green');
 // assignClientPlayer('client5', 'Mrs. White');
