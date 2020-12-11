@@ -429,7 +429,7 @@ class GameState {
     // for player to move to hallway, must have been in another room, find that room
     currentRoom = playerMoving.getLocation();
 
-    if (!roomCardSet.has(currentRoom)) {
+    if (!this.roomCardSet.has(currentRoom)) {
       console.log('ERROR: Move only valid if you are in a room');
       validMove = false;
       return validMove;
@@ -678,6 +678,7 @@ class GameState {
 }
 
 var test = new GameState();
+
 // simulation
 test.assignClientPlayer('client0', 'Mrs. White');
 test.assignClientPlayer('client1', 'Miss Scarlet');
