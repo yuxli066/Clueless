@@ -3,8 +3,9 @@
  */
 
 class Room {
-  constructor(name) {
+  constructor(name, roomCoordinate) {
     this.name = name;
+    this.roomCoordinate = roomCoordinate;
   }
   secretPassageWay = undefined;
   adjacentHallwayList = new Set();
@@ -47,6 +48,14 @@ class Room {
 
   getSecretPassageWay() {
     return this.secretPassageWay;
+  }
+
+  getLocation() {
+    return this.roomCoordinate;
+  }
+
+  setLocation(roomCoordinate) {
+    this.roomCoordinate = roomCoordinate;
   }
 }
 
