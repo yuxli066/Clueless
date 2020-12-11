@@ -127,9 +127,9 @@ export default function Board({ playerMap }) {
       socket.on('playerMoved', handlePosition);
       socket.on('notification', handleMessageResponse);
       return () => {
-        socket.off('playerMoved', handlePosition);
-        socket.off('notification', handleMessageResponse);
-        socket.off('clientId', handleClientId);
+        socket.off('playerMoved');
+        socket.off('notification');
+        socket.off('clientId');
       };
     }
   }, [socket, handlePosition, handleMessageResponse, handleClientId, connectedPlayers]);

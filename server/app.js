@@ -85,9 +85,13 @@ io.on('connect', (socket) => {
       // TODO filter out rooms that are full!
       // TODO pick a random room!
       // for now, just pick the first one
+
+      // FIXME this assumes that at least one room is present
+      // FIXME it also includes rooms that are full/already in game
       const roomToJoin = availableRooms.keys().next().value;
       socket.join(roomToJoin);
       joinedRoom = roomToJoin;
+      socket.emit('lobby', joinedRoom);
     }
 
     // If no room, create room, else create new player in existing room.

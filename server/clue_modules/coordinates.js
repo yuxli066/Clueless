@@ -36,10 +36,7 @@ class Coordinate {
 
   // compare coordinate objects
   compareCoordinate(otherCoordinate) {
-    if (
-      this.axisX === otherCoordinate.getAxisX() &&
-      this.axisY === otherCoordinate.getAxisY()
-    ) {
+    if (this.axisX === otherCoordinate.getAxisX() && this.axisY === otherCoordinate.getAxisY()) {
       return true;
     } else {
       return false;

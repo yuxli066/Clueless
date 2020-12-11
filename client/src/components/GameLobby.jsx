@@ -4,11 +4,17 @@ import SocketContext from '../SocketContext';
 import LobbyPlayer from './LobbyPlayer';
 import { Box, Button, Center, Divider, Heading, List, ListItem, Text } from '@chakra-ui/react';
 
-export default function GameLobby({ connectedPlayers }) {
+export default function GameLobby({ connectedPlayers, lobby }) {
   const socket = useContext(SocketContext);
   const history = useHistory();
   // TODO I feel like there should be a better way to do this...
   const historyRef = useRef(history);
+  // NOTE we most likely don't need this but I'm putting it here in the very rare chance lobby changes
+  const lobbyRef = useRef(lobby);
+
+  useEffect(() => {
+    lobbyRef.current = lobby;
+  }, [lobby]);
 
   useEffect(() => {
     historyRef.current = history;
@@ -16,7 +22,7 @@ export default function GameLobby({ connectedPlayers }) {
 
   const handleGameStart = useCallback(() => {
     console.log('redirecting!!');
-    historyRef.current.push('/0/game');
+    historyRef.current.push(`/${lobbyRef.current}/game`);
   }, []);
 
   // TODO we should just listen for the message type we need for the lobby. the room was established in the session component!
@@ -24,7 +30,8 @@ export default function GameLobby({ connectedPlayers }) {
     // TODO is just using the setter here directly safe or do we need a callback?
     socket.on('startGame', handleGameStart);
     return () => {
-      socket.off('startGame', handleGameStart);
+      socket.off('playerList');
+      socket.off('startGame');
     };
   }, [socket, handleGameStart]);
 
@@ -47,14 +54,16 @@ export default function GameLobby({ connectedPlayers }) {
         ))}
       </List>
       <Center>
-        <Text>Get 3-5 friends to join this lobby to start!</Text>
+        <Text>
+          To start the game, make sure there are at least 3 players and no more than 6 in this
+          lobby!
+        </Text>
       </Center>
       <Center>
-        {/* FIXME don't forget to undo this! */}
         <Link
-          disabled={connectedPlayers.length < 4 || connectedPlayers.length > 6}
+          disabled={connectedPlayers.length < 3 || connectedPlayers.length > 6}
+          lobby={lobbyRef.current}
           component={StartGameButton}
-          to="/0/game"
         >
           Start the Game!
         </Link>
@@ -66,7 +75,7 @@ export default function GameLobby({ connectedPlayers }) {
 const StartGameButton = React.forwardRef((props, ref) => {
   const socket = useContext(SocketContext);
 
-  const { disabled } = props;
+  const { disabled, lobby } = props;
 
   // FIXME update socket to properly emit game start (either via game room prop or on the server side!)
   return (
@@ -74,7 +83,7 @@ const StartGameButton = React.forwardRef((props, ref) => {
       colorScheme="blue"
       margin={4}
       disabled={disabled}
-      onClick={() => socket.emit('requestGameStart', 'single-instance-game')}
+      onClick={() => socket.emit('requestGameStart', lobby)}
     >
       Start the Game!
     </Button>

@@ -109,8 +109,7 @@ function Banner(props) {
       }}
     >
       <div className={styles.banner}>
-        {/* fixme this need sto be updated to either creating or joining a lobby! */}
-        <Link as={ReactLink} to="/0/lobby" style={{ textDecoration: 'none' }}>
+        <Link as={ReactLink} to="/create-or-join" style={{ textDecoration: 'none' }}>
           <div className={styles.primary}>
             <figure>
               <Text textStyle="h4">{buttonText}</Text>
