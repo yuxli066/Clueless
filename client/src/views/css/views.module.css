@@ -242,3 +242,8 @@ a p {
   color: black;
   width: fit-content;
 }
+
+.gameNavBar {
+  width: 100%;
+  margin: auto;
+}
