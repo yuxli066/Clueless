@@ -60,27 +60,7 @@ const availablePlayers = [
 const playerDeck = [
   {
     idd: 1,
-    namee: 'Billard Room',
-  },
-  {
-    idd: 2,
-    namee: 'Rev. Green',
-  },
-  {
-    idd: 3,
-    namee: 'Professor Plum',
-  },
-  {
-    idd: 4,
-    namee: 'Miss Scarlet',
-  },
-  {
-    idd: 5,
-    namee: 'Mrs. Peacock',
-  },
-  {
-    idd: 6,
-    namee: 'Colonel Mustard',
+    card: 'Conservatory',
   },
 ];
 
@@ -397,7 +377,7 @@ export default function Board({ playerMap }) {
               {playerDeck.map((card) => (
                 <GridItem rowSpan={1} colSpan={1} key={card.idd} style={{ textAlign: 'center' }}>
                   <Center>
-                    <Deck name={card.namee} />
+                    <Deck card={card.card} self={card.idd === socket.id} />
                   </Center>
                 </GridItem>
               ))}
