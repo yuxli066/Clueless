@@ -59,8 +59,28 @@ const availablePlayers = [
 
 const playerDeck = [
   {
-    idd: 1,
-    card: 'Conservatory',
+    id: 1,
+    card: 'Study',
+  },
+  {
+    id: 2,
+    card: 'Billard Room',
+  },
+  {
+    id: 3,
+    card: 'Mrs. White',
+  },
+  {
+    id: 4,
+    card: 'Wrench',
+  },
+  {
+    id: 5,
+    card: 'Library',
+  },
+  {
+    id: 6,
+    card: 'Revolver',
   },
 ];
 
@@ -372,12 +392,12 @@ export default function Board({ playerMap }) {
           <div
             style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
           >
-            <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
+            <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(7, 1fr)" w="100%" h="100%">
               {/* TODO move to connectedplayers (coming from the server) */}
               {playerDeck.map((card) => (
-                <GridItem rowSpan={1} colSpan={1} key={card.idd} style={{ textAlign: 'center' }}>
+                <GridItem rowSpan={1} colSpan={1} key={card.id} style={{ textAlign: 'center' }}>
                   <Center>
-                    <Deck card={card.card} self={card.idd === socket.id} />
+                    <Deck card={card.card} />
                   </Center>
                 </GridItem>
               ))}

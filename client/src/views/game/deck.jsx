@@ -50,29 +50,23 @@ function getContentNamee(card) {
   }
 }
 
-export default function Deck({ card, self }) {
+export default function Deck({ card }) {
   const content = useContentContext();
   console.log('content in deck', content);
   console.log('first card in deck', card);
   const cardPicture = getContentNamee(card);
   console.log('Card in deck function', cardPicture);
-
-  console.log('This is what the source will be', content.images[cardPicture].default);
   return (
     <div>
       {/* TODO come up with a bettwer way to downsize the image! */}
       {/* TODO improve padding of image! */}
-      <img alt={card} src={content.images[cardPicture]} style={{ width: '50%', height: '50%' }} />
+      <img
+        alt={card}
+        src={content.images[cardPicture].default}
+        style={{ width: '50%', height: '50%' }}
+      />
       <div></div>
-      {/* TODO i want this and the image on one line! */}
-      {self ? (
-        <p>
-          {card}
-          <strong> (you)</strong>
-        </p>
-      ) : (
-        <p>{card}</p>
-      )}
+      <p>{card}</p>
     </div>
   );
 }
