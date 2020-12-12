@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
-import { useToast, Grid, GridItem, Center } from '@chakra-ui/react';
+import { useToast, Grid, GridItem, Center, Flex } from '@chakra-ui/react';
 import GameCard from './GameCard';
 import Players from './Players';
 import { useDrop } from 'react-dnd';
@@ -176,9 +176,10 @@ export default function Board({ playerMap }) {
   ) : (
     <div>
       <Grid templateRows="repeat(12, 1fr)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
-        <GridItem rowSpan={13} colSpan={1}>
-          <Navbar></Navbar>
+        <GridItem rowSpan={1} colSpan={1}>
+          <Navbar />
         </GridItem>
+        <GridItem rowSpan={12} colSpan={1} rowStart={2} />
         <GridItem rowSpan={1} colSpan={4}>
           <div
             style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
