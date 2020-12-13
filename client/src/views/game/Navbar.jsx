@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link as ReactLink } from 'react-router-dom';
+import { useContentContext } from '../../ContentProvider.jsx';
+import * as contentHelpers from '../content';
 import {
   Drawer,
   DrawerOverlay,
@@ -14,18 +16,19 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  PopoverArrow,
   PopoverCloseButton,
   PopoverHeader,
   PopoverBody,
   PopoverFooter,
-  Box,
   ButtonGroup,
+  Grid,
 } from '@chakra-ui/react';
 
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialFocusRef = React.useRef();
+  const Content = useContentContext();
+
   return (
     <>
       <Button bg="rgb(255, 253, 235)" onClick={onOpen} width="100%" h="100%">
@@ -38,18 +41,17 @@ function Navbar() {
               <Center>GAME MENU</Center>
             </DrawerHeader>
             <DrawerBody>
-              <Popover zIndex={9999}>
+              <Popover>
                 <PopoverTrigger>
                   <Button size="md" height="4em" width="100%" mb="1em" mt="1em">
                     HOME
                   </Button>
                 </PopoverTrigger>
-                <div id="testingId">
+                <div id="popover1">
                   <PopoverContent color="white" bg="red.800" borderColor="blue.800">
                     <PopoverHeader pt={4} fontWeight="bold" border="0">
                       Are you sure?
                     </PopoverHeader>
-                    <PopoverArrow />
                     <PopoverCloseButton />
                     <PopoverBody>
                       You will not be able to rejoin the same game once you quit!
@@ -74,9 +76,56 @@ function Navbar() {
                 </div>
               </Popover>
               <Divider orientation="horizontal" />
-              <Button size="md" height="4em" width="100%" mt="1em" mb="1em">
-                GAME RULES
-              </Button>
+              <Popover>
+                <PopoverTrigger>
+                  <Button size="md" height="4em" width="100%" mt="1em" mb="1em">
+                    GAME RULES
+                  </Button>
+                </PopoverTrigger>
+                <div id="popover2">
+                  <PopoverContent color="white" bg="green.500" borderColor="blue.800">
+                    <PopoverHeader pt={4} fontWeight="bold" border="0">
+                      <Center>RULES FOR THE GAME:</Center>
+                    </PopoverHeader>
+                    <PopoverCloseButton />
+                    <PopoverBody fontSize="xl">
+                      <Grid templateColumns="1fr 1fr">
+                        <contentHelpers.ColText
+                          content={{
+                            colSize: { xl: 1, lg: 2, md: 2, sm: 2 },
+                            text: Content.text['Instructions1'],
+                          }}
+                        />
+                        <contentHelpers.ColText
+                          content={{
+                            colSize: { xl: 1, lg: 2, md: 2, sm: 2 },
+                            text: Content.text['Instructions2'],
+                          }}
+                        />
+                        <contentHelpers.ColText
+                          content={{
+                            colSize: { xl: 1, lg: 2, md: 2, sm: 2 },
+                            text: Content.text['Instructions4'],
+                          }}
+                        />
+                        <contentHelpers.ColText
+                          content={{
+                            colSize: { xl: 1, lg: 2, md: 2, sm: 2 },
+                            text: Content.text['Instructions5'],
+                          }}
+                        />
+                        <contentHelpers.ColText
+                          content={{
+                            colSize: { xl: 1, lg: 2, md: 2, sm: 2 },
+                            text: Content.text['Instructions6'],
+                          }}
+                        />
+                        {/* add more game rule content here*/}
+                      </Grid>
+                    </PopoverBody>
+                  </PopoverContent>
+                </div>
+              </Popover>
               <Divider orientation="horizontal" />
               <Popover>
                 <PopoverTrigger>
@@ -88,7 +137,6 @@ function Navbar() {
                   <PopoverHeader pt={4} fontWeight="bold" border="0">
                     Are you sure?
                   </PopoverHeader>
-                  <PopoverArrow />
                   <PopoverCloseButton />
                   <PopoverBody>
                     You will not be able to rejoin the same game once you quit!
