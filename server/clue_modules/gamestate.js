@@ -241,7 +241,6 @@ class GameState {
       clientIndex++;
     });
   }
-
   // function for return of object with string
   getPlayerObject(characterName) {
     switch (characterName) {
@@ -270,26 +269,35 @@ class GameState {
   }
 
   // validate accusation made by current player
-  makeAccusation(playerCard, roomCard, weaponCard) {
+  makeAccusation(clientID,playerCard, roomCard, weaponCard) {
     // must compare murder cards to players accusation card choice
-    var accusation = false;
     if (
       playerCard === this.murderPlayer &&
       weaponCard === this.murderWeapon &&
       roomCard === this.murderRoom
     ) {
-      console.log('Accusation was correct!');
-      accusation = true;
+      this.gameCardMap.get(clientID).getClientPlayer().getName() + ' Wins!',
+      this.gameOver();
     } else {
-      console.log('Accusation was incorrect!');
-      accusation = false;
+      console.log(
+        this.gameCardMap.get(clientID).getClientPlayer().getName() +
+          ' lost and is out the game!',
+      );
+      //EVENT removal of player
+      this.removeClient(clientID);
+      if (this.gameCardMap.size < 1) {
+        this.gameOver();
+      }
     }
-    return accusation;
   }
 
-  makeSuggestion(playerCard, roomCard, weaponCard) {
-    console.log(
-      'It was ' +
+  gameOver(){
+    console.log('Game is over');
+  }
+
+  async makeSuggestion(clientID,playerCard, roomCard, weaponCard) {
+    console.log(clientID+
+      'suggests it was ' +
         playerCard.getName() +
         ' in the ' +
         roomCard.getName() +
@@ -297,58 +305,36 @@ class GameState {
         weaponCard.getName(),
     );
 
+    var guessStatement =clientID+ 'suggests it was ' +
+                          playerCard.getName() +
+                          ' in the ' +
+                          roomCard.getName() +
+                          ' with a ' +
+                          weaponCard.getName();
+
     playerCard.setLocation(roomCard);
     console.log(playerCard.getName() + ' has moved to ' + roomCard.getName());
+
+    // TODO flush out logic for disproval
+
+    // var disproved = await this.requestDisproval(guessStatement);
+    // if(disproved != '')
+    // {
+    //   //EVENT show client the card that was disproved
+    //   console.log(disproved);
+
+    // }else{
+    //   console.log('No one was able to disprove');
+    // }
   }
 
   // TODO:  that broadcasts suggestion and has players show cards to disprove
   makeGuess(clientID,guessType,guessMurderPlayer,guessMurderRoom,guessMurderWeapon) {
-    this.guessSingleton = new guess.Guess();
-
-    // var guessType = reader.question(
-    //   this.gameCardMap.get(clientID).getClientPlayer().getName() +
-    //     ': Make a suggestion (S) or accusation (A)? ',
-    // );
-    // switch (guessType) {
-    //   case 'A':
-    //     guessSingleton.setGuessType('Accusation');
-    //     guessType = 'accusing';
-    //     break;
-    //   case 'S':
-    //     guessSingleton.setGuessType('Suggestion');
-    //     guessType = 'suggesting';
-    //     break;
-    // }
-    // var guessMurderPlayer = reader.question(
-    //   this.gameCardMap.get(clientID).getClientPlayer().getName() +
-    //     `: Who are you ${guessType} is the murderer? `,
-    // );
-    // var guessMurderRoom = reader.question(
-    //   this.gameCardMap.get(clientID).getClientPlayer().getName() +
-    //     `: Where do are you ${guessType} the murder happened? `,
-    // );
-    // var guessMurderWeapon = reader.question(
-    //   this.gameCardMap.get(clientID).getClientPlayer().getName() +
-    //     `: What are you ${guessType} the weapon was? `,
-    // );
-
-    this.playerCardSet.forEach(function (player) {
-      if (player.getName() === guessMurderPlayer) {
-        guessSingleton.setMurderPlayer(player);
-      }
-    });
-    this.roomCardSet.forEach(function (room) {
-      if (room.getName() === guessMurderRoom) {
-        guessSingleton.setMurderRoom(room);
-      }
-    });
-    this.weaponCardSet.forEach(function (weapon) {
-      if (weapon.getName() === guessMurderWeapon) {
-        guessSingleton.setMurderWeapon(weapon);
-      }
-    });
-
-    return guessSingleton;
+    if(guessType === 'suggestion'){
+      this.makeSuggestion(clientID,guessMurderPlayer,guessMurderRoom,guessMurderWeapon);
+    }else if(guessType === 'accusation'){
+      this.makeAccusation(clientID,guessMurderPlayer,guessMurderRoom,guessMurderWeapon);
+    }
   }
 
   // update player location
@@ -573,6 +559,13 @@ class GameState {
     } else {
       return false;
     }
+  }
+
+  startGame(){
+
+    this.clientArray = Array.from(this.gameCardMap.keys());
+    this.distributeDeck(this.gameCardMap, this.gameDeck, this.clientArray);
+
   }
 
   // TODO: flush out pseudo code for this
