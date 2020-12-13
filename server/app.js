@@ -7,6 +7,8 @@ const socketIo = require('socket.io');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+const GameState = require('./clue_modules/gamestate');
+
 var app = express();
 
 app.use(logger('dev'));
@@ -26,6 +28,7 @@ const position = {};
 
 // FIXME I think this is a dangerous global! We need to make this safer and able to synchronize read/writes!
 const roomMap = new Map();
+const gameStateMap = new Map();
 
 const PLAYERS = new Set([
   'Colonel Mustard',
@@ -146,9 +149,38 @@ io.on('connect', (socket) => {
   socket.on('requestGameStart', (room) => {
     // TODO we need to check to make sure this works!
     console.log('starting the game!');
-    console.log(room);
-    console.log(socket.rooms);
     io.in(room).emit('startGame');
+
+    const gameState = new GameState();
+    gameStateMap.set(roomMap.get(room), gameState);
+
+    // add the players to the game state object
+    roomMap.get(room).forEach((player, id) => {
+      console.log(player, id);
+      gameState.assignClientPlayer(id, player.name);
+    });
+
+    // console.log(gameState.gameCardMap);
+
+    console.log(gameState);
+
+    // EVENT distribute cards
+    gameState.startGame();
+
+    // EVENT indicate to the first player that it is their turn
+    // TODO we should emit to the client whose turn it is
+  });
+
+  // TODO we need EVENTs for client sending a card back
+  // this should also then indicate to the next player that it is their turn
+
+  // EVENTs suggestion (and accusation)
+  socket.on('suggestion', (suggestion) => {
+    console.log(suggestion);
+  });
+
+  socket.on('accusation', (acc) => {
+    console.log(acc);
   });
 
   socket.on('disconnecting', () => {
@@ -200,6 +232,10 @@ io.on('connect', (socket) => {
     // position[socket.id].x = movementData.x;
     // position[socket.id].y = movementData.y;
     // emit a message to all players about the player that moved
+
+    // EVENT this is where our main player movent will be
+    // update the position of the player that moved and (maybe) indicate the need for a guess or accusation
+
     io.emit('playerMoved', movementData);
   });
 });

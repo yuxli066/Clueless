@@ -1,4 +1,4 @@
-import { React } from 'react';
+import { React, useContext, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -11,10 +11,22 @@ import {
   TabPanels,
   TabPanel,
 } from '@chakra-ui/react';
+import SocketContext from '../../SocketContext';
 
 function GameCard() {
-  const handleSubmitAccusation = (e) => {
-    alert(`placeholder`);
+  const [guessType, setGuessType] = useState('DEFAULT');
+  const [weapon, setWeapon] = useState('DEFAULT');
+  const [room, setRoom] = useState('DEFAULT');
+  const [player, setPlayer] = useState('DEFAULT');
+  const socket = useContext(SocketContext);
+
+  const handleSubmitAccusation = (_) => {
+    console.log(guessType);
+    socket.emit(guessType, {
+      weapon,
+      room,
+      player,
+    });
   };
 
   return (
@@ -198,7 +210,7 @@ function GameCard() {
               <Text fontSize="md">Guess Type</Text>
               <br />
               <div>
-                <select defaultValue={'DEFAULT'}>
+                <select value={guessType} onChange={(e) => setGuessType(e.target.value)}>
                   <option value="DEFAULT">Choose an item...</option>
                   <option value="suggestion">Suggestion</option>
                   <option value="accusation">Accusation</option>
@@ -211,7 +223,7 @@ function GameCard() {
               <Text fontSize="md">Weapon</Text>
               <br />
               <div>
-                <select defaultValue={'DEFAULT'}>
+                <select value={weapon} onChange={(e) => setWeapon(e.target.value)}>
                   <option value="DEFAULT">Choose an item...</option>
                   <option value="candlestick">Candlestick</option>
                   <option value="daggerKnife">Dagger/Knife</option>
@@ -228,7 +240,7 @@ function GameCard() {
               <Text fontSize="md">Room</Text>
               <br />
               <div>
-                <select defaultValue={'DEFAULT'}>
+                <select value={room} onChange={(e) => setRoom(e.target.value)}>
                   <option value="DEFAULT">Choose an item...</option>
                   <option value="kitchen">Kitchen</option>
                   <option value="hall">Hall</option>
@@ -248,7 +260,8 @@ function GameCard() {
               <Text fontSize="md">Player</Text>
               <br />
               <div>
-                <select defaultValue={'DEFAULT'}>
+                {/* TODO consider moving these to handling just players */}
+                <select value={player} onChange={(e) => setPlayer(e.target.value)}>
                   <option value="DEFAULT">Choose an item...</option>
                   <option value="missScarlett">Miss Scarlett</option>
                   <option value="professorPlum">Professor Plum</option>

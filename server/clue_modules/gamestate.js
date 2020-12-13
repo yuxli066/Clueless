@@ -10,7 +10,6 @@ var hallway = require('./hallway');
 var coordinate = require('./coordinates');
 var gamecard = require('./gamecard');
 var guess = require('./guess');
-var reader = require('readline-sync');
 
 class GameState {
   constructor() {
@@ -20,11 +19,14 @@ class GameState {
     this.initiatePlayerLocations();
   }
 
+  // TODO shoudl these instantiations be in the constructor?
+
   //Instantiate singleton of guess
   //guessSingleton = new guess.Guess();
   guessSingleton = new guess.Guess();
 
   // Instantiate Players
+  // TODO we need to figure out if we want this to be these names or the names that we have on the cards
   colMustardPlayer = new player.Player('Colonel Mustard');
   missScarletPlayer = new player.Player('Miss Scarlet');
   profPlumPlayer = new player.Player('Prof. Plum');
@@ -269,19 +271,17 @@ class GameState {
   }
 
   // validate accusation made by current player
-  makeAccusation(clientID,playerCard, roomCard, weaponCard) {
+  makeAccusation(clientID, playerCard, roomCard, weaponCard) {
     // must compare murder cards to players accusation card choice
     if (
       playerCard === this.murderPlayer &&
       weaponCard === this.murderWeapon &&
       roomCard === this.murderRoom
     ) {
-      this.gameCardMap.get(clientID).getClientPlayer().getName() + ' Wins!',
-      this.gameOver();
+      this.gameCardMap.get(clientID).getClientPlayer().getName() + ' Wins!', this.gameOver();
     } else {
       console.log(
-        this.gameCardMap.get(clientID).getClientPlayer().getName() +
-          ' lost and is out the game!',
+        this.gameCardMap.get(clientID).getClientPlayer().getName() + ' lost and is out the game!',
       );
       //EVENT removal of player
       this.removeClient(clientID);
@@ -291,13 +291,14 @@ class GameState {
     }
   }
 
-  gameOver(){
+  gameOver() {
     console.log('Game is over');
   }
 
-  async makeSuggestion(clientID,playerCard, roomCard, weaponCard) {
-    console.log(clientID+
-      'suggests it was ' +
+  async makeSuggestion(clientID, playerCard, roomCard, weaponCard) {
+    console.log(
+      clientID +
+        'suggests it was ' +
         playerCard.getName() +
         ' in the ' +
         roomCard.getName() +
@@ -305,12 +306,14 @@ class GameState {
         weaponCard.getName(),
     );
 
-    var guessStatement =clientID+ 'suggests it was ' +
-                          playerCard.getName() +
-                          ' in the ' +
-                          roomCard.getName() +
-                          ' with a ' +
-                          weaponCard.getName();
+    var guessStatement =
+      clientID +
+      'suggests it was ' +
+      playerCard.getName() +
+      ' in the ' +
+      roomCard.getName() +
+      ' with a ' +
+      weaponCard.getName();
 
     playerCard.setLocation(roomCard);
     console.log(playerCard.getName() + ' has moved to ' + roomCard.getName());
@@ -329,11 +332,11 @@ class GameState {
   }
 
   // TODO:  that broadcasts suggestion and has players show cards to disprove
-  makeGuess(clientID,guessType,guessMurderPlayer,guessMurderRoom,guessMurderWeapon) {
-    if(guessType === 'suggestion'){
-      this.makeSuggestion(clientID,guessMurderPlayer,guessMurderRoom,guessMurderWeapon);
-    }else if(guessType === 'accusation'){
-      this.makeAccusation(clientID,guessMurderPlayer,guessMurderRoom,guessMurderWeapon);
+  makeGuess(clientID, guessType, guessMurderPlayer, guessMurderRoom, guessMurderWeapon) {
+    if (guessType === 'suggestion') {
+      this.makeSuggestion(clientID, guessMurderPlayer, guessMurderRoom, guessMurderWeapon);
+    } else if (guessType === 'accusation') {
+      this.makeAccusation(clientID, guessMurderPlayer, guessMurderRoom, guessMurderWeapon);
     }
   }
 
@@ -390,10 +393,10 @@ class GameState {
     return locationMovingTo;
   }
 
-  movePlayerLocation(playerMoving,locationMovingTo) {
+  movePlayerLocation(playerMoving, locationMovingTo) {
     // function to test with terminal input
     //TODO replace with answer from client, expecting string with player name
- 
+
     // var moveAnswer = reader.question(playerMoving.getName() + ' Where do you want to move? ');
 
     var locationMovingTo = this.decodeMove(locationMovingTo);
@@ -540,7 +543,6 @@ class GameState {
     //   .forEach(function (gameCard) {
     //     console.log('    -' + gameCard.getName());
     //   });
-
     // var disproveAnswer = reader.question(
     //   'Type card that you select or type NONE if you do not have card to disprove: ',
     // );
@@ -549,7 +551,6 @@ class GameState {
     // } else {
     //   return true;
     // }
-
     //EVENT this is where you should ask client to disprove the current suggestion
   }
 
@@ -561,18 +562,17 @@ class GameState {
     }
   }
 
-  startGame(){
-
+  // EVENT start the game
+  startGame() {
     this.clientArray = Array.from(this.gameCardMap.keys());
     this.distributeDeck(this.gameCardMap, this.gameDeck, this.clientArray);
-
   }
 
   // TODO: flush out pseudo code for this
   gamePlay() {
     debugger;
     // game runs until a player wins (makes correct accusation)
-    this.clientArray = Array.from(this.gameCardMap.keys());
+    // this.clientArray = Array.from(this.gameCardMap.keys());
     var gameOver = false;
     var playerCounter = 0;
     var nextPlayer = false;
@@ -585,7 +585,7 @@ class GameState {
 
     // distibute cards to each of the client's gamecard set
     //EVENT to distribute card decks once all players have connected/game is starting. These will be the card sent to each respective client
-    this.distributeDeck(this.gameCardMap, this.gameDeck, this.clientArray);
+    // this.distributeDeck(this.gameCardMap, this.gameDeck, this.clientArray);
 
     while (!gameOver) {
       //EVENT game is starting and this is the setup for the loop for current player selection
@@ -601,7 +601,6 @@ class GameState {
       }
 
       while (!nextPlayer && !gameOver) {
-        
         //EVENT this will allow the move and expects input from client on location of wherer to move
         // current player makes their move
         this.movePlayerLocation(this.gameCardMap.get(currentClient).getClientPlayer());
@@ -658,7 +657,7 @@ class GameState {
             disproveCounter = playerCounter + 1;
             currentDisprovePlayer = this.getNextDisprovePlayer(disproveCounter);
 
-            // EVENT Ask each client until card is disproved 
+            //EVENT Ask each client until card is disproved
             while (!disproved) {
               disproved = this.disproveSuggestion(currentDisprovePlayer);
               disproveCounter++;
@@ -688,9 +687,11 @@ class GameState {
   }
 }
 
-var test = new GameState();
+// var test = new GameState();
 
-// simulation
-test.assignClientPlayer('client0', 'Mrs. White');
-test.assignClientPlayer('client1', 'Miss Scarlet');
-test.gamePlay();
+// // simulation
+// test.assignClientPlayer('client0', 'Mrs. White');
+// test.assignClientPlayer('client1', 'Miss Scarlet');
+// test.gamePlay();
+
+module.exports = GameState;

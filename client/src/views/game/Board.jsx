@@ -232,13 +232,6 @@ export default function Board({ playerMap }) {
     };
   }, [socket, handlePosition, handleMessageResponse, handleClientId]);
 
-  // FIXME handle this eslint diable!
-  // eslint-disable-next-line no-unused-vars
-  function handleSubmitAccusation() {
-    var notificationString = 'Player made a suggestion/accusation';
-    socket.emit('display_notification', notificationString);
-  }
-
   // render all players
   const renderClient = (x, y) => {
     let allPlayers = [];
