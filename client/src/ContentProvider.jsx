@@ -2,7 +2,9 @@ import React, { useEffect, useState, useContext } from 'react';
 const importAll = (imports) =>
   imports
     .keys()
-    .map((item) => ({ [item.replace(/(\.\/)(.+)(\.jpe?g|\.png|\.PNG)/g, '$2')]: imports(item) }));
+    .map((item) => ({
+      [item.replace(/(\.\/)(.+)(\.jpe?g|\.png|\.PNG|\.JPG)/g, '$2')]: imports(item),
+    }));
 const ContentContext = React.createContext();
 
 export const useContentContext = () => useContext(ContentContext);
