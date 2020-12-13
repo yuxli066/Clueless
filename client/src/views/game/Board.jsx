@@ -4,6 +4,7 @@ import SocketContext from '../../../src/SocketContext';
 import { useToast, Grid, GridItem, Center } from '@chakra-ui/react';
 import GameCard from './GameCard';
 import Players from './Players';
+import Deck from './Deck';
 import { useDrop } from 'react-dnd';
 import { useContentContext } from '../../ContentProvider';
 import white from '../../board-images/white-image.PNG';
@@ -116,6 +117,33 @@ const availablePlayers = [
   {
     id: 6,
     name: 'Mrs. White',
+  },
+];
+
+const playerDeck = [
+  {
+    id: 1,
+    card: 'Study',
+  },
+  {
+    id: 2,
+    card: 'Billard Room',
+  },
+  {
+    id: 3,
+    card: 'Mrs. White',
+  },
+  {
+    id: 4,
+    card: 'Wrench',
+  },
+  {
+    id: 5,
+    card: 'Library',
+  },
+  {
+    id: 6,
+    card: 'Revolver',
   },
 ];
 
@@ -434,7 +462,16 @@ export default function Board({ playerMap }) {
           <div
             style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
           >
-            Deck goes here
+            <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(7, 1fr)" w="100%" h="100%">
+              {/* TODO move to connectedplayers (coming from the server) */}
+              {playerDeck.map((card) => (
+                <GridItem rowSpan={1} colSpan={1} key={card.id} style={{ textAlign: 'center' }}>
+                  <Center>
+                    <Deck card={card.card} />
+                  </Center>
+                </GridItem>
+              ))}
+            </Grid>
           </div>
         </GridItem>
       </Grid>
