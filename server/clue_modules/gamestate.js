@@ -13,62 +13,119 @@ var guess = require('./guess');
 
 class GameState {
   constructor() {
+     //Instantiate singleton of guess
+    //guessSingleton = new guess.Guess();
+    guessSingleton = new guess.Guess();
+
+    // Instantiate Players
+    colMustardPlayer = new player.Player('Colonel Mustard');
+    missScarletPlayer = new player.Player('Miss Scarlet');
+    profPlumPlayer = new player.Player('Professor Plum');
+    mrsPeacockPlayer = new player.Player('Mrs. Peacock');
+    mrGreenPlayer = new player.Player('Rev. Green');
+    mrsWhitePlayer = new player.Player('Mrs. White');
+
+    // Instantiate Weapons
+    knifeWeapon = new weapon.Weapon('Knife');
+    ropeWeapon = new weapon.Weapon('Rope');
+    leadPipeWeapon = new weapon.Weapon('Lead Pipe');
+    wrenchWeapon = new weapon.Weapon('Wrench');
+    candleStickWeapon = new weapon.Weapon('Candle Stick');
+    revolverWeapon = new weapon.Weapon('Revolver');
+
+    // Instantiate Hallways
+    hallway1 = new hallway.Hallway(1, new coordinate.Coordinate(0, 1));
+    hallway2 = new hallway.Hallway(2, new coordinate.Coordinate(0, 3));
+    hallway3 = new hallway.Hallway(3, new coordinate.Coordinate(1, 0));
+    hallway4 = new hallway.Hallway(4, new coordinate.Coordinate(1, 2));
+    hallway5 = new hallway.Hallway(5, new coordinate.Coordinate(1, 4));
+    hallway6 = new hallway.Hallway(6, new coordinate.Coordinate(2, 1));
+    hallway7 = new hallway.Hallway(7, new coordinate.Coordinate(2, 3));
+    hallway8 = new hallway.Hallway(8, new coordinate.Coordinate(3, 0));
+    hallway9 = new hallway.Hallway(9, new coordinate.Coordinate(3, 2));
+    hallway10 = new hallway.Hallway(10, new coordinate.Coordinate(3, 4));
+    hallway11 = new hallway.Hallway(11, new coordinate.Coordinate(4, 1));
+    hallway12 = new hallway.Hallway(12, new coordinate.Coordinate(4, 3));
+
+    // Instantiate Rooms
+    // link adjacent hallways
+    // set secret passage way where applicable
+    studyRoom = new room.Room('Study', new coordinate.Coordinate(0, 4));
+    hallRoom = new room.Room('Hall', new coordinate.Coordinate(2, 4));
+    loungeRoom = new room.Room('Lounge', new coordinate.Coordinate(4, 4));
+    libraryRoom = new room.Room('Library', new coordinate.Coordinate(0, 2));
+    billiardsRoom = new room.Room('Billiards', new coordinate.Coordinate(2, 2));
+    diningRoom = new room.Room('Dining', new coordinate.Coordinate(4, 2));
+    conservatoryRoom = new room.Room('Conservatory', new coordinate.Coordinate(0, 0));
+    ballroomRoom = new room.Room('Ballroom', new coordinate.Coordinate(2, 0));
+    kitchenRoom = new room.Room('Kitchen', new coordinate.Coordinate(4, 0));
     // initialize game
     this.setupHallways();
     this.setupSecretPassageWays();
     this.initiatePlayerLocations();
+
+      // State Tracking
+    playerCardSet = new Set([
+      this.colMustardPlayer,
+      this.missScarletPlayer,
+      this.profPlumPlayer,
+      this.mrsPeacockPlayer,
+      this.mrGreenPlayer,
+      this.mrsWhitePlayer,
+    ]);
+    weaponCardSet = new Set([
+      this.knifeWeapon,
+      this.ropeWeapon,
+      this.leadPipeWeapon,
+      this.wrenchWeapon,
+      this.candleStickWeapon,
+      this.revolverWeapon,
+    ]);
+    roomCardSet = new Set([
+      this.conservatoryRoom,
+      this.libraryRoom,
+      this.studyRoom,
+      this.ballroomRoom,
+      this.billiardsRoom,
+      this.hallRoom,
+      this.kitchenRoom,
+      this.diningRoom,
+      this.loungeRoom,
+    ]);
+
+    hallwayCardSet = new Set([
+      this.hallway1,
+      this.hallway2,
+      this.hallway3,
+      this.hallway4,
+      this.hallway5,
+      this.hallway6,
+      this.hallway7,
+      this.hallway8,
+      this.hallway9,
+      this.hallway10,
+      this.hallway11,
+      this.hallway12,
+    ]);
+
+    // list to track current amount of connected players
+    inGamePlayerSet = new Set();
+
+    currentClient = undefined; // define current client character
+
+    murderPlayer = this.randomCard(this.playerCardSet); // choose random card to select murder character
+    murderWeapon = this.randomCard(this.weaponCardSet); // choose random card to select murder weapon
+    murderRoom = this.randomCard(this.roomCardSet); // choose random card to select murder room
+    preGameDeck = this.getGameDeck(this.murderPlayer, this.murderWeapon, this.murderRoom); // cards remaining in the game to be distributed
+
+    // shuffle deck
+    gameDeck = this.shuffleDeck(this.preGameDeck); // shuffle the deck to randomize order they get sent
+
+    // Initialize map for client game cards
+    gameCardMap = new Map();
+    clientArray = [];
   }
-
-  // TODO shoudl these instantiations be in the constructor?
-
-  //Instantiate singleton of guess
-  //guessSingleton = new guess.Guess();
-  guessSingleton = new guess.Guess();
-
-  // Instantiate Players
-  // TODO we need to figure out if we want this to be these names or the names that we have on the cards
-  colMustardPlayer = new player.Player('Colonel Mustard');
-  missScarletPlayer = new player.Player('Miss Scarlet');
-  profPlumPlayer = new player.Player('Prof. Plum');
-  mrsPeacockPlayer = new player.Player('Mrs. Peacock');
-  mrGreenPlayer = new player.Player('Mr. Green');
-  mrsWhitePlayer = new player.Player('Mrs. White');
-
-  // Instantiate Weapons
-  knifeWeapon = new weapon.Weapon('Knife');
-  ropeWeapon = new weapon.Weapon('Rope');
-  leadPipeWeapon = new weapon.Weapon('Lead Pipe');
-  wrenchWeapon = new weapon.Weapon('Wrench');
-  candleStickWeapon = new weapon.Weapon('Candle Stick');
-  revolverWeapon = new weapon.Weapon('Revolver');
-
-  // Instantiate Hallways
-  hallway1 = new hallway.Hallway(1, new coordinate.Coordinate(0, 1));
-  hallway2 = new hallway.Hallway(2, new coordinate.Coordinate(0, 3));
-  hallway3 = new hallway.Hallway(3, new coordinate.Coordinate(1, 0));
-  hallway4 = new hallway.Hallway(4, new coordinate.Coordinate(1, 2));
-  hallway5 = new hallway.Hallway(5, new coordinate.Coordinate(1, 4));
-  hallway6 = new hallway.Hallway(6, new coordinate.Coordinate(2, 1));
-  hallway7 = new hallway.Hallway(7, new coordinate.Coordinate(2, 3));
-  hallway8 = new hallway.Hallway(8, new coordinate.Coordinate(3, 0));
-  hallway9 = new hallway.Hallway(9, new coordinate.Coordinate(3, 2));
-  hallway10 = new hallway.Hallway(10, new coordinate.Coordinate(3, 4));
-  hallway11 = new hallway.Hallway(11, new coordinate.Coordinate(4, 1));
-  hallway12 = new hallway.Hallway(12, new coordinate.Coordinate(4, 3));
-
-  // Instantiate Rooms
-  // link adjacent hallways
-  // set secret passage way where applicable
-  studyRoom = new room.Room('Study', new coordinate.Coordinate(0, 4));
-  hallRoom = new room.Room('Hall', new coordinate.Coordinate(2, 4));
-  loungeRoom = new room.Room('Lounge', new coordinate.Coordinate(4, 4));
-  libraryRoom = new room.Room('Library', new coordinate.Coordinate(0, 2));
-  billiardsRoom = new room.Room('Billiards', new coordinate.Coordinate(2, 2));
-  diningRoom = new room.Room('Dining', new coordinate.Coordinate(4, 2));
-  conservatoryRoom = new room.Room('Conservatory', new coordinate.Coordinate(0, 0));
-  ballroomRoom = new room.Room('Ballroom', new coordinate.Coordinate(2, 0));
-  kitchenRoom = new room.Room('Kitchen', new coordinate.Coordinate(4, 0));
-
+ 
   setupHallways() {
     // setup room hallways
     this.studyRoom.addAdjacentHallways([this.hallway2, this.hallway5]);
@@ -95,66 +152,7 @@ class GameState {
     this.kitchenRoom.setSecretPassageWay(this.studyRoom);
   }
 
-  // State Tracking
-  playerCardSet = new Set([
-    this.colMustardPlayer,
-    this.missScarletPlayer,
-    this.profPlumPlayer,
-    this.mrsPeacockPlayer,
-    this.mrGreenPlayer,
-    this.mrsWhitePlayer,
-  ]);
-  weaponCardSet = new Set([
-    this.knifeWeapon,
-    this.ropeWeapon,
-    this.leadPipeWeapon,
-    this.wrenchWeapon,
-    this.candleStickWeapon,
-    this.revolverWeapon,
-  ]);
-  roomCardSet = new Set([
-    this.conservatoryRoom,
-    this.libraryRoom,
-    this.studyRoom,
-    this.ballroomRoom,
-    this.billiardsRoom,
-    this.hallRoom,
-    this.kitchenRoom,
-    this.diningRoom,
-    this.loungeRoom,
-  ]);
 
-  hallwayCardSet = new Set([
-    this.hallway1,
-    this.hallway2,
-    this.hallway3,
-    this.hallway4,
-    this.hallway5,
-    this.hallway6,
-    this.hallway7,
-    this.hallway8,
-    this.hallway9,
-    this.hallway10,
-    this.hallway11,
-    this.hallway12,
-  ]);
-
-  // list to track current amount of connected players
-  inGamePlayerSet = new Set();
-
-  currentClient = undefined; // define current client character
-
-  murderPlayer = this.randomCard(this.playerCardSet); // choose random card to select murder character
-  murderWeapon = this.randomCard(this.weaponCardSet); // choose random card to select murder weapon
-  murderRoom = this.randomCard(this.roomCardSet); // choose random card to select murder room
-  preGameDeck = this.getGameDeck(this.murderPlayer, this.murderWeapon, this.murderRoom); // cards remaining in the game to be distributed
-
-  // shuffle deck
-  gameDeck = this.shuffleDeck(this.preGameDeck); // shuffle the deck to randomize order they get sent
-
-  // Initialize map for client game cards
-  gameCardMap = new Map();
-  clientArray = [];
 
   initiatePlayerLocations() {
     // Initiate player start Locations
