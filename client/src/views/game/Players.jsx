@@ -38,14 +38,7 @@ export default function Players({ name, self }) {
       />
       <div></div>
       {/* TODO i want this and the image on one line! */}
-      {self ? (
-        <p>
-          {name}
-          <strong> (you)</strong>
-        </p>
-      ) : (
-        <p>{name}</p>
-      )}
+      {self ? <p>{name} (you)</p> : <p>{name}</p>}
     </div>
   );
 }

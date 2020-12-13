@@ -92,61 +92,6 @@ const getcoordinate = (locationName) => {
   }
 };
 
-//TODO: This needs to be recieved from lobby
-const availablePlayers = [
-  {
-    id: 1,
-    name: 'Colonel Mustard',
-  },
-  {
-    id: 2,
-    name: 'Rev. Green',
-  },
-  {
-    id: 3,
-    name: 'Professor Plum',
-  },
-  {
-    id: 4,
-    name: 'Miss Scarlet',
-  },
-  {
-    id: 5,
-    name: 'Mrs. Peacock',
-  },
-  {
-    id: 6,
-    name: 'Mrs. White',
-  },
-];
-
-const playerDeck = [
-  {
-    id: 1,
-    card: 'Study',
-  },
-  {
-    id: 2,
-    card: 'Billard Room',
-  },
-  {
-    id: 3,
-    card: 'Mrs. White',
-  },
-  {
-    id: 4,
-    card: 'Wrench',
-  },
-  {
-    id: 5,
-    card: 'Library',
-  },
-  {
-    id: 6,
-    card: 'Revolver',
-  },
-];
-
 export default function Board({ playerMap }) {
   // using useMemo so that eslint is happy
   const Content = useContentContext();
@@ -158,6 +103,8 @@ export default function Board({ playerMap }) {
   const [loading, setIsLoading] = useState(true);
   const [connectedPlayers, setConnectedPlayers] = useState([]);
   const [clientId, setClientId] = useState(undefined);
+
+  var playerDeck = [];
 
   const getPlayerImage = (playerName) => {
     switch (playerName) {
@@ -232,11 +179,19 @@ export default function Board({ playerMap }) {
     };
   }, [socket, handlePosition, handleMessageResponse, handleClientId]);
 
+  console.log('connected players ->', connectedPlayers);
+
   // render all players
   const renderClient = (x, y) => {
     let allPlayers = [];
     for (let player of connectedPlayers) {
       const [playerX, playerY] = player.playaInformation.initPosition;
+
+      if (player.playaInformation.id === clientId) {
+        playerDeck = player.playaInformation.playerDeck;
+        console.log('player deck', playerDeck);
+      }
+
       let playerExists = x === playerX && y === playerY;
       if (playerExists) {
         const playerMovable = player.playaInformation.id === clientId;
@@ -275,10 +230,10 @@ export default function Board({ playerMap }) {
           >
             <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
               {/* TODO move to connectedplayers (coming from the server) */}
-              {availablePlayers.map((player) => (
+              {connectedPlayers.map((player) => (
                 <GridItem rowSpan={1} colSpan={1} key={player.id} style={{ textAlign: 'center' }}>
                   <Center>
-                    <Players name={player.name} self={player.id === socket.id} />
+                    <Players name={player.playaInformation.name} self={player.id === socket.id} />
                   </Center>
                 </GridItem>
               ))}
@@ -458,9 +413,9 @@ export default function Board({ playerMap }) {
             <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(7, 1fr)" w="100%" h="100%">
               {/* TODO move to connectedplayers (coming from the server) */}
               {playerDeck.map((card) => (
-                <GridItem rowSpan={1} colSpan={1} key={card.id} style={{ textAlign: 'center' }}>
+                <GridItem rowSpan={1} colSpan={1} key={card.Id} style={{ textAlign: 'center' }}>
                   <Center>
-                    <Deck card={card.card} />
+                    <Deck card={card} />
                   </Center>
                 </GridItem>
               ))}

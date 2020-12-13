@@ -58,6 +58,26 @@ const getInitialLocation = (playerName) => {
   }
 };
 
+//Recieve this, don't hardcode
+const getPlayerDeck = (playerName) => {
+  switch (playerName) {
+    case 'Colonel Mustard':
+      return ['Study', 'Billard Room'];
+    case 'Rev. Green':
+      return ['Mrs. White', 'Wrench'];
+    case 'Professor Plum':
+      return ['Library', 'Revolver'];
+    case 'Miss Scarlet':
+      return ['Hall', 'Candlestick'];
+    case 'Mrs. Peacock':
+      return ['Rope', 'Colonel Mustard'];
+    case 'Mrs. White':
+      return ['Kitchen', 'Conservatory'];
+    default:
+      return 'none';
+  }
+};
+
 // TODO we should move the socket handling code to a new file!
 io.on('connect', (socket) => {
   console.log(`new websocket client with id ${socket.id} connected!`);
@@ -115,11 +135,13 @@ io.on('connect', (socket) => {
 
     playerMap = roomMap.get(joinedRoom);
     initialPosition = getInitialLocation(characterName);
+    playerDeck = getPlayerDeck(characterName);
 
     playerInfo = {
       id: socket.id,
       name: characterName,
       initPosition: initialPosition,
+      playerDeck: playerDeck,
     };
     playerMap.set(socket.id, playerInfo);
     console.log(`Your Client ID is: ${socket.id}`);
@@ -137,6 +159,7 @@ io.on('connect', (socket) => {
       id: socket.id,
       name: characterName,
       initPosition: initialPosition,
+      playerDeck: playerDeck,
     });
   });
 
