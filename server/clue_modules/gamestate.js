@@ -302,35 +302,35 @@ class GameState {
   }
 
   // TODO:  that broadcasts suggestion and has players show cards to disprove
-  makeGuess(clientID) {
-    var guessSingleton = new guess.Guess();
+  makeGuess(clientID,guessType,guessMurderPlayer,guessMurderRoom,guessMurderWeapon) {
+    this.guessSingleton = new guess.Guess();
 
-    var guessType = reader.question(
-      this.gameCardMap.get(clientID).getClientPlayer().getName() +
-        ': Make a suggestion (S) or accusation (A)? ',
-    );
-    switch (guessType) {
-      case 'A':
-        guessSingleton.setGuessType('Accusation');
-        guessType = 'accusing';
-        break;
-      case 'S':
-        guessSingleton.setGuessType('Suggestion');
-        guessType = 'suggesting';
-        break;
-    }
-    var guessMurderPlayer = reader.question(
-      this.gameCardMap.get(clientID).getClientPlayer().getName() +
-        `: Who are you ${guessType} is the murderer? `,
-    );
-    var guessMurderRoom = reader.question(
-      this.gameCardMap.get(clientID).getClientPlayer().getName() +
-        `: Where do are you ${guessType} the murder happened? `,
-    );
-    var guessMurderWeapon = reader.question(
-      this.gameCardMap.get(clientID).getClientPlayer().getName() +
-        `: What are you ${guessType} the weapon was? `,
-    );
+    // var guessType = reader.question(
+    //   this.gameCardMap.get(clientID).getClientPlayer().getName() +
+    //     ': Make a suggestion (S) or accusation (A)? ',
+    // );
+    // switch (guessType) {
+    //   case 'A':
+    //     guessSingleton.setGuessType('Accusation');
+    //     guessType = 'accusing';
+    //     break;
+    //   case 'S':
+    //     guessSingleton.setGuessType('Suggestion');
+    //     guessType = 'suggesting';
+    //     break;
+    // }
+    // var guessMurderPlayer = reader.question(
+    //   this.gameCardMap.get(clientID).getClientPlayer().getName() +
+    //     `: Who are you ${guessType} is the murderer? `,
+    // );
+    // var guessMurderRoom = reader.question(
+    //   this.gameCardMap.get(clientID).getClientPlayer().getName() +
+    //     `: Where do are you ${guessType} the murder happened? `,
+    // );
+    // var guessMurderWeapon = reader.question(
+    //   this.gameCardMap.get(clientID).getClientPlayer().getName() +
+    //     `: What are you ${guessType} the weapon was? `,
+    // );
 
     this.playerCardSet.forEach(function (player) {
       if (player.getName() === guessMurderPlayer) {
@@ -385,7 +385,7 @@ class GameState {
     }
   }
 
-  decodeMove(playerMoving, moveLocation) {
+  decodeMove(moveLocation) {
     var locationMovingTo = undefined;
     if (moveLocation.includes('Hallway')) {
       this.hallwayCardSet.forEach(function (hallway) {
@@ -404,12 +404,13 @@ class GameState {
     return locationMovingTo;
   }
 
-  movePlayerLocation(playerMoving) {
+  movePlayerLocation(playerMoving,locationMovingTo) {
     // function to test with terminal input
     //TODO replace with answer from client, expecting string with player name
-    var moveAnswer = reader.question(playerMoving.getName() + ' Where do you want to move? ');
+ 
+    // var moveAnswer = reader.question(playerMoving.getName() + ' Where do you want to move? ');
 
-    var locationMovingTo = this.decodeMove(playerMoving, moveAnswer);
+    var locationMovingTo = this.decodeMove(locationMovingTo);
 
     if (playerMoving.getLocation() instanceof room.Room) {
       this.moveFromRoom(playerMoving, locationMovingTo);
@@ -546,22 +547,24 @@ class GameState {
   }
   // TODO function for server to display each players disprove card for suggestion
   disproveSuggestion(clientID) {
-    console.log(clientID + ' must show a card to disprove player: type the card you choose:');
-    this.gameCardMap
-      .get(clientID)
-      .getGameCardList()
-      .forEach(function (gameCard) {
-        console.log('    -' + gameCard.getName());
-      });
+    // console.log(clientID + ' must show a card to disprove player: type the card you choose:');
+    // this.gameCardMap
+    //   .get(clientID)
+    //   .getGameCardList()
+    //   .forEach(function (gameCard) {
+    //     console.log('    -' + gameCard.getName());
+    //   });
 
-    var disproveAnswer = reader.question(
-      'Type card that you select or type NONE if you do not have card to disprove: ',
-    );
-    if (disproveAnswer === 'NONE') {
-      return false;
-    } else {
-      return true;
-    }
+    // var disproveAnswer = reader.question(
+    //   'Type card that you select or type NONE if you do not have card to disprove: ',
+    // );
+    // if (disproveAnswer === 'NONE') {
+    //   return false;
+    // } else {
+    //   return true;
+    // }
+
+    //EVENT this is where you should ask client to disprove the current suggestion
   }
 
   turnIsOver(player) {
@@ -588,47 +591,59 @@ class GameState {
     var currentPlayer = undefined;
 
     // distibute cards to each of the client's gamecard set
+    //EVENT to distribute card decks once all players have connected/game is starting. These will be the card sent to each respective client
     this.distributeDeck(this.gameCardMap, this.gameDeck, this.clientArray);
 
     while (!gameOver) {
+      //EVENT game is starting and this is the setup for the loop for current player selection
       nextPlayer = false;
       if (playerCounter >= this.gameCardMap.size) {
         playerCounter = 0;
       }
       currentPlayer = this.clientArray[playerCounter];
 
+      if (!this.gameCardMap.has(currentPlayer)) {
+        playerCounter++;
+        nextPlayer = true;
+      }
+
       while (!nextPlayer && !gameOver) {
-        if (!this.gameCardMap.has(currentPlayer)) {
-          playerCounter++;
-          nextPlayer = true;
-        }
+        
+        //EVENT this will allow the move and expects input from client on location of wherer to move
         // current player makes their move
         this.movePlayerLocation(this.gameCardMap.get(currentPlayer).getClientPlayer());
 
+        // EVENT. acutally may not be neccesary since with events we can just skip this
         // if move was to a hallway, time for next players turn
         if (this.turnIsOver(this.gameCardMap.get(currentPlayer).getClientPlayer())) {
           playerCounter++;
           nextPlayer = true;
           console.log('turn is over');
         } else {
+          // EVENT takes a guess from client, path take after depends on accusation or suggestion
           // if move was to a room, need to make a suggestion
           currentPlayerGuess = this.makeGuess(currentPlayer);
+
+          //EVENT accusation is made, expects clients input and determines if they are right or wrong
           if (currentPlayerGuess.getGuessType() === 'Accusation') {
             accusation = this.makeAccusation(
               currentPlayerGuess.getMurderPlayer(),
               currentPlayerGuess.getMurderRoom(),
               currentPlayerGuess.getMurderWeapon(),
             );
+            //EVENT if the accusation was valid, they win and game is over
             if (accusation) {
               console.log(
                 this.gameCardMap.get(currentPlayer).getClientPlayer().getName() + ' Wins!',
               );
               gameOver = true;
+              //EVENT if accusation is invalid, they lose and are out the game and removed from player list
             } else {
               console.log(
                 this.gameCardMap.get(currentPlayer).getClientPlayer().getName() +
                   ' lost and is out the game!',
               );
+              //EVENT removal of player
               this.removeClient(currentPlayer);
               if (this.gameCardMap.size < 1) {
                 gameOver = true;
@@ -637,17 +652,20 @@ class GameState {
               nextPlayer = true;
             }
           }
-
+          //EVENT client makes suggestion
           if (currentPlayerGuess.getGuessType() == 'Suggestion') {
             this.makeSuggestion(
               currentPlayerGuess.getMurderPlayer(),
               currentPlayerGuess.getMurderRoom(),
               currentPlayerGuess.getMurderWeapon(),
             );
+
+            //EVENT once suggestion is made, client submit disproval (end as soon as a client has a disprove card or no client was able to disprove)
             disproved = false;
             disproveCounter = playerCounter + 1;
             currentDisprovePlayer = this.getNextDisprovePlayer(disproveCounter);
 
+            // EVENT Ask each client until card is disproved 
             while (!disproved) {
               disproved = this.disproveSuggestion(currentDisprovePlayer);
               disproveCounter++;
