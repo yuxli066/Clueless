@@ -1,2 +1,13 @@
 @import '~normalize.css';
 @import 'https://fonts.googleapis.com/css2?family=Modak&display=swap';
+
+/*
+* hacky way to add z index to div under pop over
+*/
+#popover1 > div {
+  z-index: 5;
+}
+
+#popover2 > div {
+  z-index: 5;
+}

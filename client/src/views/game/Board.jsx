@@ -9,6 +9,7 @@ import { useDrop } from 'react-dnd';
 import { useContentContext } from '../../ContentProvider';
 import white from '../../board-images/white-image.PNG';
 import { ItemTypes } from './ItemTypes';
+import Navbar from './Navbar';
 
 const getInitialLocation = (playerName) => {
   switch (playerName) {
@@ -203,9 +204,10 @@ export default function Board({ playerMap }) {
   ) : (
     <div>
       <Grid templateRows="repeat(12, 1fr)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
-        <GridItem rowSpan={13} colSpan={1}>
-          <div> Nav Bar Goes Here</div>
+        <GridItem rowSpan={1} colSpan={1}>
+          <Navbar />
         </GridItem>
+        <GridItem rowSpan={12} colSpan={1} rowStart={2} />
         <GridItem rowSpan={1} colSpan={4}>
           <div
             style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
