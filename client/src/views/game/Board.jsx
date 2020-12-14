@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
-import { useToast, Grid, GridItem, Center } from '@chakra-ui/react';
+import { useToast, Grid, GridItem, Center, Button, Input } from '@chakra-ui/react';
 import GameCard from './GameCard';
 import Players from './Players';
 import Deck from './Deck';
@@ -9,6 +9,16 @@ import { useDrop } from 'react-dnd';
 import { useContentContext } from '../../ContentProvider';
 import white from '../../board-images/white-image.PNG';
 import { ItemTypes } from './ItemTypes';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 const getInitialLocation = (playerName) => {
   switch (playerName) {
@@ -99,10 +109,13 @@ export default function Board({ playerMap }) {
 
   const socket = useContext(SocketContext);
 
+  const { isOpen, onOpen, onClose, showModal } = useDisclosure();
+
   /* states */
   const [loading, setIsLoading] = useState(true);
   const [connectedPlayers, setConnectedPlayers] = useState([]);
   const [clientId, setClientId] = useState(undefined);
+  const [disproval, setDisproval] = useState('None');
 
   var playerDeck = [];
 
@@ -138,6 +151,63 @@ export default function Board({ playerMap }) {
     [showToast],
   );
 
+  const handleSugg = useCallback(
+    (resp) => {
+      console.log('Guess Was:', resp);
+      const descript =
+        'A suggestion was made. ' +
+        resp.player +
+        ' killed in the ' +
+        resp.room +
+        ' with a ' +
+        resp.weapon +
+        '. Please click the button to disprove.';
+      showToast({
+        description: descript,
+        isClosable: true,
+        position: 'top',
+        status: 'success',
+      });
+    },
+    [showToast],
+    //Can't seem to get this to work. Open modal after recieving sugg
+    //openModal(),
+  );
+
+  const handleAcc = useCallback(
+    (resp) => {
+      console.log('Guess Was:', resp);
+      const descript =
+        'An accusation was made. ' +
+        resp.player +
+        ' killed in the ' +
+        resp.room +
+        ' with a ' +
+        resp.weapon +
+        '. Please click the button to disprove.';
+      showToast({
+        description: descript,
+        isClosable: true,
+        position: 'top',
+        status: 'success',
+      });
+    },
+    [showToast],
+    //Can't seem to get this to work. Open modal after recieving acc
+    //openModal(),
+  );
+
+  //Havent gotten this to open modal yet
+  const openModal = useDisclosure(isOpen);
+
+  const handleDisproval = (_) => {
+    console.log(disproval);
+    //socket.emit(disproval, {
+    //  card,
+    //player,
+    //});
+  };
+
   const handlePosition = useCallback(
     (movementData) => {
       let newConnectedPlayers = [...connectedPlayers];
@@ -172,12 +242,16 @@ export default function Board({ playerMap }) {
     socket.on('clientId', handleClientId);
     socket.on('playerMoved', handlePosition);
     socket.on('notification', handleMessageResponse);
+    socket.on('suggestion', handleSugg);
+    socket.on('accusation', handleAcc);
     return () => {
       socket.off('playerMoved');
       socket.off('notification');
       socket.off('clientId');
+      socket.off('suggestion');
+      socket.off('accusation');
     };
-  }, [socket, handlePosition, handleMessageResponse, handleClientId]);
+  }, [socket, handlePosition, handleMessageResponse, handleClientId, handleSugg, handleAcc]);
 
   console.log('connected players ->', connectedPlayers);
 
@@ -222,7 +296,7 @@ export default function Board({ playerMap }) {
     <div>
       <Grid templateRows="repeat(12, 1fr)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
         <GridItem rowSpan={13} colSpan={1}>
-          <div> Nav Bar Goes Here</div>
+          <Button onClick={onOpen}> DISPROVE (AUTOMATE)</Button>
         </GridItem>
         <GridItem rowSpan={1} colSpan={4}>
           <div
@@ -423,6 +497,31 @@ export default function Board({ playerMap }) {
           </div>
         </GridItem>
       </Grid>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>A Suggestion/Accusation was made!</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <p>
+              Are you disprove the suggestion/accusation? Type "No" if not. If you can, please type
+              in the card name.{' '}
+            </p>
+            <Input
+              placeholder="Ex. Candlestick "
+              size="md"
+              onChange={(e) => setDisproval(e.target.value)}
+            />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleDisproval}>
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }

@@ -196,12 +196,15 @@ io.on('connect', (socket) => {
     socket.emit('notification', message);
   });
 
+  // EVENTs suggestion (and accusation)
   socket.on('suggestion', (suggestion) => {
     console.log(suggestion);
+    io.emit('suggestion', suggestion);
   });
 
   socket.on('accusation', (acc) => {
     console.log(acc);
+    io.emit('accusation', acc);
   });
 
   socket.on('board', (currentPlayers) => {
