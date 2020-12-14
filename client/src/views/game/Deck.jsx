@@ -56,7 +56,7 @@ export default function Deck({ card }) {
   console.log('first card in deck', card);
   const cardPicture = getContentNamee(card);
   console.log('Card in deck function', cardPicture);
-  return (
+  return content.images[cardPicture] ? (
     <div>
       {/* TODO come up with a bettwer way to downsize the image! */}
       {/* TODO improve padding of image! */}
@@ -68,5 +68,7 @@ export default function Deck({ card }) {
       <div></div>
       <p>{card}</p>
     </div>
+  ) : (
+    <div>Loading Deck...</div>
   );
 }

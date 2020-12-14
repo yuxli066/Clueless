@@ -7,29 +7,26 @@ const socketIo = require('socket.io');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-const GameState = require('./clue_modules/gamestate');
+// const GameState = require('./clue_modules/gamestate');
+const gamestate = require('./gamestateserver');
+let gamestatetracker;
 
 var app = express();
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // TODO get this hooked up to CRA's build dir (most likely via symlink)
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
 const io = socketIo();
 
 // FIXME this is a dangerous global that we should fix!
 const position = {};
-
 // FIXME I think this is a dangerous global! We need to make this safer and able to synchronize read/writes!
 const roomMap = new Map();
 const gameStateMap = new Map();
-
 const PLAYERS = new Set([
   'Colonel Mustard',
   'Rev. Green',
@@ -142,6 +139,8 @@ io.on('connect', (socket) => {
       name: characterName,
       initPosition: initialPosition,
       playerDeck: playerDeck,
+      isCurrentTurn: false,
+      isCulprit: false,
     };
     playerMap.set(socket.id, playerInfo);
     console.log(`Your Client ID is: ${socket.id}`);
@@ -155,12 +154,6 @@ io.on('connect', (socket) => {
     }
     // TODO broadcast that the client joined the room!
     io.in(joinedRoom).emit('playerList', serializedPlayerMap);
-    io.in(joinedRoom).emit('yourClient', {
-      id: socket.id,
-      name: characterName,
-      initPosition: initialPosition,
-      playerDeck: playerDeck,
-    });
   });
 
   // TODO do we want to move this to the client not having to say they left the room? (assumes clients can only be in one room at a time!)
@@ -173,63 +166,29 @@ io.on('connect', (socket) => {
     // TODO we need to check to make sure this works!
     console.log('starting the game!');
     io.in(room).emit('startGame');
+    // convert player map to object for ease of access, highly inefficient but :/
+    const currentplayers = [...roomMap.get(room).entries()].reduce(
+      (obj, [key, value]) => ((obj[key] = value), obj),
+      {},
+    );
+    /* player who joined first gets first move */
+    let startingPlayer = Object.entries(currentplayers)[0][1];
+    /* select a random player as the culprit */
+    let culprit = Object.entries(currentplayers)[
+      Math.floor(Math.random() * Math.floor(Object.entries(currentplayers).length))
+    ][1];
+    console.log('the starting player is: ', startingPlayer);
+    console.log('the culprit is: ', culprit);
+    startingPlayer.isCurrentTurn = true;
+    gamestatetracker = new gamestate(currentplayers, startingPlayer, true);
 
-    const gameState = new GameState();
-    gameStateMap.set(roomMap.get(room), gameState);
+    /* format object in a way to pass to client */
+    let currentplayersforclient = [];
+    for ([key, value] of Object.entries(currentplayers)) {
+      currentplayersforclient.push({ id: key, playaInformation: value });
+    }
 
-    // add the players to the game state object
-    roomMap.get(room).forEach((player, id) => {
-      console.log(player, id);
-      gameState.assignClientPlayer(id, player.name);
-    });
-
-    // console.log(gameState.gameCardMap);
-
-    console.log(gameState);
-
-    // EVENT distribute cards
-    gameState.startGame();
-
-    // EVENT indicate to the first player that it is their turn
-    // TODO we should emit to the client whose turn it is
-  });
-
-  // TODO we need EVENTs for client sending a card back
-  // this should also then indicate to the next player that it is their turn
-
-  // EVENTs suggestion (and accusation)
-  socket.on('suggestion', (suggestion) => {
-    console.log(suggestion);
-  });
-
-  socket.on('accusation', (acc) => {
-    console.log(acc);
-  });
-
-  socket.on('disconnecting', () => {
-    // TODO we need to emit to the room that this socket will disconnect imminently
-    console.log('disconnecting here!');
-    // console.log(socket.rooms);
-    const rooms = new Set([...socket.rooms].filter((room) => room !== socket.id));
-    rooms.forEach((room) => {
-      // delete the player from the playerMap inside of the room
-      // this way the character can be reused
-      console.log('removing player from room:', room);
-
-      // TODO I want to use #get()?.delete() but some it seemed like some people's node had trouble?
-      const roomToDelete = roomMap.get(room);
-      if (roomToDelete) {
-        roomToDelete.delete(socket.id);
-      }
-
-      // TODO update the remaining clients!
-    });
-  });
-
-  socket.on('greet', (greeting) => {
-    console.log('client said:', greeting);
-    console.log('sending response back...');
-    socket.emit('response', 'Hello from server!');
+    io.in(room).emit('game_started_on_board', currentplayersforclient);
   });
 
   socket.on('display_notification', (message) => {
@@ -237,9 +196,12 @@ io.on('connect', (socket) => {
     socket.emit('notification', message);
   });
 
-  socket.on('greetOtherClients', (greeting) => {
-    console.log('client said:', greeting);
-    io.emit('broadcast', 'Hello all clients from server!');
+  socket.on('suggestion', (suggestion) => {
+    console.log(suggestion);
+  });
+
+  socket.on('accusation', (acc) => {
+    console.log(acc);
   });
 
   socket.on('board', (currentPlayers) => {
@@ -252,15 +214,21 @@ io.on('connect', (socket) => {
   });
 
   socket.on('playerMovement', (movementData) => {
-    // position[socket.id].x = movementData.x;
-    // position[socket.id].y = movementData.y;
-    // emit a message to all players about the player that moved
-
-    // EVENT this is where our main player movent will be
-    // update the position of the player that moved and (maybe) indicate the need for a guess or accusation
-
     io.emit('playerMoved', movementData);
   });
+
+  /** TEST ONLY*/
+  socket.on('greet', (greeting) => {
+    console.log('client said:', greeting);
+    console.log('sending response back...');
+    socket.emit('response', 'Hello from server!');
+  });
+
+  socket.on('greetOtherClients', (greeting) => {
+    console.log('client said:', greeting);
+    io.emit('broadcast', 'Hello all clients from server!');
+  });
+  /** TEST ONLY*/
 });
 
 module.exports = {
