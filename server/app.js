@@ -7,9 +7,9 @@ const socketIo = require('socket.io');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-// const GameState = require('./clue_modules/gamestate');
-const gamestate = require('./gamestateserver');
-let gamestatetracker;
+const GameState = require('./clue_modules/gamestate');
+// const gamestate = require('./gamestate');
+// let gamestatetracker;
 
 var app = express();
 app.use(logger('dev'));
@@ -74,6 +74,12 @@ const getPlayerDeck = (playerName) => {
       return 'none';
   }
 };
+
+function getLobby(rooms, id) {
+  // basically we just filter out the id from the room list (socketio has each client join a room named by their id)
+  // NOTE it's safe to assume clients (i.e. browser tabs) are only in 1 game at a time
+  // TODO
+}
 
 // TODO we should move the socket handling code to a new file!
 io.on('connect', (socket) => {
@@ -180,7 +186,8 @@ io.on('connect', (socket) => {
     console.log('the starting player is: ', startingPlayer);
     console.log('the culprit is: ', culprit);
     startingPlayer.isCurrentTurn = true;
-    gamestatetracker = new gamestate(currentplayers, startingPlayer, true);
+    const gameState = new GameState();
+    gameStateMap.set(roomMap.get(room), gameState);
 
     /* format object in a way to pass to client */
     let currentplayersforclient = [];
