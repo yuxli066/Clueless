@@ -220,6 +220,42 @@ io.on('connect', (socket) => {
     io.emit('playerMoved', movementData);
   });
 
+  socket.on('disconnecting', () => {
+    // TODO we need to emit to the room that this socket will disconnect imminently
+    console.log('disconnecting here!');
+    // console.log(socket.rooms);
+    const rooms = new Set([...socket.rooms].filter((room) => room !== socket.id));
+    rooms.forEach((room) => {
+      // delete the player from the playerMap inside of the room
+      // this way the character can be reused
+      console.log('removing player from room:', room);
+
+      // TODO I want to use #get()?.delete() but some it seemed like some people's node had trouble?
+      const roomToDelete = roomMap.get(room);
+      if (roomToDelete) {
+        roomToDelete.delete(socket.id);
+      }
+
+      // TODO update the remaining clients!
+    });
+  });
+
+  socket.on('greet', (greeting) => {
+    console.log('client said:', greeting);
+    console.log('sending response back...');
+    socket.emit('response', 'Hello from server!');
+  });
+
+  socket.on('display_notification', (message) => {
+    console.log('client said:', message);
+    socket.emit('notification', message);
+  });
+
+  socket.on('greetOtherClients', (greeting) => {
+    console.log('client said:', greeting);
+    io.emit('broadcast', 'Hello all clients from server!');
+  });
+
   /** TEST ONLY*/
   socket.on('greet', (greeting) => {
     console.log('client said:', greeting);
