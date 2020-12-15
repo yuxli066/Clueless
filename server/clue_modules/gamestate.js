@@ -13,14 +13,14 @@ var guess = require('./guess');
 
 class GameState {
   constructor() {
-     //Instantiate singleton of guess
+    //Instantiate singleton of guess
     //guessSingleton = new guess.Guess();
-    
+
     this.guessSingleton = new guess.Guess();
 
     // Instantiate Players
     this.colMustardPlayer = new player.Player('Colonel Mustard');
-    this.missScarletPlayer = new player.Player('Miss Scarlet');
+    this.missScarletPlayer = new player.Player('Miss Scarlett');
     this.profPlumPlayer = new player.Player('Professor Plum');
     this.mrsPeacockPlayer = new player.Player('Mrs. Peacock');
     this.mrGreenPlayer = new player.Player('Rev. Green');
@@ -30,7 +30,7 @@ class GameState {
     this.knifeWeapon = new weapon.Weapon('Knife');
     this.ropeWeapon = new weapon.Weapon('Rope');
     this.leadPipeWeapon = new weapon.Weapon('Lead Pipe');
-    this. wrenchWeapon = new weapon.Weapon('Wrench');
+    this.wrenchWeapon = new weapon.Weapon('Wrench');
     this.candleStickWeapon = new weapon.Weapon('Candle Stick');
     this.revolverWeapon = new weapon.Weapon('Revolver');
 
@@ -39,7 +39,7 @@ class GameState {
     this.hallway2 = new hallway.Hallway(2, new coordinate.Coordinate(0, 3));
     this.hallway3 = new hallway.Hallway(3, new coordinate.Coordinate(1, 0));
     this.hallway4 = new hallway.Hallway(4, new coordinate.Coordinate(1, 2));
-    this. hallway5 = new hallway.Hallway(5, new coordinate.Coordinate(1, 4));
+    this.hallway5 = new hallway.Hallway(5, new coordinate.Coordinate(1, 4));
     this.hallway6 = new hallway.Hallway(6, new coordinate.Coordinate(2, 1));
     this.hallway7 = new hallway.Hallway(7, new coordinate.Coordinate(2, 3));
     this.hallway8 = new hallway.Hallway(8, new coordinate.Coordinate(3, 0));
@@ -65,8 +65,8 @@ class GameState {
     this.setupSecretPassageWays();
     this.initiatePlayerLocations();
 
-      // State Tracking
-      this.playerCardSet = new Set([
+    // State Tracking
+    this.playerCardSet = new Set([
       this.colMustardPlayer,
       this.missScarletPlayer,
       this.profPlumPlayer,
@@ -135,7 +135,7 @@ class GameState {
     this.disproveCounter = 1;
     this.currentClient = undefined;
   }
- 
+
   setupHallways() {
     // setup room hallways
     this.studyRoom.addAdjacentHallways([this.hallway2, this.hallway5]);
@@ -161,8 +161,6 @@ class GameState {
     this.conservatoryRoom.setSecretPassageWay(this.loungeRoom);
     this.kitchenRoom.setSecretPassageWay(this.studyRoom);
   }
-
-
 
   initiatePlayerLocations() {
     // Initiate player start Locations
@@ -346,32 +344,27 @@ class GameState {
   }
 
   // TODO:  that broadcasts suggestion and has players show cards to disprove
-  makeGuess(clientID, guessType, guessMurderPlayer,guessMurderRoom, guessMurderWeapon) {
-    this.playerCardSet.forEach(function(player){
-      if(guessMurderPlayer.toLocaleLowerCase() === player.getName().toLocaleLowerCase()){
-        guessMurderPlayer = player;
-      }
-    });
-    this.roomCardSet.forEach(function(room){
-      if(guessMurderRoom.toLocaleLowerCase() === room.getName().toLocaleLowerCase()){
-        guessMurderRoom = room;
-      }
-    });
+  makeGuess(clientID, guessType, guessMurderPlayer, guessMurderRoom, guessMurderWeapon) {
+    const player = [...this.playerCardSet].filter(
+      (player) => guessMurderPlayer.toLocaleLowerCase() === player.getName().toLocaleLowerCase(),
+    )[0];
 
-    this.weaponCardSet.forEach(function(weapon){
-      if(guessMurderWeapon.toLocaleLowerCase() === weapon.getName().toLocaleLowerCase()){
-        guessMurderWeapon = weapon;
-      }
-    });
+    const room = [...this.roomCardSet].filter(
+      (room) => guessMurderRoom.toLocaleLowerCase() === room.getName().toLocaleLowerCase(),
+    )[0];
+
+    const weapon = [...this.weaponCardSet].filter(
+      (weapon) => guessMurderWeapon.toLocaleLowerCase() === weapon.getName().toLocaleLowerCase(),
+    )[0];
 
     if (guessType === 'suggestion') {
-      return this.makeSuggestion(clientID, guessMurderPlayer, guessMurderRoom, guessMurderWeapon);
+      return this.makeSuggestion(clientID, player, room, weapon);
     } else if (guessType === 'accusation') {
-      return this.makeAccusation(clientID, guessMurderPlayer, guessMurderRoom, guessMurderWeapon);
+      return this.makeAccusation(clientID, player, room, weapon);
     }
   }
 
-  getGuess(){
+  getGuess() {
     return this.guessSingleton;
   }
 
@@ -407,7 +400,6 @@ class GameState {
       );
       return false;
       // if given invalid move, recursive ask
-      
     }
   }
 
@@ -446,7 +438,7 @@ class GameState {
       this.moveFromHallway(playerMoving, locationMovingTo);
       this.getNextPlayer();
       return false;
-    } 
+    }
   }
 
   //validate move from hallway
@@ -548,7 +540,7 @@ class GameState {
 
     // if this player is already taken:
     while (this.inGamePlayerSet.has(player)) {
-      player = this.getRandomItem(playerCardSet);
+      player = this.getRandomItem(this.playerCardSet);
     }
 
     // add player to in game set
@@ -563,27 +555,24 @@ class GameState {
     }
   }
 
-  getNextPlayer(){
-
+  getNextPlayer() {
     this.playerCounter++;
     if (this.playerCounter >= this.gameCardMap.size) {
       this.playerCounter = 0;
     }
 
     this.currentClient = this.clientArray[this.playerCounter];
-    
 
     if (!this.gameCardMap.has(this.currentClient)) {
-      this.getNextPlayer()
+      this.getNextPlayer();
     }
-
   }
 
-  getCurrentPlayer(){
+  getCurrentPlayer() {
     return this.currentClient;
   }
 
-  getDisprovePlayer(){
+  getDisprovePlayer() {
     return this.currentDisprovePlayer;
   }
 
@@ -592,15 +581,14 @@ class GameState {
     this.disproveCounter = this.playerCounter + 1;
     if (this.disproveCounter >= this.clientArray.length) {
       currentDisprovePlayer = this.clientArray[0];
-    } 
-    this.currentDisprovePlayer = this.clientArray[this.disproveCounter]; 
-
+    }
+    this.currentDisprovePlayer = this.clientArray[this.disproveCounter];
 
     if (!this.gameCardMap.has(this.currentDisprovePlayer)) {
-      this.getNextDisprovePlayer()
+      this.getNextDisprovePlayer();
     }
 
-    if(this.currentClient === this.currentDisprovePlayer){
+    if (this.currentClient === this.currentDisprovePlayer) {
       return false;
     }
     return true;
@@ -623,16 +611,14 @@ class GameState {
     //   return true;
     // }
     //EVENT this is where you should ask client to disprove the current suggestion
-    if(disproveCard != 'NO'.toLocaleLowerCase()){
+    if (disproveCard != 'NO'.toLocaleLowerCase()) {
       var continueDisprove = this.getNextDisprovePlayer();
-      if(continueDisprove){
+      if (continueDisprove) {
         return false;
-      }else {
+      } else {
         return true;
       }
-      
-    }
-    else{
+    } else {
       return true;
     }
   }
@@ -651,13 +637,16 @@ class GameState {
     this.distributeDeck(this.gameCardMap, this.gameDeck, this.clientArray);
     console.log('Game has started');
     this.currentClient = this.clientArray[0];
-    
-    
-    
-   
-  }
 
-  
+    console.log(
+      'NAME',
+      this.murderPlayer.getName(),
+      'WEAPON',
+      this.murderWeapon.getName(),
+      'ROOM',
+      this.murderRoom.getName(),
+    );
+  }
 
   // TODO: flush out pseudo code for this
   gamePlay() {
@@ -777,7 +766,6 @@ class GameState {
     console.log('End of Game');
   }
 }
-
 
 // // simulation
 // test.assignClientPlayer('client0', 'Mrs. White');

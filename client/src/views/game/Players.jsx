@@ -1,6 +1,7 @@
 //TODO: Do we even need this? Can change UI of lobby to use same image sizes and reuse LobbyPlayer
 import React from 'react';
 import { useContentContext } from '../../ContentProvider';
+import { TriangleUpIcon } from '@chakra-ui/icons';
 
 function getContentName(name) {
   switch (name) {
@@ -22,7 +23,7 @@ function getContentName(name) {
   }
 }
 
-export default function Players({ name, self }) {
+export default function Players({ name, self, isCurrentTurn }) {
   const content = useContentContext();
   // console.log(content);
   const profilePicture = getContentName(name);
@@ -39,6 +40,11 @@ export default function Players({ name, self }) {
       <div></div>
       {/* TODO i want this and the image on one line! */}
       {self ? <p>{name} (you)</p> : <p>{name}</p>}
+      {/* {isCurrentTurn ? (
+        <TriangleUpIcon w={8} h={8} color="red.500" />
+      ) : (
+        <div>Not your turn yet</div>
+      )} */}
     </div>
   );
 }

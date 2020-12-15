@@ -22,6 +22,7 @@ function GameCard() {
 
   const handleSubmitAccusation = (_) => {
     console.log(guessType);
+    console.log(room);
     socket.emit(guessType, {
       weapon,
       room,
@@ -88,7 +89,7 @@ function GameCard() {
               <Checkbox size="md"></Checkbox>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-              <p>Dr Orchid</p>
+              <p>Mrs. White</p>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Checkbox size="md"></Checkbox>
@@ -225,12 +226,12 @@ function GameCard() {
               <div>
                 <select value={weapon} onChange={(e) => setWeapon(e.target.value)}>
                   <option value="DEFAULT">Choose an item...</option>
-                  <option value="candlestick">Candlestick</option>
-                  <option value="daggerKnife">Dagger/Knife</option>
-                  <option value="lead Pipe">Lead Pipe</option>
-                  <option value="revolverColt">Revolver/Colt</option>
-                  <option value="rope">Rope</option>
-                  <option value="spannerMonkeyWrench">Spanner/Monkey Wrench</option>
+                  <option value="Candle Stick">Candlestick</option>
+                  <option value="Knife">Dagger/Knife</option>
+                  <option value="Lead Pipe">Lead Pipe</option>
+                  <option value="Revolver">Revolver/Colt</option>
+                  <option value="Rope">Rope</option>
+                  <option value="Wrench">Spanner/Monkey Wrench</option>
                 </select>
               </div>
             </label>
@@ -242,15 +243,15 @@ function GameCard() {
               <div>
                 <select value={room} onChange={(e) => setRoom(e.target.value)}>
                   <option value="DEFAULT">Choose an item...</option>
-                  <option value="kitchen">Kitchen</option>
-                  <option value="hall">Hall</option>
-                  <option value="ballroom">Ballroom</option>
-                  <option value="conservatory">Conservatory</option>
-                  <option value="diningRoom">Dining Room</option>
-                  <option value="billardRoom">Billard Room</option>
-                  <option value="library">Library</option>
-                  <option value="lounge">Lounge</option>
-                  <option value="study">Study</option>
+                  <option value="Kitchen">Kitchen</option>
+                  <option value="Hall">Hall</option>
+                  <option value="Ballroom">Ballroom</option>
+                  <option value="Conservatory">Conservatory</option>
+                  <option value="Dining">Dining Room</option>
+                  <option value="Billiards">Billard Room</option>
+                  <option value="Library">Library</option>
+                  <option value="Lounge">Lounge</option>
+                  <option value="Study">Study</option>
                 </select>
               </div>
             </label>
@@ -263,12 +264,12 @@ function GameCard() {
                 {/* TODO consider moving these to handling just players */}
                 <select value={player} onChange={(e) => setPlayer(e.target.value)}>
                   <option value="DEFAULT">Choose an item...</option>
-                  <option value="missScarlett">Miss Scarlett</option>
-                  <option value="professorPlum">Professor Plum</option>
-                  <option value="mrsPeacock">Mrs Peacock</option>
-                  <option value="reverendGreen">Reverend Green</option>
-                  <option value="colonelMustard">Colonel Mustard</option>
-                  <option value="drOrchid">Dr Orchid</option>
+                  <option value="Miss Scarlett">Miss Scarlett</option>
+                  <option value="Professor Plum">Professor Plum</option>
+                  <option value="Mrs. Peacock">Mrs Peacock</option>
+                  <option value="Rev. Green">Reverend Green</option>
+                  <option value="Colonel Mustard">Colonel Mustard</option>
+                  <option value="Mrs. White">Mrs. White</option>
                 </select>
               </div>
             </label>

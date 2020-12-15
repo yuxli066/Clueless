@@ -16,9 +16,10 @@ ENV NODE_ENV production
 RUN yarn install --production
 
 # copy src files && move react artifacts to express server
-COPY ./ ./
-RUN yarn build \
-    && mv client/build/* server/public
+COPY ./client ./client
+RUN yarn build
+COPY ./server ./server
+RUN mv client/build/* server/public
 
 # NOTE this expose only works on local dev! (in heroku it's ignored!)
 EXPOSE 3000
