@@ -299,11 +299,11 @@ export default function Board({ playerMap }) {
         {/* <GridItem rowSpan={1} colSpan={1}>
           <Navbar />
         </GridItem> */}
-        <GridItem rowSpan={13} colSpan={1}>
+        <GridItem rowSpan={13} colSpan={1} rowStart={1} colStart={1}>
           <Button onClick={onOpen}> DISPROVE (AUTOMATE)</Button>
         </GridItem>
         <GridItem rowSpan={12} colSpan={1} rowStart={2} />
-        <GridItem rowSpan={1} colSpan={4}>
+        <GridItem rowSpan={1} colSpan={4} rowStart={1} colStart={2}>
           <div
             style={{ backgroundColor: '#fcfbf5', width: '100%', height: '100%', borderRadius: 12 }}
           >
@@ -319,7 +319,7 @@ export default function Board({ playerMap }) {
             </Grid>
           </div>
         </GridItem>
-        <GridItem padding="2em" rowSpan={8} colSpan={4}>
+        <GridItem padding="2em" rowSpan={8} colSpan={4} rowStart={2} colStart={2}>
           <Grid
             backgroundColor="white"
             templateRows="10% repeat(5, 200px) 10%"
