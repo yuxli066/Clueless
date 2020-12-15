@@ -288,7 +288,8 @@ class GameState {
       weaponCard === this.murderWeapon &&
       roomCard === this.murderRoom
     ) {
-      this.gameCardMap.get(clientID).getClientPlayer().getName() + ' Wins!', this.endGame();
+      console.log(this.gameCardMap.get(clientID).getClientPlayer().getName() + ' Wins!');
+      return true;
     } else {
       console.log(
         this.gameCardMap.get(clientID).getClientPlayer().getName() + ' lost and is out the game!',
@@ -298,6 +299,9 @@ class GameState {
       if (this.gameCardMap.size < 1) {
         this.endGame();
       }
+      // get next player
+      this.getNextPlayer();
+      return false;
     }
   }
 
@@ -308,7 +312,7 @@ class GameState {
   makeSuggestion(clientID, playerCard, roomCard, weaponCard) {
     console.log(
       clientID +
-        'suggests it was ' +
+        ' suggests it was ' +
         playerCard.getName() +
         ' in the ' +
         roomCard.getName() +
@@ -316,17 +320,17 @@ class GameState {
         weaponCard.getName(),
     );
 
-    var guessStatement =
-      clientID +
-      'suggests it was ' +
-      playerCard.getName() +
-      ' in the ' +
-      roomCard.getName() +
-      ' with a ' +
-      weaponCard.getName();
+    // set guess params
+    this.guessSingleton.setGuessType('suggestion');
+    this.guessSingleton.setMurderPlayer(playerCard);
+    this.guessSingleton.setMurderRoom(roomCard);
+    this.guessSingleton.setMurderWeapon(weaponCard);
 
     playerCard.setLocation(roomCard);
     console.log(playerCard.getName() + ' has moved to ' + roomCard.getName());
+    this.getNextDisprovePlayer();
+
+    return this.guessSingleton;
 
     // TODO flush out logic for disproval
 
@@ -344,27 +348,31 @@ class GameState {
   // TODO:  that broadcasts suggestion and has players show cards to disprove
   makeGuess(clientID, guessType, guessMurderPlayer,guessMurderRoom, guessMurderWeapon) {
     this.playerCardSet.forEach(function(player){
-      if(guessMurderPlayer === player.getName()){
+      if(guessMurderPlayer.toLocaleLowerCase() === player.getName().toLocaleLowerCase()){
         guessMurderPlayer = player;
       }
     });
     this.roomCardSet.forEach(function(room){
-      if(guessMurderRoom === room.getName()){
+      if(guessMurderRoom.toLocaleLowerCase() === room.getName().toLocaleLowerCase()){
         guessMurderRoom = room;
       }
     });
 
     this.weaponCardSet.forEach(function(weapon){
-      if(guessMurderWeapon === weapon.getName()){
+      if(guessMurderWeapon.toLocaleLowerCase() === weapon.getName().toLocaleLowerCase()){
         guessMurderWeapon = weapon;
       }
     });
 
     if (guessType === 'suggestion') {
-      this.makeSuggestion(clientID, guessMurderPlayer, guessMurderRoom, guessMurderWeapon);
+      return this.makeSuggestion(clientID, guessMurderPlayer, guessMurderRoom, guessMurderWeapon);
     } else if (guessType === 'accusation') {
-      this.makeAccusation(clientID, guessMurderPlayer, guessMurderRoom, guessMurderWeapon);
+      return this.makeAccusation(clientID, guessMurderPlayer, guessMurderRoom, guessMurderWeapon);
     }
+  }
+
+  getGuess(){
+    return this.guessSingleton;
   }
 
   // update player location
@@ -407,13 +415,13 @@ class GameState {
     var locationMovingTo = undefined;
     if (moveLocation.includes('Hallway')) {
       this.hallwayCardSet.forEach(function (hallway) {
-        if (hallway.getName() === moveLocation) {
+        if (hallway.getName().toLocaleLowerCase() === moveLocation.toLocaleLowerCase()) {
           locationMovingTo = hallway;
         }
       });
     } else {
       this.roomCardSet.forEach(function (room) {
-        if (room.getName() === moveLocation) {
+        if (room.getName().toLocaleLowerCase() === moveLocation.toLocaleLowerCase()) {
           locationMovingTo = room;
         }
       });
@@ -571,13 +579,21 @@ class GameState {
 
   }
 
+  getCurrentPlayer(){
+    return this.currentClient;
+  }
+
+  getDisprovePlayer(){
+    return this.currentDisprovePlayer;
+  }
+
   getNextDisprovePlayer() {
     // var disproveCounter = playerCounter+1;
     this.disproveCounter = this.playerCounter + 1;
     if (this.disproveCounter >= this.clientArray.length) {
       currentDisprovePlayer = this.clientArray[0];
     } 
-    this.currentDisprovePlayer = this.clientArray[disproveCounter]; 
+    this.currentDisprovePlayer = this.clientArray[this.disproveCounter]; 
 
 
     if (!this.gameCardMap.has(this.currentDisprovePlayer)) {
@@ -590,7 +606,7 @@ class GameState {
     return true;
   }
   // TODO function for server to display each players disprove card for suggestion
-  disproveSuggestion(clientID) {
+  disproveSuggestion(disproveCard) {
     // console.log(clientID + ' must show a card to disprove player: type the card you choose:');
     // this.gameCardMap
     //   .get(clientID)
@@ -607,6 +623,18 @@ class GameState {
     //   return true;
     // }
     //EVENT this is where you should ask client to disprove the current suggestion
+    if(disproveCard != 'NO'.toLocaleLowerCase()){
+      var continueDisprove = this.getNextDisprovePlayer();
+      if(continueDisprove){
+        return false;
+      }else {
+        return true;
+      }
+      
+    }
+    else{
+      return true;
+    }
   }
 
   turnIsOver(player) {
@@ -629,9 +657,7 @@ class GameState {
    
   }
 
-  getCurrentPlayer(){
-    return this.clientArray[this.playerCounter];
-  }
+  
 
   // TODO: flush out pseudo code for this
   gamePlay() {
