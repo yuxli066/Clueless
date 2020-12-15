@@ -22,7 +22,7 @@ function getContentName(name) {
   }
 }
 
-export default function Players({ name, self }) {
+export default function Players({ name, self, isCurrentTurn }) {
   const content = useContentContext();
   const profilePicture = getContentName(name);
 
@@ -37,14 +37,12 @@ export default function Players({ name, self }) {
       />
       <div></div>
       {/* TODO i want this and the image on one line! */}
-      {self ? (
-        <p>
-          {name}
-          <strong> (you)</strong>
-        </p>
+      {self ? <p>{name} (you)</p> : <p>{name}</p>}
+      {/* {isCurrentTurn ? (
+        <TriangleUpIcon w={8} h={8} color="red.500" />
       ) : (
-        <p>{name}</p>
-      )}
+        <div>Not your turn yet</div>
+      )} */}
     </div>
   );
 }

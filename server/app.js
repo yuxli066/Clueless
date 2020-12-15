@@ -3,30 +3,33 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const socketIo = require('socket.io');
+var fallback = require('express-history-api-fallback');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var app = express();
+const GameState = require('./clue_modules/gamestate');
+// const gamestate = require('./gamestate');
+// let gamestatetracker;
 
+var app = express();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // TODO get this hooked up to CRA's build dir (most likely via symlink)
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fallback('index.html', { root: path.join(__dirname, 'public') }));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
+// app.use('/users', usersRouter);
 const io = socketIo();
 
 // FIXME this is a dangerous global that we should fix!
 const position = {};
-
 // FIXME I think this is a dangerous global! We need to make this safer and able to synchronize read/writes!
 const roomMap = new Map();
-
+const gameStateMap = new Map();
 const PLAYERS = new Set([
   'Colonel Mustard',
   'Rev. Green',
@@ -39,6 +42,7 @@ const PLAYERS = new Set([
 const getInitialLocation = (playerName) => {
   switch (playerName) {
     case 'Colonel Mustard':
+      // FIXME this is not right
       return [2, 2];
     case 'Rev. Green':
       return [3, 7];
@@ -54,6 +58,34 @@ const getInitialLocation = (playerName) => {
       return 'none';
   }
 };
+
+//Recieve this, don't hardcode
+const getPlayerDeck = (playerName) => {
+  switch (playerName) {
+    case 'Colonel Mustard':
+      return ['Study', 'Billard Room'];
+    case 'Rev. Green':
+      return ['Mrs. White', 'Wrench'];
+    case 'Professor Plum':
+      return ['Library', 'Revolver'];
+    case 'Miss Scarlet':
+      return ['Hall', 'Candlestick'];
+    case 'Mrs. Peacock':
+      return ['Rope', 'Colonel Mustard'];
+    case 'Mrs. White':
+      return ['Kitchen', 'Conservatory'];
+    default:
+      return 'none';
+  }
+};
+
+function getLobby(rooms, id) {
+  // basically we just filter out the id from the room list (socketio has each client join a room named by their id)
+  // NOTE it's safe to assume clients (i.e. browser tabs) are only in 1 game at a time
+  // TODO
+
+  return rooms.filter((room) => room != id)[0];
+}
 
 // TODO we should move the socket handling code to a new file!
 io.on('connect', (socket) => {
@@ -112,11 +144,15 @@ io.on('connect', (socket) => {
 
     playerMap = roomMap.get(joinedRoom);
     initialPosition = getInitialLocation(characterName);
+    playerDeck = getPlayerDeck(characterName);
 
     playerInfo = {
       id: socket.id,
       name: characterName,
       initPosition: initialPosition,
+      playerDeck: playerDeck,
+      isCurrentTurn: false,
+      isCulprit: false,
     };
     playerMap.set(socket.id, playerInfo);
     console.log(`Your Client ID is: ${socket.id}`);
@@ -130,11 +166,6 @@ io.on('connect', (socket) => {
     }
     // TODO broadcast that the client joined the room!
     io.in(joinedRoom).emit('playerList', serializedPlayerMap);
-    io.in(joinedRoom).emit('yourClient', {
-      id: socket.id,
-      name: characterName,
-      initPosition: initialPosition,
-    });
   });
 
   // TODO do we want to move this to the client not having to say they left the room? (assumes clients can only be in one room at a time!)
@@ -145,10 +176,128 @@ io.on('connect', (socket) => {
 
   socket.on('requestGameStart', (room) => {
     // TODO we need to check to make sure this works!
-    console.log('starting the game!');
-    console.log(room);
-    console.log(socket.rooms);
+    console.log('starting the game for room', room);
     io.in(room).emit('startGame');
+    // convert player map to object for ease of access, highly inefficient but :/
+    const currentplayers = [...roomMap.get(room).entries()].reduce(
+      (obj, [key, value]) => ((obj[key] = value), obj),
+      {},
+    );
+    /* player who joined first gets first move */
+    let startingPlayer = Object.entries(currentplayers)[0][1];
+    /* select a random player as the culprit */
+    startingPlayer.isCurrentTurn = true;
+    const gameState = new GameState();
+    gameStateMap.set(room, gameState);
+
+    // add the players to the game state object
+    roomMap.get(room).forEach((player, id) => {
+      console.log(player, id);
+      gameState.assignClientPlayer(id, player.name);
+    });
+
+    // console.log(gameState.gameCardMap);
+
+    console.log(gameState);
+
+    // EVENT distribute cards
+    gameState.startGame();
+
+    /* format object in a way to pass to client */
+    let currentplayersforclient = [];
+    for ([key, value] of Object.entries(currentplayers)) {
+      currentplayersforclient.push({ id: key, playaInformation: value });
+    }
+
+    io.in(room).emit('game_started_on_board', currentplayersforclient);
+  });
+
+  socket.on('display_notification', (message) => {
+    console.log('client said:', message);
+    socket.emit('notification', message);
+  });
+
+  // EVENTs suggestion (and accusation)
+  socket.on('suggestion', (suggestion) => {
+    // TODO get the gameState
+    // gamestate event
+    console.log('\n' + socket.id + ' made a suggestion');
+    const lobby = getLobby([...socket.rooms], socket.id);
+    const gameState = gameStateMap.get(lobby);
+    gameState.makeGuess(
+      socket.id,
+      'suggestion',
+      suggestion.player,
+      suggestion.room,
+      suggestion.weapon,
+    );
+
+    socket.emit('disprove', socket.id);
+  });
+
+  socket.on('accusation', (acc) => {
+    console.log('\n' + socket.id + ' made a suggestion');
+    const lobby = getLobby([...socket.rooms], socket.id);
+    const gameState = gameStateMap.get(lobby);
+    const gameWon = gameState.makeGuess(socket.id, 'accusation', acc.player, acc.room, acc.weapon);
+
+    if (gameWon) {
+      socket.emit('end_of_game', gameState.endGame());
+      io.emit('notification', gameState.endGame() + ' won the game!');
+    } else {
+      // TODO handle the case of losing here!
+    }
+  });
+
+  socket.on('disprove', function (disproveCard) {
+    console.log('\n' + clientID + ' disprove the guess:');
+    const lobby = getLobby([...socket.rooms], socket.id);
+    const gameState = gameStateMap.get(lobby);
+
+    var guess = gameState.getGuess();
+    console.log(
+      clientID +
+        ' suggests it was ' +
+        guess.getMurderPlayer().getName() +
+        ' in the ' +
+        guess.getMurderRoom().getName() +
+        ' with a ' +
+        guess.getMurderWeapon().getName(),
+    );
+    var disproved = gameState.disproveSuggestion(disproveCard.toLowerCase());
+    console.log('disprove card: ' + disproveCard);
+    if (disproved) {
+      //TODO emit this turn is over
+      // socket.emit('make_move',clientID);
+      const nextPlayer = gameState.getCurrentPlayer;
+      io.to(nextPlayer).emit('notification', 'It is your turn!');
+    } else {
+      socket.emit('disprove', gameState.getDisprovePlayer());
+    }
+  });
+
+  socket.on('end_of_game', function (clientWon) {
+    console.log('Game is over ' + clientWon + ' is the winner');
+
+    const room = getLobby([...sockett.rooms], socket.id);
+    io.emit('notification', clientWon + ' won the game!');
+  });
+
+  socket.on('board', (currentPlayers) => {
+    // currentPlayers.forEach((playa) =>
+    //   console.log(
+    //     `Current players on the board: ${playa.playaInformation.id}:${playa.playaInformation.name}`,
+    //   ),
+    // );
+    socket.emit('clientId', socket.id);
+  });
+
+  socket.on('playerMovement', (movementData) => {
+    const lobby = getLobby([...socket.rooms], socket.id);
+    const gameState = gameStateMap.get(lobby);
+
+    gameState.movePlayerLocation(socket.id, movementData.pos);
+    io.emit('playerMoved', movementData);
   });
 
   socket.on('disconnecting', () => {
@@ -187,35 +336,18 @@ io.on('connect', (socket) => {
     io.emit('broadcast', 'Hello all clients from server!');
   });
 
-  socket.on('newPlayer', (initialLocation) => {
-    if (!position[socket.id]) {
-      position[socket.id] = {};
-    }
-    position[socket.id].x = initialLocation.x;
-    position[socket.id].y = initialLocation.y;
-
-    // send to this client their id
-    socket.emit('clientId', socket.id);
-
-    // send positions to all clients so they get the new player
-    // io.emit('playerMoved', position);
+  /** TEST ONLY*/
+  socket.on('greet', (greeting) => {
+    console.log('client said:', greeting);
+    console.log('sending response back...');
+    socket.emit('response', 'Hello from server!');
   });
 
-  socket.on('board', (currentPlayers) => {
-    currentPlayers.forEach((playa) =>
-      console.log(
-        `Current players on the board: ${playa.playaInformation.id}:${playa.playaInformation.name}`,
-      ),
-    );
-    socket.emit('clientId', socket.id);
+  socket.on('greetOtherClients', (greeting) => {
+    console.log('client said:', greeting);
+    io.emit('broadcast', 'Hello all clients from server!');
   });
-
-  socket.on('playerMovement', (movementData) => {
-    // position[socket.id].x = movementData.x;
-    // position[socket.id].y = movementData.y;
-    // emit a message to all players about the player that moved
-    io.emit('playerMoved', movementData);
-  });
+  /** TEST ONLY*/
 });
 
 module.exports = {

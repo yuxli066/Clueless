@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
 import Colonel from './Colonal';
 import SocketContext from '../../../src/SocketContext';
-import { useToast, Grid, GridItem, Center } from '@chakra-ui/react';
+import { useToast, Grid, GridItem, Center, Button, Input } from '@chakra-ui/react';
 import GameCard from './GameCard';
 import Players from './Players';
 import Deck from './Deck';
@@ -9,7 +9,17 @@ import { useDrop } from 'react-dnd';
 import { useContentContext } from '../../ContentProvider';
 import white from '../../board-images/white-image.PNG';
 import { ItemTypes } from './ItemTypes';
-import Navbar from './Navbar';
+// import Navbar from './Navbar';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 const getInitialLocation = (playerName) => {
   switch (playerName) {
@@ -30,60 +40,68 @@ const getInitialLocation = (playerName) => {
   }
 };
 
-//TODO: This needs to be recieved from lobby
-const availablePlayers = [
-  {
-    id: 1,
-    name: 'Colonel Mustard',
-  },
-  {
-    id: 2,
-    name: 'Rev. Green',
-  },
-  {
-    id: 3,
-    name: 'Professor Plum',
-  },
-  {
-    id: 4,
-    name: 'Miss Scarlet',
-  },
-  {
-    id: 5,
-    name: 'Mrs. Peacock',
-  },
-  {
-    id: 6,
-    name: 'Mrs. White',
-  },
+const hallways = [
+  '[2,5]',
+  '[2,3]',
+  '[3,6]',
+  '[3,4]',
+  '[3,2]',
+  '[4,5]',
+  '[4,3]',
+  '[5,6]',
+  '[5,4]',
+  '[5,2]',
+  '[6,5]',
+  '[6,3]',
 ];
-
-const playerDeck = [
-  {
-    id: 1,
-    card: 'Study',
-  },
-  {
-    id: 2,
-    card: 'Billard Room',
-  },
-  {
-    id: 3,
-    card: 'Mrs. White',
-  },
-  {
-    id: 4,
-    card: 'Wrench',
-  },
-  {
-    id: 5,
-    card: 'Library',
-  },
-  {
-    id: 6,
-    card: 'Revolver',
-  },
-];
+const getlocationname = (coordinates) => {
+  switch (JSON.stringify(coordinates)) {
+    case '[2,2]':
+      return 'Study';
+    case '[4,2]':
+      return 'Hall';
+    case '[6,2]':
+      return 'Lounge';
+    case '[2,4]':
+      return 'Library';
+    case '[4,4]':
+      return 'Billiards';
+    case '[6,4]':
+      return 'Dining';
+    case '[2,6]':
+      return 'Conservatory';
+    case '[4,6]':
+      return 'Ballroom';
+    case '[6,6]':
+      return 'Kitchen';
+    default:
+      return `Hallway ${hallways.indexOf(JSON.stringify(coordinates)) + 1}`;
+  }
+};
+const getcoordinate = (locationName) => {
+  switch (locationName) {
+    case 'Study':
+      return [2, 2];
+    case 'Hall':
+      return [4, 2];
+    case 'Lounge':
+      return [6, 2];
+    case 'Library':
+      return [2, 4];
+    case 'Billiards':
+      return [4, 4];
+    case 'Dining':
+      return [6, 4];
+    case 'Conservatory':
+      return [2, 6];
+    case 'Ballroom':
+      return [4, 6];
+    case 'Kitchen':
+      return [6, 6];
+    default:
+      return JSON.parse(hallways[Number(locationName.match(/\d+/gm)[0]) - 1]);
+  }
+};
 
 export default function Board({ playerMap }) {
   // using useMemo so that eslint is happy
@@ -92,10 +110,15 @@ export default function Board({ playerMap }) {
 
   const socket = useContext(SocketContext);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   /* states */
   const [loading, setIsLoading] = useState(true);
   const [connectedPlayers, setConnectedPlayers] = useState([]);
   const [clientId, setClientId] = useState(undefined);
+  const [disproval, setDisproval] = useState('None');
+
+  var playerDeck = [];
 
   const getPlayerImage = (playerName) => {
     switch (playerName) {
@@ -129,12 +152,69 @@ export default function Board({ playerMap }) {
     [showToast],
   );
 
+  const handleSugg = useCallback(
+    (resp) => {
+      console.log('Guess Was:', resp);
+      const descript =
+        'A suggestion was made. ' +
+        resp.player +
+        ' killed in the ' +
+        resp.room +
+        ' with a ' +
+        resp.weapon +
+        '. Please click the button to disprove.';
+      showToast({
+        description: descript,
+        isClosable: true,
+        position: 'top',
+        status: 'success',
+      });
+    },
+    [showToast],
+    //Can't seem to get this to work. Open modal after recieving sugg
+    //openModal(),
+  );
+
+  const handleAcc = useCallback(
+    (resp) => {
+      console.log('Guess Was:', resp);
+      const descript =
+        'An accusation was made. ' +
+        resp.player +
+        ' killed in the ' +
+        resp.room +
+        ' with a ' +
+        resp.weapon +
+        '. Please click the button to disprove.';
+      showToast({
+        description: descript,
+        isClosable: true,
+        position: 'top',
+        status: 'success',
+      });
+    },
+    [showToast],
+    //Can't seem to get this to work. Open modal after recieving acc
+    //openModal(),
+  );
+
+  //Havent gotten this to open modal yet
+  // const openModal = useDisclosure(isOpen);
+
+  const handleDisproval = (_) => {
+    console.log(disproval);
+    //socket.emit(disproval, {
+    //  card,
+    //player,
+    //});
+  };
+
   const handlePosition = useCallback(
     (movementData) => {
       let newConnectedPlayers = [...connectedPlayers];
       newConnectedPlayers.find(
         (p) => p.playaInformation.id === movementData.id,
-      ).playaInformation.initPosition = movementData.pos;
+      ).playaInformation.initPosition = getcoordinate(movementData.pos);
       setConnectedPlayers(newConnectedPlayers);
     },
     [connectedPlayers],
@@ -147,34 +227,46 @@ export default function Board({ playerMap }) {
 
   useEffect(() => {
     setConnectedPlayers(playerMap);
+  }, [playerMap]);
+
+  useEffect(() => {
     if (connectedPlayers && clientId) setIsLoading(false);
-  }, [playerMap, connectedPlayers, clientId]);
+  }, [connectedPlayers, clientId]);
+
   useEffect(() => {
     if (connectedPlayers) {
       socket.emit('board', connectedPlayers);
-      socket.on('clientId', handleClientId);
-      socket.on('playerMoved', handlePosition);
-      socket.on('notification', handleMessageResponse);
-      return () => {
-        socket.off('playerMoved');
-        socket.off('notification');
-        socket.off('clientId');
-      };
     }
-  }, [socket, handlePosition, handleMessageResponse, handleClientId, connectedPlayers]);
+  }, [connectedPlayers, socket]);
 
-  // FIXME handle this eslint diable!
-  // eslint-disable-next-line no-unused-vars
-  function handleSubmitAccusation() {
-    var notificationString = 'Player made a suggestion/accusation';
-    socket.emit('display_notification', notificationString);
-  }
+  useEffect(() => {
+    socket.on('clientId', handleClientId);
+    socket.on('playerMoved', handlePosition);
+    socket.on('notification', handleMessageResponse);
+    socket.on('suggestion', handleSugg);
+    socket.on('accusation', handleAcc);
+    return () => {
+      socket.off('playerMoved');
+      socket.off('notification');
+      socket.off('clientId');
+      socket.off('suggestion');
+      socket.off('accusation');
+    };
+  }, [socket, handlePosition, handleMessageResponse, handleClientId, handleSugg, handleAcc]);
+
+  console.log('connected players ->', connectedPlayers);
 
   // render all players
   const renderClient = (x, y) => {
     let allPlayers = [];
     for (let player of connectedPlayers) {
       const [playerX, playerY] = player.playaInformation.initPosition;
+
+      if (player.playaInformation.id === clientId) {
+        playerDeck = player.playaInformation.playerDeck;
+        console.log('player deck', playerDeck);
+      }
+
       let playerExists = x === playerX && y === playerY;
       if (playerExists) {
         const playerMovable = player.playaInformation.id === clientId;
@@ -204,8 +296,11 @@ export default function Board({ playerMap }) {
   ) : (
     <div>
       <Grid templateRows="repeat(12, 1fr)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
-        <GridItem rowSpan={1} colSpan={1}>
+        {/* <GridItem rowSpan={1} colSpan={1}>
           <Navbar />
+        </GridItem> */}
+        <GridItem rowSpan={13} colSpan={1}>
+          <Button onClick={onOpen}> DISPROVE (AUTOMATE)</Button>
         </GridItem>
         <GridItem rowSpan={12} colSpan={1} rowStart={2} />
         <GridItem rowSpan={1} colSpan={4}>
@@ -214,10 +309,10 @@ export default function Board({ playerMap }) {
           >
             <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(6, 1fr)" w="100%" h="100%">
               {/* TODO move to connectedplayers (coming from the server) */}
-              {availablePlayers.map((player) => (
+              {connectedPlayers.map((player) => (
                 <GridItem rowSpan={1} colSpan={1} key={player.id} style={{ textAlign: 'center' }}>
                   <Center>
-                    <Players name={player.name} self={player.id === socket.id} />
+                    <Players name={player.playaInformation.name} self={player.id === socket.id} />
                   </Center>
                 </GridItem>
               ))}
@@ -397,9 +492,9 @@ export default function Board({ playerMap }) {
             <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(7, 1fr)" w="100%" h="100%">
               {/* TODO move to connectedplayers (coming from the server) */}
               {playerDeck.map((card) => (
-                <GridItem rowSpan={1} colSpan={1} key={card.id} style={{ textAlign: 'center' }}>
+                <GridItem rowSpan={1} colSpan={1} key={card.Id} style={{ textAlign: 'center' }}>
                   <Center>
-                    <Deck card={card.card} />
+                    <Deck card={card} />
                   </Center>
                 </GridItem>
               ))}
@@ -407,6 +502,31 @@ export default function Board({ playerMap }) {
           </div>
         </GridItem>
       </Grid>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>A Suggestion/Accusation was made!</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <p>
+              Are you disprove the suggestion/accusation? Type "No" if not. If you can, please type
+              in the card name.{' '}
+            </p>
+            <Input
+              placeholder="Ex. Candlestick "
+              size="md"
+              onChange={(e) => setDisproval(e.target.value)}
+            />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleDisproval}>
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
@@ -417,9 +537,9 @@ const RoomHallway = ({ colStart, rowStart, children, id, imageUrl, cell }) => {
   const socket = useContext(SocketContext);
   const handlePlayerMove = (player) => {
     console.log(
-      'Player with id: ' + player.id + ' just moved to: [' + colStart + ', ' + rowStart + ']',
+      'Player with id: ' + player.id + ' just moved to: ' + getlocationname([colStart, rowStart]),
     );
-    socket.emit('playerMovement', { id: player.id, pos: [colStart, rowStart] });
+    socket.emit('playerMovement', { id: player.id, pos: getlocationname([colStart, rowStart]) });
   };
   // eslint-disable-next-line
   const [{ isOver, canDrop }, drop] = useDrop({
