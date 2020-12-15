@@ -327,6 +327,9 @@ export default function Board({ playerMap }) {
             w="100%"
             h="100%"
           >
+            <RoomHallway colStart={7} rowStart={3} cell="starting">
+              {renderClient(7, 3)}
+            </RoomHallway>
             <RoomHallway colStart={3} rowStart={7} cell="starting">
               {renderClient(3, 7)}
             </RoomHallway>

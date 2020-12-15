@@ -43,7 +43,7 @@ const getInitialLocation = (playerName) => {
   switch (playerName) {
     case 'Colonel Mustard':
       // FIXME this is not right
-      return [2, 2];
+      return [7, 3];
     case 'Rev. Green':
       return [3, 7];
     case 'Professor Plum':
